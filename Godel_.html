@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قضایای ناتمامیت گودل</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0f;
+    --surface: #16161b;
+    --surface2: #1a1a22;
+    --border: #252530;
+    --gold: #c9a84c;
+    --gold-dim: #7a6230;
+    --gold-bright: #e8c96a;
+    --blue: #5aa0d0;
+    --blue-dim: #2a4f6e;
+    --blue-bright: #7ec0ee;
+    --text: #ede9df;
+    --text-body: #c4bfb2;
+    --text-muted: #8a8680;
+    --text-dim: #55524e;
+    --accent-red: #d05a5a;
+    --accent-green: #5ac280;
+    --accent-purple: #9a7ac8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-body);
+    font-family: 'Vazirmatn', sans-serif;
+    font-weight: 300;
+    line-height: 2;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 15% 15%, rgba(90,160,208,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 60% at 85% 85%, rgba(201,168,76,0.06) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(154,122,200,0.03) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 80px 36px 140px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── سربرگ ── */
+  header {
+    text-align: center;
+    margin-bottom: 88px;
+    animation: fadeDown 0.9s ease both;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+
+  h1 {
+    font-size: clamp(34px, 6vw, 60px);
+    font-weight: 900;
+    line-height: 1.15;
+    background: linear-gradient(140deg, var(--gold) 0%, var(--gold-bright) 45%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 14px;
+    letter-spacing: -1px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-bottom: 8px;
+  }
+
+  .meta {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+  }
+
+  .divider-gold {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+    margin: 36px auto 0;
+  }
+
+  /* ── مقدمه ── */
+  .intro {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 44px 48px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.7s ease 0.15s both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .intro::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-purple), transparent);
+    opacity: 0.5;
+  }
+
+  .section-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--text-dim);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-tag::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .intro h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .intro p {
+    font-size: 15px;
+    color: var(--text-body);
+    line-height: 2.1;
+    margin-bottom: 14px;
+  }
+
+  .intro p:last-child { margin-bottom: 0; }
+
+  /* ── تعریف مفاهیم ── */
+  .concepts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.7s ease 0.25s both;
+  }
+
+  .concept-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 26px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .concept-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    opacity: 0.08;
+    transform: translate(30%, -30%);
+  }
+
+  .concept-card.c-blue::before { background: var(--blue); }
+  .concept-card.c-gold::before { background: var(--gold); }
+  .concept-card.c-red::before { background: var(--accent-red); }
+  .concept-card.c-green::before { background: var(--accent-green); }
+
+  .concept-name {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .concept-card.c-blue .concept-name { color: var(--blue-bright); }
+  .concept-card.c-gold .concept-name { color: var(--gold-bright); }
+  .concept-card.c-red .concept-name { color: var(--accent-red); }
+  .concept-card.c-green .concept-name { color: var(--accent-green); }
+
+  .concept-en {
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    font-family: 'Courier New', monospace;
+    direction: ltr;
+    display: block;
+  }
+
+  .concept-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.9;
+  }
+
+  /* ── کارت قضیه ── */
+  .theorem {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 52px 48px 44px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .theorem-one { animation-delay: 0.35s; }
+  .theorem-two { animation-delay: 0.5s; }
+
+  .theorem::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; left: 0;
+    height: 3px;
+  }
+
+  .theorem-one::after {
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+    opacity: 0.6;
+  }
+
+  .theorem-two::after {
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.5;
+  }
+
+  .theorem-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 22px;
+  }
+
+  .theorem-one .theorem-badge {
+    background: rgba(90,160,208,0.1);
+    border: 1px solid rgba(90,160,208,0.2);
+    color: var(--blue-bright);
+  }
+
+  .theorem-two .theorem-badge {
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--gold-bright);
+  }
+
+  .theorem > h2 {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--text);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .theorem-en-title {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: 'Courier New', monospace;
+    direction: ltr;
+    display: block;
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+  }
+
+  /* ── بلوک‌های داخل قضیه ── */
+  .block {
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 14px;
+  }
+
+  .block-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .block-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.12;
+  }
+
+  /* بلوک ساده */
+  .block-simple {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .block-simple .block-label { color: var(--text-muted); }
+
+  .block-simple p {
+    font-size: 15px;
+    color: var(--text-body);
+    line-height: 2.1;
+  }
+
+  /* بلوک صوری */
+  .block-formal {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+  }
+
+  .theorem-one .block-formal { border-right: 3px solid rgba(90,160,208,0.4); }
+  .theorem-two .block-formal { border-right: 3px solid rgba(201,168,76,0.4); }
+
+  .block-formal .block-label { color: var(--text-muted); }
+
+  .block-formal p {
+    font-size: 14.5px;
+    color: #ccc8bc;
+    line-height: 2.05;
+  }
+
+  /* بلوک شهودی */
+  .block-intuition {
+    background: rgba(154,122,200,0.04);
+    border: 1px solid rgba(154,122,200,0.1);
+  }
+
+  .block-intuition .block-label { color: var(--accent-purple); }
+
+  .block-intuition p {
+    font-size: 14.5px;
+    color: #a8a4b8;
+    line-height: 2.1;
+  }
+
+  /* بلوک مثال */
+  .block-example {
+    background: rgba(255,255,255,0.015);
+    border: 1px dashed rgba(255,255,255,0.08);
+  }
+
+  .block-example .block-label { color: var(--text-dim); }
+
+  .block-example p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 2.05;
+    margin-bottom: 14px;
+  }
+
+  .block-example p:last-child { margin-bottom: 0; }
+
+  .example-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    margin-top: 16px;
+    padding-right: 10px;
+    border-right: 2px solid var(--text-dim);
+  }
+
+  /* ── هایلایت‌ها ── */
+  .hi-blue { color: var(--blue-bright); font-weight: 500; }
+  .hi-gold { color: var(--gold-bright); font-weight: 500; }
+  .hi-red { color: var(--accent-red); font-weight: 500; }
+  .hi-green { color: var(--accent-green); font-weight: 500; }
+  .hi-purple { color: var(--accent-purple); font-weight: 500; }
+
+  /* فرمول */
+  .formula {
+    display: inline-block;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 5px;
+    padding: 1px 9px;
+    font-size: 13px;
+    font-family: 'Courier New', monospace;
+    color: #c8c4ba;
+    direction: ltr;
+    margin: 0 3px;
+    white-space: nowrap;
+  }
+
+  /* ── بخش ارتباط ── */
+  .connection {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 48px 48px 44px;
+    margin-bottom: 32px;
+    animation: fadeUp 0.7s ease 0.65s both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .connection::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blue), var(--accent-purple), var(--gold));
+    opacity: 0.4;
+  }
+
+  .connection h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 28px;
+  }
+
+  .connection p {
+    font-size: 14.5px;
+    color: var(--text-muted);
+    line-height: 2.1;
+    margin-bottom: 16px;
+  }
+
+  .connection p:last-child { margin-bottom: 0; }
+
+  /* نمودار */
+  .diagram {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 0;
+    margin: 36px 0;
+    flex-wrap: wrap;
+  }
+
+  .node {
+    border-radius: 10px;
+    padding: 16px 22px;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.7;
+    min-width: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .node small {
+    font-size: 11px;
+    font-weight: 300;
+    opacity: 0.6;
+    margin-top: 4px;
+  }
+
+  .node-blue {
+    background: rgba(90,160,208,0.08);
+    border: 1px solid rgba(90,160,208,0.2);
+    color: var(--blue-bright);
+  }
+
+  .node-gold {
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--gold-bright);
+  }
+
+  .node-red {
+    background: rgba(208,90,90,0.08);
+    border: 1px solid rgba(208,90,90,0.18);
+    color: #e08080;
+  }
+
+  .arrow {
+    color: var(--text-dim);
+    font-size: 20px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  /* جدول خلاصه */
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 13.5px;
+  }
+
+  .summary-table th {
+    text-align: right;
+    padding: 10px 16px;
+    color: var(--text-dim);
+    font-weight: 600;
+    letter-spacing: 2px;
+    font-size: 11px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .summary-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    color: var(--text-muted);
+    vertical-align: top;
+  }
+
+  .summary-table tr:last-child td { border-bottom: none; }
+
+  .summary-table td:first-child {
+    color: var(--text-body);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* ── بخش پایانی ── */
+  .implications {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 44px 48px;
+    margin-bottom: 32px;
+    animation: fadeUp 0.7s ease 0.75s both;
+  }
+
+  .implications h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+
+  .implications p {
+    font-size: 14.5px;
+    color: var(--text-muted);
+    line-height: 2.1;
+    margin-bottom: 16px;
+  }
+
+  .implications p:last-child { margin-bottom: 0; }
+
+  /* نقل‌قول پایانی */
+  .closing {
+    text-align: center;
+    padding: 56px 32px 32px;
+    animation: fadeUp 0.7s ease 0.85s both;
+  }
+
+  .closing-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, transparent, var(--border));
+    margin: 0 auto 40px;
+  }
+
+  .closing-quote {
+    font-size: 17px;
+    color: var(--text-body);
+    line-height: 2.3;
+    max-width: 600px;
+    margin: 0 auto 24px;
+    font-weight: 300;
+  }
+
+  .closing-attr {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+  }
+
+  /* ── انیمیشن‌ها ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 48px 20px 80px; }
+    .theorem, .connection, .intro, .implications { padding: 32px 24px; }
+    .concepts { grid-template-columns: 1fr; }
+    .diagram { flex-direction: column; align-items: center; }
+    .arrow { transform: rotate(90deg); padding: 8px 0; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- سربرگ -->
+  <header>
+    <div class="eyebrow">کورت گودل &nbsp;·&nbsp; ۱۹۳۱</div>
+    <h1>قضایای ناتمامیت</h1>
+    <p class="subtitle">مرزهای ذاتی هر نظام صوری</p>
+    <p class="meta">Gödel's Incompleteness Theorems</p>
+    <div class="divider-gold"></div>
+  </header>
+
+  <!-- مقدمه -->
+  <div class="intro">
+    <div class="section-tag">زمینه</div>
+    <h2>چه چیزی گودل می‌خواست اثبات کند؟</h2>
+    <p>
+      در اوایل قرن بیستم، ریاضیدان بزرگ آلمانی داوید هیلبرت برنامه‌ای جاه‌طلبانه داشت:
+      مجموعه‌ای از اصول موضوع بیابد که <span class="hi-blue">کامل</span>،
+      <span class="hi-green">سازگار</span>، و <span class="hi-gold">اثبات‌پذیر</span> باشد
+      — یعنی بتوان تمام ریاضیات را از آن استخراج کرد و درعین‌حال مطمئن بود که هیچ تناقضی پنهان نیست.
+    </p>
+    <p>
+      کورت گودل در سال ۱۹۳۱ در قالب دو قضیه ثابت کرد که این رویا
+      <span class="hi-red">غیرممکن ذاتی</span> است —
+      نه به خاطر کمبود دانش بشری، بلکه به خاطر ساختار منطق خود.
+      این کشف، پایه‌های فلسفه ریاضیات را برای همیشه تغییر داد.
+    </p>
+  </div>
+
+  <!-- مفاهیم کلیدی -->
+  <div class="concepts">
+    <div class="concept-card c-blue">
+      <div class="concept-name">نظام صوری</div>
+      <span class="concept-en">Formal System</span>
+      <p>مجموعه‌ای از اصول موضوع و قواعد استنتاج که به‌صورت نمادین و مکانیکی تعریف شده‌اند. حساب پئانو و نظریه مجموعه‌های زرملو-فرنکل نمونه‌هایی از این نظام‌ها هستند.</p>
+    </div>
+    <div class="concept-card c-green">
+      <div class="concept-name">سازگاری</div>
+      <span class="concept-en">Consistency</span>
+      <p>نظام T سازگار است اگر هیچ فرمول φ وجود نداشته باشد که هم ⊢ φ و هم ⊢ ¬φ. یعنی نظام هیچ‌وقت یک گزاره و نقیضش را هر دو اثبات نکند.</p>
+    </div>
+    <div class="concept-card c-gold">
+      <div class="concept-name">کامل بودن</div>
+      <span class="concept-en">Completeness</span>
+      <p>نظام کامل است اگر برای هر گزاره φ، یا ⊢ φ یا ⊢ ¬φ. یعنی هیچ گزاره‌ای وجود نداشته باشد که نه قابل اثبات باشد و نه قابل رد.</p>
+    </div>
+    <div class="concept-card c-red">
+      <div class="concept-name">تصمیم‌ناپذیری</div>
+      <span class="concept-en">Undecidability</span>
+      <p>گزاره φ در نظام T تصمیم‌ناپذیر است اگر نه ⊢ φ و نه ⊢ ¬φ. وجود چنین گزاره‌ای نشان می‌دهد نظام ناتمام است.</p>
+    </div>
+  </div>
+
+  <!-- قضیه اول -->
+  <div class="theorem theorem-one">
+    <div class="theorem-badge">قضیه اول</div>
+    <h2>ناتمامیت</h2>
+    <span class="theorem-en-title">First Incompleteness Theorem</span>
+
+    <div class="block block-simple">
+      <div class="block-label">به زبان ساده</div>
+      <p>
+        اگر یک نظام ریاضی بتواند جمع و ضرب اعداد طبیعی را توصیف کند و بی‌تناقض باشد،
+        آنگاه همیشه گزاره‌هایی وجود دارند که نه می‌توان ثابت کرد درست‌اند، نه ثابت کرد غلط.
+        این یک محدودیت ذاتی منطق است، نه کمبود هوش یا ابزار.
+      </p>
+    </div>
+
+    <div class="block block-formal">
+      <div class="block-label">توصیف صوری و دقیق</div>
+      <p>
+        فرض کنید T یک نظام صوری <span class="hi-blue">سازگار</span>،
+        <span class="hi-blue">بازگشتی اصل‌بندی‌شده</span>
+        (یعنی یک الگوریتم وجود دارد که تعیین می‌کند آیا گزاره‌ای اصل موضوع است یا نه)
+        و <span class="hi-blue">به اندازه کافی قوی</span> باشد
+        — یعنی حداقل حساب پئانو را در خود داشته باشد.
+        آنگاه گزاره‌ای مثل <span class="formula">G</span> وجود دارد به قسمی که:
+        <br><br>
+        الف) اگر T سازگار باشد، <span class="formula">G</span> در T <span class="hi-red">اثبات‌ناپذیر</span> است.
+        <br>
+        ب) اگر T سازگار باشد، <span class="formula">¬G</span> در T نیز <span class="hi-red">اثبات‌ناپذیر</span> است.
+        <br><br>
+        پس <span class="formula">G</span> یک گزاره <span class="hi-red">تصمیم‌ناپذیر</span> است.
+        به بیان دیگر: T نمی‌تواند هم سازگار و هم کامل باشد.
+      </p>
+    </div>
+
+    <div class="block block-formal">
+      <div class="block-label">ایده اثبات — عدد‌گذاری گودل</div>
+      <p>
+        گودل به هر فرمول و هر دنباله استنتاجی، یک عدد طبیعی یکتا نسبت داد
+        (<span class="hi-blue">عدد گودل</span>).
+        از این طریق، گزاره‌های منطقی درباره اثبات را می‌توان به گزاره‌های حسابی ترجمه کرد.
+        سپس گزاره <span class="formula">G</span> را ساخت که معادل است با:
+        <em>«گزاره‌ای با عدد گودل n — که خود G است — در T اثبات‌پذیر نیست.»</em>
+        این خودارجاعی دقیق، نه یک پارادوکس، بلکه یک گزاره
+        <span class="hi-green">حسابی معتبر</span> است که از بیرون نظام درست است،
+        اما از درون آن اثبات‌ناپذیر.
+      </p>
+    </div>
+
+    <div class="block block-intuition">
+      <div class="block-label">شهود</div>
+      <p>
+        هر نظام صوری مثل یک زبان است. هر زبانی می‌تواند چیزهایی بگوید،
+        اما همیشه حقایقی هستند که این زبان برای بیانشان ابزار ندارد.
+        گودل نشان داد این محدودیت در ریاضیات
+        <span class="hi-purple">ساختاری</span> است —
+        نه موقت، نه قابل رفع با اضافه کردن قوانین جدید،
+        چون هر بار که قانون جدیدی اضافه کنی، گزاره‌های تصمیم‌ناپذیر جدیدی ظهور می‌کنند.
+      </p>
+    </div>
+
+    <div class="block block-example">
+      <div class="block-label">مثال‌های واقعی</div>
+
+      <div class="example-title">فرضیه پیوستار — مثال اثبات‌شده از تصمیم‌ناپذیری</div>
+      <p>
+        فرضیه پیوستار <span class="formula">CH</span> می‌گوید هیچ مجموعه‌ای وجود ندارد که
+        اندازه‌اش بین اعداد طبیعی و اعداد حقیقی باشد.
+        پل کوهن در ۱۹۶۳ ثابت کرد که <span class="formula">CH</span>
+        در نظریه مجموعه‌های زرملو-فرنکل نه قابل اثبات است و نه قابل رد.
+        این یک نمونه واقعی و اثبات‌شده از تصمیم‌ناپذیری گودلی است.
+      </p>
+
+      <div class="example-title">فرضیه گلدباخ — احتمالاً تصمیم‌ناپذیر</div>
+      <p>
+        هر عدد زوج بزرگ‌تر از دو، مجموع دو عدد اول است.
+        این ادعا برای تمام اعداد زوج تا
+        <span class="formula">4 × 10¹⁸</span>
+        بررسی و تأیید شده، اما هنوز اثبات کلی ندارد.
+        ممکن است یکی از گزاره‌های تصمیم‌ناپذیر گودل باشد:
+        درست باشد اما از درون حساب پئانو قابل اثبات نباشد.
+      </p>
+
+      <div class="example-title">فرضیه ریمان — مرز دانش امروز</div>
+      <p>
+        تمام صفرهای غیربدیهی تابع زتای ریمان <span class="formula">ζ(s)</span>
+        روی خط <span class="formula">Re(s) = ½</span> قرار دارند.
+        یکی از مهم‌ترین مسائل حل‌نشده ریاضیات است.
+        اگر تصمیم‌ناپذیر باشد — که هنوز نمی‌دانیم —
+        این به معنای <span class="hi-red">محدودیت ذاتی نظام</span> است،
+        نه صرفاً کمبود هوش یا روش اثبات.
+      </p>
+    </div>
+  </div>
+
+  <!-- قضیه دوم -->
+  <div class="theorem theorem-two">
+    <div class="theorem-badge">قضیه دوم</div>
+    <h2>اثبات‌ناپذیری سازگاری</h2>
+    <span class="theorem-en-title">Second Incompleteness Theorem</span>
+
+    <div class="block block-simple">
+      <div class="block-label">به زبان ساده</div>
+      <p>
+        هیچ نظام ریاضی نمی‌تواند با ابزار خودش ثابت کند که بی‌تناقض است.
+        اگر بتواند — یعنی اگر بتواند سازگاری خودش را اثبات کند —
+        این دقیقاً دلیلی است که ناسازگار است و هر چیزی را اثبات می‌کند.
+      </p>
+    </div>
+
+    <div class="block block-formal">
+      <div class="block-label">توصیف صوری و دقیق</div>
+      <p>
+        فرض کنید T همان شرایط قضیه اول را دارد.
+        گزاره <span class="formula">Con(T)</span> گزاره‌ای است که سازگاری T را بیان می‌کند.
+        آنگاه:
+        <br><br>
+        اگر T <span class="hi-gold">سازگار</span> باشد، آنگاه
+        <span class="formula">Con(T)</span> در T <span class="hi-red">اثبات‌ناپذیر</span> است.
+        <br><br>
+        اثبات این قضیه از قضیه اول نتیجه می‌شود:
+        گودل نشان داد که در خود T می‌توان استدلال زیر را صوری کرد:
+        <span class="formula">Con(T) → G</span>
+        — یعنی اگر T سازگار باشد، آنگاه <span class="formula">G</span> اثبات‌ناپذیر است.
+        پس اگر T بتواند <span class="formula">Con(T)</span> را اثبات کند،
+        آنگاه <span class="formula">G</span> را هم اثبات می‌کند، که تناقض است.
+      </p>
+    </div>
+
+    <div class="block block-intuition">
+      <div class="block-label">شهود</div>
+      <p>
+        برای داوری درباره یک نظام، باید خارج از آن نظام ایستاد.
+        یک دستگاه نمی‌تواند درستی خودش را از درون خودش تضمین کند —
+        همان‌طور که یک ترازو نمی‌تواند دقت خودش را با خودش بسنجد.
+        هر اثباتی از سازگاری T، به ابزاری قوی‌تر از T نیاز دارد —
+        و آن ابزار هم به نوبه خود همین مشکل را دارد.
+        این زنجیره هیچ‌وقت تمام نمی‌شود.
+      </p>
+    </div>
+
+    <div class="block block-example">
+      <div class="block-label">مثال واقعی</div>
+      <p>
+        سازگاری نظریه مجموعه‌های زرملو-فرنکل در خود این نظریه اثبات‌ناپذیر است.
+        برای اثبات آن باید به نظام قوی‌تری مثل
+        زرملو-فرنکل به‌اضافه وجود اعداد اصیل متوسل شد.
+        اما سازگاری آن نظام هم در خودش اثبات‌ناپذیر است و به نظام بزرگ‌تری نیاز دارد.
+        این سلسله‌مراتب تا بی‌نهایت ادامه دارد —
+        هیچ‌جایی نمی‌توان ایستاد و گفت «اینجا پایه قطعی است.»
+      </p>
+    </div>
+  </div>
+
+  <!-- ارتباط دو قضیه -->
+  <div class="connection">
+    <div class="section-tag">پیوند</div>
+    <h2>رابطه منطقی میان دو قضیه</h2>
+
+    <div class="diagram">
+      <div class="node node-blue">T سازگار است<br><small>فرض اولیه</small></div>
+      <div class="arrow">←</div>
+      <div class="node node-gold">G تصمیم‌ناپذیر است<br><small>قضیه اول</small></div>
+      <div class="arrow">←</div>
+      <div class="node node-red">Con(T) اثبات‌ناپذیر است<br><small>قضیه دوم</small></div>
+    </div>
+
+    <p>
+      قضیه دوم در واقع نسخه صوری‌شده قضیه اول است.
+      گودل نشان داد که <span class="formula">Con(T)</span>
+      دقیقاً همان چیزی است که می‌گوید
+      «گزاره‌ای اثبات‌نشدنی در T وجود دارد» — یعنی همان <span class="formula">G</span>.
+      پس اگر T بتواند سازگاری خود را اثبات کند،
+      یعنی <span class="formula">G</span> را هم اثبات کرده، که با قضیه اول در تناقض است.
+    </p>
+
+    <table class="summary-table">
+      <tr>
+        <th>نظام</th>
+        <th>کامل؟</th>
+        <th>سازگار؟</th>
+        <th>توضیح</th>
+      </tr>
+      <tr>
+        <td>حساب پرزبرگر (فقط جمع)</td>
+        <td><span class="hi-green">بله</span></td>
+        <td><span class="hi-green">بله</span></td>
+        <td>خیلی ضعیف است؛ ضرب ندارد، پس قضیه گودل شامل آن نمی‌شود</td>
+      </tr>
+      <tr>
+        <td>حساب پئانو (جمع + ضرب)</td>
+        <td><span class="hi-red">خیر</span></td>
+        <td><span class="hi-green">فرض می‌شود</span></td>
+        <td>به اندازه کافی قوی است؛ گودل مستقیماً برای این نظام کار کرد</td>
+      </tr>
+      <tr>
+        <td>نظریه مجموعه‌های زرملو-فرنکل</td>
+        <td><span class="hi-red">خیر</span></td>
+        <td><span class="hi-green">فرض می‌شود</span></td>
+        <td>فرضیه پیوستار در آن تصمیم‌ناپذیر است — اثبات‌شده توسط کوهن</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- پیامدها -->
+  <div class="implications">
+    <div class="section-tag">پیامد</div>
+    <h2>این کشف چه معنایی دارد؟</h2>
+    <p>
+      گودل نگفت ریاضیات غلط است یا بی‌فایده. گفت ریاضیات
+      <span class="hi-blue">محدودیت ذاتی</span> دارد — و این تفاوت مهمی است.
+      اعداد اول همچنان اول‌اند، قضیه فیثاغورس همچنان درست است.
+      آنچه گودل نشان داد این است که هیچ سیستم واحدی نمی‌تواند
+      <em>همه</em> حقایق را در خود جا دهد.
+    </p>
+    <p>
+      همچنین تصمیم‌ناپذیری <span class="hi-purple">نسبی</span> است، نه مطلق.
+      فرضیه پیوستار در زرملو-فرنکل تصمیم‌ناپذیر است،
+      اما اگر یک اصل موضوع جدید اضافه کنیم، می‌توان آن را اثبات یا رد کرد.
+      فقط آنگاه گزاره‌های تصمیم‌ناپذیر جدیدی ظهور خواهند کرد.
+      ریاضیات <span class="hi-gold">سقف ثابتی ندارد</span>.
+    </p>
+    <p>
+      این قضایا بر فلسفه ذهن هم تأثیر گذاشتند.
+      برخی استدلال کرده‌اند که ذهن انسان می‌تواند درستی گزاره‌های تصمیم‌ناپذیر را
+      از بیرون نظام ببیند — چیزی که هیچ ماشین صوری نمی‌تواند.
+      اما این استدلال همچنان در فلسفه مورد بحث است.
+    </p>
+  </div>
+
+  <!-- پایان -->
+  <div class="closing">
+    <div class="closing-line"></div>
+    <p class="closing-quote">
+      ریاضیات نه دروغ می‌گوید نه خاموش می‌ماند —
+      فقط همیشه چیزی هست که از خودش نمی‌تواند بگوید.
+    </p>
+    <div class="closing-attr">کورت گودل &nbsp;·&nbsp; ۱۹۰۶ تا ۱۹۷۸</div>
+  </div>
+
+</div>
+</body>
+</html>
