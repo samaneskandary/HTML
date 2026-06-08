@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a1f16">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Vazirmatn:wght@400;600;700;900&display=swap" rel="stylesheet">
+<title>ساکر استارز</title>
+<style>
+  :root{
+    --bg1:#06140e; --bg2:#0e2a1d; --ink:#eafff4;
+    --red:#ff4d4d; --red-d:#c81e1e;
+    --blue:#3d8bff; --blue-d:#1652c8;
+    --gold:#ffd45e; --line:rgba(255,255,255,.7);
+    --pitch:#1f8a4c; --pitch2:#1c7e45;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent; margin:0; padding:0}
+  html,body{height:100%;}
+  body{
+    font-family:"Vazirmatn","Segoe UI",Tahoma,system-ui,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(120% 90% at 50% -10%, #16432e 0%, var(--bg2) 40%, var(--bg1) 100%);
+    overflow:hidden; user-select:none; -webkit-user-select:none;
+    height:100dvh; width:100vw; position:fixed; inset:0;
+  }
+  #app{position:absolute; inset:0; display:flex; flex-direction:column;}
+
+  /* ---------- screens ---------- */
+  .screen{position:absolute; inset:0; display:none; flex-direction:column;
+          align-items:center; justify-content:safe center; overflow-y:auto;
+          padding:18px; text-align:center;}
+  .screen.on{display:flex; animation:fade .35s ease both;}
+  @keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+
+  .brand{font-family:"Lalezar",cursive; font-weight:400; line-height:1; letter-spacing:0;
+         text-shadow:0 6px 0 rgba(0,0,0,.35), 0 14px 30px rgba(0,0,0,.5);}
+  .brand .b1{font-size:clamp(40px,12vw,84px); color:#fff;}
+  .brand .b2{font-size:clamp(40px,12vw,84px);
+             background:linear-gradient(90deg,var(--red),var(--gold) 55%,var(--blue));
+             -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .tag{margin-top:14px; font-size:clamp(13px,3.6vw,17px); opacity:.8; letter-spacing:1px;}
+
+  .ball-emoji{font-size:clamp(72px,22vw,140px); line-height:1; margin-bottom:10px;
+    filter:drop-shadow(0 18px 22px rgba(0,0,0,.55));
+    animation:bob 2.2s ease-in-out infinite;}
+  @keyframes bob{50%{transform:translateY(-16px) rotate(-6deg)}}
+
+  .btn{appearance:none; border:none; cursor:pointer; font-family:inherit;
+       font-weight:800; letter-spacing:.5px; color:#fff; border-radius:18px;
+       padding:18px 30px; font-size:clamp(17px,5vw,22px);
+       box-shadow:0 8px 0 rgba(0,0,0,.28), 0 12px 26px rgba(0,0,0,.4);
+       transition:transform .08s, box-shadow .08s; width:min(420px,86vw);}
+  .btn:active{transform:translateY(5px); box-shadow:0 3px 0 rgba(0,0,0,.28),0 8px 16px rgba(0,0,0,.4)}
+  .btn.play{margin-top:34px;
+    background:linear-gradient(180deg,#ffe07a,var(--gold) 40%,#f0a915);
+    color:#3a2400; font-size:clamp(20px,6vw,26px); padding:20px;}
+  .btn.lvl{background:linear-gradient(180deg,#2bb766,var(--pitch));
+           display:flex; align-items:center; justify-content:space-between; gap:14px; margin:9px auto;}
+  .btn.lvl .n{background:#fff; color:#0d6b38; width:38px; height:38px; border-radius:50%;
+              display:grid; place-items:center; font-size:20px; flex:0 0 auto;}
+  .btn.lvl small{font-weight:600; opacity:.85; font-size:13px;}
+  .btn.ghost{background:rgba(255,255,255,.08); border:1.5px solid rgba(255,255,255,.22);
+             box-shadow:none; font-size:16px; padding:14px 22px;}
+  .btn.ghost:active{transform:translateY(2px)}
+
+  .scr-title{font-family:"Lalezar",cursive; font-size:clamp(30px,8vw,46px); font-weight:400; margin-bottom:6px;}
+  .scr-sub{opacity:.75; margin-bottom:24px; font-size:14px;}
+  .lvls{display:flex; flex-direction:column; align-items:center; width:100%;}
+
+  /* ---------- game ---------- */
+  #gameScreen{position:absolute; inset:0; padding:0; display:none; flex-direction:column;}
+  #gameScreen.on{display:flex;}
+  #hud{display:flex; align-items:center; gap:8px; padding:10px 12px;
+       padding-top:max(10px, env(safe-area-inset-top));
+       background:linear-gradient(180deg, rgba(0,0,0,.45), transparent);}
+  .hbtn{appearance:none; border:none; background:rgba(255,255,255,.12);
+        color:#fff; width:44px; height:44px; border-radius:13px; font-size:20px;
+        cursor:pointer; flex:0 0 auto; display:grid; place-items:center;
+        border:1px solid rgba(255,255,255,.14);}
+  .hbtn:active{transform:scale(.92)}
+  #score{flex:1; display:flex; align-items:center; justify-content:center; gap:10px;
+         font-weight:900; font-size:clamp(18px,5.4vw,24px);}
+  #score .s{min-width:30px; text-align:center; padding:2px 10px; border-radius:10px; background:rgba(0,0,0,.25);}
+  #score .red{color:var(--red)} #score .blue{color:var(--blue)}
+  #turnPill{display:inline-flex; align-items:center; justify-content:center; gap:6px;
+            text-align:center; font-size:13px; font-weight:800; padding:5px 16px; border-radius:999px;
+            background:rgba(0,0,0,.3); white-space:nowrap; min-width:130px;}
+  #stage{flex:1; position:relative; min-height:0;}
+  canvas{position:absolute; inset:0; width:100%; height:100%; touch-action:none; display:block;}
+
+  /* banner / win */
+  #banner{position:absolute; left:50%; top:42%; transform:translate(-50%,-50%) scale(.3);
+          font-family:"Lalezar",cursive; font-size:clamp(48px,17vw,130px); font-weight:400; color:#fff; opacity:0;
+          pointer-events:none; text-shadow:0 6px 0 rgba(0,0,0,.4),0 0 40px var(--gold);}
+  #banner.show{animation:pop 1.3s ease both;}
+  @keyframes pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(-8deg)}
+    25%{opacity:1;transform:translate(-50%,-50%) scale(1.1) rotate(2deg)}
+    70%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+    100%{opacity:0;transform:translate(-50%,-50%) scale(1.05)}}
+
+  #overlay{position:absolute; inset:0; display:none; flex-direction:column;
+           align-items:center; justify-content:center; gap:14px; padding:24px;
+           background:rgba(4,12,8,.78); backdrop-filter:blur(4px); text-align:center;}
+  #overlay.on{display:flex; animation:fade .3s both;}
+  #ovTitle{font-family:"Lalezar",cursive; font-size:clamp(34px,10vw,60px); font-weight:400;}
+  #ovSub{opacity:.85; margin-bottom:8px;}
+
+  .hint{position:absolute; left:50%; bottom:14px; transform:translateX(-50%);
+        background:rgba(0,0,0,.4); padding:8px 16px; border-radius:999px; font-size:13px;
+        pointer-events:none; transition:opacity .4s; max-width:90%;}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- منوی اصلی -->
+  <section id="menuScreen" class="screen on">
+    <div class="ball-emoji">🏆</div>
+    <div class="brand"><span class="b1">ساکر</span> <span class="b2">استارز</span></div>
+    <div class="tag">فوتبال دو بعدی — سبک و آفلاین</div>
+    <button class="btn play" id="goPlay">⚽ بزن بریم</button>
+  </section>
+
+  <!-- انتخاب زمین -->
+  <section id="levelScreen" class="screen">
+    <div class="scr-title">انتخاب زمین</div>
+    <div class="scr-sub">یکی از سه زمین رو انتخاب کن</div>
+    <div class="lvls">
+      <button class="btn lvl" data-lvl="1"><span><span class="n">۱</span> &nbsp;زمین یک <small>— ۳ نفره، آسان</small></span><span>›</span></button>
+      <button class="btn lvl" data-lvl="2"><span><span class="n">۲</span> &nbsp;زمین دو <small>— ۴ نفره، متوسط</small></span><span>›</span></button>
+      <button class="btn lvl" data-lvl="3"><span><span class="n">۳</span> &nbsp;زمین سه <small>— ۵ نفره، سخت</small></span><span>›</span></button>
+      <button class="btn ghost" id="soundBtn" style="margin-top:18px">🔊 صدا: روشن</button>
+      <button class="btn ghost" id="backMenu">بازگشت</button>
+    </div>
+  </section>
+
+  <!-- بازی -->
+  <section id="gameScreen">
+    <div id="hud">
+      <button class="hbtn" id="hBack" title="منو">‹</button>
+      <div id="score"><span class="s red" id="sRed">۰</span><span style="opacity:.5">-</span><span class="s blue" id="sBlue">۰</span></div>
+      <button class="hbtn" id="hSound" title="صدا">🔊</button>
+    </div>
+    <div style="display:flex;justify-content:center;padding-bottom:6px"><span id="turnPill"><span>نوبت تو</span><span>🔴</span></span></div>
+    <div id="stage">
+      <canvas id="cv"></canvas>
+      <div id="banner">گُل!</div>
+      <div class="hint" id="hint">انگشتت رو روی یکی از مهره‌های قرمز بکش و رها کن تا شوت بزنی</div>
+      <div id="overlay">
+        <div id="ovTitle">بردی! 🏆</div>
+        <div id="ovSub"></div>
+        <button class="btn play" id="ovReplay" style="margin-top:6px">دوباره</button>
+        <button class="btn ghost" id="ovMenu">منوی اصلی</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+"use strict";
+/* ============================================================
+   ساکر استارز — موتور بازی (بدون هیچ کتابخانه‌ای)
+   مختصات مجازی زمین: FW x FH  (پرتره)
+   ============================================================ */
+const FW = 600;
+let   FH = 1040;                       // ارتفاع زمین — بسته به صفحه تنظیم می‌شود
+const WALL = {l:30, r:FW-30, t:64, b:FH-64};
+const GOAL_W = 200;
+const GX1 = (FW-GOAL_W)/2, GX2 = (FW+GOAL_W)/2;   // دهانه دروازه
+const GOAL_DEPTH = 46;
+const R_PIECE = 27, R_BALL = 18, R_POST = 7;
+const MAX_SPEED = 35;     // بیشینه سرعت شوت (واحد بر فریم)
+const MAX_PULL  = 260;    // بیشینه کشش انگشت
+const MIN_PULL  = 14;
+const FRICTION  = 0.985;  // اصطکاک هر فریم
+const STOP_V    = 0.18;   // آستانه توقف
+const REST      = 0.92;   // ضریب جهندگی برخوردها
+const REST_WALL = 0.86;   // جهندگی دیوار
+const WIN_GOALS = 3;
+
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+
+let view = {scale:1, ox:0, oy:0};
+function resize(){
+  const dpr = Math.min(window.devicePixelRatio||1, 2);
+  const w = cv.clientWidth, h = cv.clientHeight;
+  cv.width  = Math.max(1, Math.round(w*dpr));
+  cv.height = Math.max(1, Math.round(h*dpr));
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  const pad = 4;
+  // ارتفاع زمین را با نسبت صفحه هماهنگ کن تا تقریباً تمام فضا را بپوشاند
+  const aspect = (h - pad*2) / Math.max(1, (w - pad*2));   // ارتفاع/عرض ناحیه بازی
+  FH = Math.round(Math.max(760, Math.min(1400, FW * aspect)));
+  WALL.b = FH - 64;
+  const s = Math.min((w-pad*2)/FW, (h-pad*2)/FH);
+  view.scale = s;
+  view.ox = (w - FW*s)/2;
+  view.oy = (h - FH*s)/2;
+}
+window.addEventListener('resize', resize);
+
+/* ---------- وضعیت بازی ---------- */
+let level = 1;
+let soundOn = true;
+let pieces = [];      // مهره‌ها
+let ball = null;
+let posts = [];       // تیرک‌ها (ثابت)
+let turn = 'red';     // 'red' = بازیکن، 'blue' = هوش مصنوعی
+let phase = 'aim';    // 'aim' | 'sim' | 'aiwait' | 'goal' | 'win'
+let score = {red:0, blue:0};
+let sel = null;       // مهره‌ی انتخاب‌شده
+let drag = null;      // {x,y} موقعیت فعلی انگشت
+let goalLock = false; // جلوگیری از ثبت چند گله
+let aiTimer = 0;
+
+const AI = { 1:{spread:0.55, power:0.70}, 2:{spread:0.34, power:0.80}, 3:{spread:0.18, power:0.88} };
+const FORM = {
+  1:[[0.5,0.90],[0.30,0.72],[0.70,0.72]],
+  2:[[0.5,0.91],[0.27,0.75],[0.73,0.75],[0.5,0.62]],
+  3:[[0.5,0.92],[0.24,0.78],[0.76,0.78],[0.38,0.64],[0.62,0.64]]
+};
+function fx(f){ return WALL.l + f*(WALL.r-WALL.l); }
+function fy(f){ return WALL.t + f*(WALL.b-WALL.t); }
+
+function setupLevel(lv){
+  level = lv;
+  score = {red:0, blue:0};
+  posts = [
+    {x:GX1,y:WALL.t,r:R_POST},{x:GX2,y:WALL.t,r:R_POST},
+    {x:GX1,y:WALL.b,r:R_POST},{x:GX2,y:WALL.b,r:R_POST}
+  ];
+  kickoff('red', true);
+}
+function kickoff(who, full){
+  const form = FORM[level];
+  pieces = [];
+  for(const [a,b] of form){
+    pieces.push(mk(fx(a), fy(b), 'red'));         // قرمز پایین
+    pieces.push(mk(fx(a), fy(1-b), 'blue'));       // آبی بالا (آینه)
+  }
+  ball = {x:FW/2, y:FH/2, vx:0, vy:0, r:R_BALL, m:1, ball:true};
+  turn = who; sel=null; drag=null; goalLock=false;
+  if(turn==='blue'){ phase='aiwait'; aiTimer = performance.now()+750; }
+  else phase='aim';
+  updateHUD();
+}
+function mk(x,y,team){ return {x,y,vx:0,vy:0,r:R_PIECE,m:2.4,team}; }
+
+/* ---------- فیزیک ---------- */
+function bodies(){ return ball ? pieces.concat([ball]) : pieces.slice(); }
+
+function physicsStep(){
+  const all = bodies();
+  let maxV=0;
+  for(const b of all){ const v=Math.hypot(b.vx,b.vy); if(v>maxV)maxV=v; }
+  const sub = Math.min(8, Math.max(1, Math.ceil(maxV / (R_BALL))));
+  for(let s=0;s<sub;s++){
+    for(const b of all){ b.x += b.vx/sub; b.y += b.vy/sub; walls(b); }
+    for(const b of all) for(const p of posts) staticHit(b,p);
+    for(let i=0;i<all.length;i++)
+      for(let j=i+1;j<all.length;j++) collide(all[i], all[j]);
+  }
+  for(const b of all){
+    b.vx*=FRICTION; b.vy*=FRICTION;
+    if(Math.hypot(b.vx,b.vy) < STOP_V){ b.vx=0; b.vy=0; }
+  }
+  checkGoal();
+}
+function walls(b){
+  const mouth = b.x>GX1+b.r*0 && b.x>GX1 && b.x<GX2;
+  if(b.x-b.r < WALL.l){ b.x=WALL.l+b.r; b.vx=Math.abs(b.vx)*REST_WALL; thud(b.vx); }
+  if(b.x+b.r > WALL.r){ b.x=WALL.r-b.r; b.vx=-Math.abs(b.vx)*REST_WALL; thud(b.vx); }
+  if(b.y-b.r < WALL.t){
+    if(b.ball && mouth){ /* وارد دروازه می‌شود */ }
+    else { b.y=WALL.t+b.r; b.vy=Math.abs(b.vy)*REST_WALL; thud(b.vy); }
+  }
+  if(b.y+b.r > WALL.b){
+    if(b.ball && mouth){ }
+    else { b.y=WALL.b-b.r; b.vy=-Math.abs(b.vy)*REST_WALL; thud(b.vy); }
+  }
+  if(b.ball){ // محدود کردن توپ داخل تور
+    if(b.y < WALL.t-GOAL_DEPTH){ b.y=WALL.t-GOAL_DEPTH; b.vy*=-0.3; }
+    if(b.y > WALL.b+GOAL_DEPTH){ b.y=WALL.b+GOAL_DEPTH; b.vy*=-0.3; }
+  }
+}
+function staticHit(b,p){
+  let dx=b.x-p.x, dy=b.y-p.y, d=Math.hypot(dx,dy)||0.001, min=b.r+p.r;
+  if(d<min){
+    const nx=dx/d, ny=dy/d, ov=min-d;
+    b.x+=nx*ov; b.y+=ny*ov;
+    const vn=b.vx*nx+b.vy*ny;
+    if(vn<0){ b.vx-=(1+REST_WALL)*vn*nx; b.vy-=(1+REST_WALL)*vn*ny; thud(vn); }
+  }
+}
+function collide(a,b){
+  let dx=b.x-a.x, dy=b.y-a.y, d=Math.hypot(dx,dy)||0.001, min=a.r+b.r;
+  if(d>=min) return;
+  const nx=dx/d, ny=dy/d, ov=min-d, tot=a.m+b.m;
+  a.x-=nx*ov*(b.m/tot); a.y-=ny*ov*(b.m/tot);
+  b.x+=nx*ov*(a.m/tot); b.y+=ny*ov*(a.m/tot);
+  const dvx=b.vx-a.vx, dvy=b.vy-a.vy, vn=dvx*nx+dvy*ny;
+  if(vn>0) return;
+  const j = -(1+REST)*vn/(1/a.m + 1/b.m);
+  const ix=j*nx, iy=j*ny;
+  a.vx-=ix/a.m; a.vy-=iy/a.m;
+  b.vx+=ix/b.m; b.vy+=iy/b.m;
+  hit(Math.abs(vn));
+}
+function moving(){
+  for(const b of bodies()) if(b.vx||b.vy) return true;
+  return false;
+}
+
+/* ---------- گل ---------- */
+function checkGoal(){
+  if(goalLock || !ball) return;
+  const inMouth = ball.x>GX1 && ball.x<GX2;
+  if(inMouth && ball.y < WALL.t){ goal('red'); }       // دروازه بالا → قرمز گل زد
+  else if(inMouth && ball.y > WALL.b){ goal('blue'); }  // دروازه پایین → آبی گل زد
+}
+function goal(scorer){
+  goalLock = true;
+  score[scorer]++;
+  updateHUD();
+  celebrate(scorer);
+  showBanner(scorer==='red' ? 'گُل! 🔴' : 'گُل! 🔵');
+  // توقف همه
+  for(const b of bodies()){ b.vx=0; b.vy=0; }
+  if(score[scorer] >= WIN_GOALS){
+    phase='win';
+    setTimeout(()=>winScreen(scorer), 1100);
+  }else{
+    phase='goal';
+    const conceded = scorer==='red' ? 'blue' : 'red';
+    setTimeout(()=> kickoff(conceded, false), 1250);
+  }
+}
+
+/* ---------- هوش مصنوعی ---------- */
+function aiMove(){
+  const target = {x:FW/2, y:WALL.b};            // دروازه‌ی بازیکن
+  let best=null, bestScore=-1e9;
+  for(const p of pieces){
+    if(p.team!=='blue') continue;
+    const tb = norm(ball.x-p.x, ball.y-p.y);
+    const tg = norm(target.x-ball.x, target.y-ball.y);
+    const align = tb.x*tg.x + tb.y*tg.y;
+    const dist = Math.hypot(ball.x-p.x, ball.y-p.y);
+    const sc = align*1.6 - dist/FH;
+    if(sc>bestScore){ bestScore=sc; best=p; }
+  }
+  if(!best){ endTurn(); return; }
+  const cfg = AI[level];
+  let dir = norm(ball.x-best.x, ball.y-best.y);
+  const ang = Math.atan2(dir.y,dir.x) + (Math.random()-0.5)*cfg.spread;
+  const power = MAX_SPEED*(cfg.power + Math.random()*0.1);
+  best.vx = Math.cos(ang)*power;
+  best.vy = Math.sin(ang)*power;
+  kickSound();
+  phase='sim';
+}
+function endTurn(){
+  if(phase==='win'||phase==='goal') return;
+  turn = (turn==='red') ? 'blue' : 'red';
+  if(turn==='blue'){ phase='aiwait'; aiTimer = performance.now()+650; }
+  else phase='aim';
+  updateHUD();
+}
+
+/* ---------- ورودی بازیکن ---------- */
+function toField(e){
+  const r = cv.getBoundingClientRect();
+  const cx = (e.touches?e.touches[0].clientX:e.clientX) - r.left;
+  const cy = (e.touches?e.touches[0].clientY:e.clientY) - r.top;
+  return { x:(cx-view.ox)/view.scale, y:(cy-view.oy)/view.scale };
+}
+function onDown(e){
+  if(phase!=='aim' || turn!=='red') return;
+  const p = toField(e);
+  let pick=null, pd=1e9;
+  for(const mp of pieces){
+    if(mp.team!=='red') continue;
+    const d=Math.hypot(mp.x-p.x, mp.y-p.y);
+    if(d < mp.r+22 && d<pd){ pd=d; pick=mp; }
+  }
+  if(pick){ sel=pick; drag={x:p.x,y:p.y}; e.preventDefault(); }
+}
+function onMove(e){ if(sel){ drag=toField(e); e.preventDefault(); } }
+function onUp(e){
+  if(!sel){ return; }
+  const dx=sel.x-drag.x, dy=sel.y-drag.y;     // کشش به عقب → پرتاب به جلو
+  const pull=Math.min(Math.hypot(dx,dy), MAX_PULL);
+  if(pull>=MIN_PULL){
+    const dir=norm(dx,dy);
+    const pw=(pull/MAX_PULL)*MAX_SPEED;
+    sel.vx=dir.x*pw; sel.vy=dir.y*pw;
+    kickSound();
+    phase='sim';
+    hideHint();
+  }
+  sel=null; drag=null; e&&e.preventDefault&&e.preventDefault();
+}
+cv.addEventListener('mousedown',onDown);  cv.addEventListener('mousemove',onMove);  window.addEventListener('mouseup',onUp);
+cv.addEventListener('touchstart',onDown,{passive:false}); cv.addEventListener('touchmove',onMove,{passive:false}); window.addEventListener('touchend',onUp,{passive:false});
+
+/* ---------- رندر ---------- */
+function draw(){
+  const w=cv.clientWidth, h=cv.clientHeight;
+  ctx.clearRect(0,0,w,h);
+  ctx.save();
+  ctx.translate(view.ox, view.oy);
+  ctx.scale(view.scale, view.scale);
+
+  drawPitch();
+  // تیرک‌ها
+  for(const p of posts){ disc(p.x,p.y,p.r,'#f4f4f4','#bdbdbd'); }
+  // مهره‌ها
+  for(const mp of pieces){
+    const c = mp.team==='red' ? ['#ff5d5d','#b71c1c'] : ['#4f97ff','#10399c'];
+    disc(mp.x,mp.y,mp.r,c[0],c[1]);
+    ctx.beginPath(); ctx.arc(mp.x,mp.y,mp.r*0.42,0,7); ctx.fillStyle='rgba(255,255,255,.85)'; ctx.fill();
+  }
+  // توپ
+  if(ball){
+    disc(ball.x,ball.y,ball.r,'#ffffff','#cfd6da');
+    ctx.fillStyle='#1c1c1c';
+    ctx.beginPath(); ctx.arc(ball.x,ball.y,ball.r*0.34,0,7); ctx.fill();
+  }
+  // نشانگر شوت
+  if(sel && drag){
+    const dx=sel.x-drag.x, dy=sel.y-drag.y;
+    const pull=Math.min(Math.hypot(dx,dy),MAX_PULL);
+    if(pull>4){
+      const dir=norm(dx,dy), len=40+(pull/MAX_PULL)*150;
+      const ex=sel.x+dir.x*len, ey=sel.y+dir.y*len;
+      const t=pull/MAX_PULL;
+      const col = `rgb(${Math.round(120+135*t)},${Math.round(220-150*t)},90)`;
+      ctx.strokeStyle=col; ctx.lineWidth=8; ctx.lineCap='round';
+      ctx.setLineDash([16,12]);
+      ctx.beginPath(); ctx.moveTo(sel.x,sel.y); ctx.lineTo(ex,ey); ctx.stroke();
+      ctx.setLineDash([]);
+      // سرپیکان
+      const a=Math.atan2(dir.y,dir.x);
+      ctx.fillStyle=col; ctx.beginPath();
+      ctx.moveTo(ex,ey);
+      ctx.lineTo(ex-18*Math.cos(a-0.4), ey-18*Math.sin(a-0.4));
+      ctx.lineTo(ex-18*Math.cos(a+0.4), ey-18*Math.sin(a+0.4));
+      ctx.closePath(); ctx.fill();
+      // هاله انتخاب
+      ctx.strokeStyle='rgba(255,255,255,.9)'; ctx.lineWidth=4;
+      ctx.beginPath(); ctx.arc(sel.x,sel.y,sel.r+6,0,7); ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+function disc(x,y,r,fill,edge){
+  ctx.beginPath(); ctx.arc(x,y,r,0,7);
+  const g=ctx.createRadialGradient(x-r*0.3,y-r*0.4,r*0.2, x,y,r);
+  g.addColorStop(0,fill); g.addColorStop(1,edge);
+  ctx.fillStyle=g; ctx.fill();
+  ctx.lineWidth=3; ctx.strokeStyle='rgba(0,0,0,.25)'; ctx.stroke();
+  ctx.beginPath(); ctx.arc(x,y-r*0.05,r,0,7);
+  ctx.lineWidth=2; ctx.strokeStyle='rgba(255,255,255,.35)'; ctx.stroke();
+}
+function drawPitch(){
+  const tones = {1:['#1f9a52','#1c8c4a'], 2:['#15803d','#11702f'], 3:['#1f7a8c','#176777']};
+  const [g1,g2] = tones[level]||tones[1];
+  // زمینه پشت زمین
+  ctx.fillStyle='#0a1f15'; ctx.fillRect(-40,-40,FW+80,FH+80);
+  // راه‌راه چمن
+  const stripes=10, sh=(WALL.b-WALL.t)/stripes;
+  for(let i=0;i<stripes;i++){
+    ctx.fillStyle = (i%2? g1:g2);
+    ctx.fillRect(WALL.l, WALL.t+i*sh, WALL.r-WALL.l, sh+1);
+  }
+  ctx.strokeStyle='rgba(255,255,255,.8)'; ctx.lineWidth=3;
+  // کادر
+  ctx.strokeRect(WALL.l, WALL.t, WALL.r-WALL.l, WALL.b-WALL.t);
+  // خط وسط + دایره
+  ctx.beginPath(); ctx.moveTo(WALL.l,FH/2); ctx.lineTo(WALL.r,FH/2); ctx.stroke();
+  ctx.beginPath(); ctx.arc(FW/2,FH/2,70,0,7); ctx.stroke();
+  ctx.beginPath(); ctx.arc(FW/2,FH/2,5,0,7); ctx.fillStyle='rgba(255,255,255,.8)'; ctx.fill();
+  // محوطه‌ها
+  const bw=GOAL_W+90, bh=70;
+  ctx.strokeRect(FW/2-bw/2, WALL.t, bw, bh);
+  ctx.strokeRect(FW/2-bw/2, WALL.b-bh, bw, bh);
+  // دروازه‌ها (تور)
+  drawNet(WALL.t,-1); drawNet(WALL.b,1);
+}
+function drawNet(yLine, dir){
+  const top = dir<0 ? yLine-GOAL_DEPTH : yLine;
+  const x0=GX1, x1=GX2;
+  ctx.save();
+  ctx.fillStyle='rgba(255,255,255,.10)';
+  ctx.fillRect(x0, top, GOAL_W, GOAL_DEPTH);
+  ctx.strokeStyle='rgba(255,255,255,.45)'; ctx.lineWidth=1.4;
+  for(let x=x0; x<=x1; x+=16){ ctx.beginPath(); ctx.moveTo(x,top); ctx.lineTo(x,top+GOAL_DEPTH); ctx.stroke(); }
+  for(let y=top; y<=top+GOAL_DEPTH; y+=14){ ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(x1,y); ctx.stroke(); }
+  // تیر دروازه پررنگ
+  ctx.strokeStyle='#fff'; ctx.lineWidth=5; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(x0,yLine); ctx.lineTo(x0, dir<0?yLine-GOAL_DEPTH:yLine+GOAL_DEPTH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x1,yLine); ctx.lineTo(x1, dir<0?yLine-GOAL_DEPTH:yLine+GOAL_DEPTH); ctx.stroke();
+  ctx.restore();
+}
+
+/* ---------- حلقه اصلی ---------- */
+let running=false;
+function loop(now){
+  if(!running) return;
+  if(phase==='sim'){
+    physicsStep();
+    if(phase==='sim' && !moving()) endTurn();
+  }else if(phase==='aiwait' && now>=aiTimer){
+    aiMove();
+  }
+  draw();
+  requestAnimationFrame(loop);
+}
+
+/* ---------- HUD ---------- */
+const fa = n => String(n).replace(/\d/g, d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+function updateHUD(){
+  document.getElementById('sRed').textContent  = fa(score.red);
+  document.getElementById('sBlue').textContent = fa(score.blue);
+  const pill=document.getElementById('turnPill');
+  if(phase==='win'){ pill.innerHTML='پایان بازی'; }
+  else pill.innerHTML = (turn==='red')
+        ? '<span>نوبت تو</span><span>🔴</span>'
+        : '<span>نوبت حریف</span><span>🔵</span>';
+}
+function showBanner(txt){
+  const b=document.getElementById('banner');
+  b.textContent=txt; b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
+}
+let hintTimer;
+function hideHint(){ const h=document.getElementById('hint'); h.style.opacity='0'; }
+function showHintOnce(){
+  const h=document.getElementById('hint'); h.style.opacity='1';
+  clearTimeout(hintTimer); hintTimer=setTimeout(hideHint,4500);
+}
+function winScreen(scorer){
+  const ov=document.getElementById('overlay');
+  document.getElementById('ovTitle').textContent = scorer==='red' ? 'بردی! 🏆' : 'باختی 😔';
+  document.getElementById('ovSub').textContent = `نتیجه ${fa(score.red)} - ${fa(score.blue)}`;
+  ov.classList.add('on');
+}
+
+/* ---------- صدا (WebAudio، بدون فایل) ---------- */
+let actx=null, lastHit=0;
+function audio(){ if(!actx){ try{ actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return actx; }
+function beep(freq,dur,type='sine',gain=0.2){
+  if(!soundOn) return; const a=audio(); if(!a) return;
+  const o=a.createOscillator(), g=a.createGain();
+  o.type=type; o.frequency.value=freq; o.connect(g); g.connect(a.destination);
+  const t=a.currentTime; g.gain.setValueAtTime(gain,t);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.start(t); o.stop(t+dur);
+}
+function kickSound(){ beep(180,0.12,'triangle',0.3); }
+function hit(v){ const n=performance.now(); if(n-lastHit<35) return; lastHit=n;
+  if(v>1.5) beep(120+Math.min(v,20)*12,0.06,'square',0.12); }
+function thud(v){ if(Math.abs(v)>2){ const n=performance.now(); if(n-lastHit<35)return; lastHit=n; beep(90,0.05,'sine',0.08);} }
+function goalJingle(){ if(!soundOn)return; [523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,0.18,'triangle',0.25),i*90)); }
+
+/* سوت داور: تی-تی-تیییت */
+function whistle(){
+  if(!soundOn) return; const a=audio(); if(!a) return;
+  const t0=a.currentTime;
+  const toot=(start,len)=>{
+    const o=a.createOscillator(), g=a.createGain(),
+          lfo=a.createOscillator(), lg=a.createGain();
+    o.type='sine'; o.frequency.value=2350;
+    lfo.type='sine'; lfo.frequency.value=30; lg.gain.value=140; // تریل سوت
+    lfo.connect(lg); lg.connect(o.frequency);
+    g.gain.setValueAtTime(0.0001,start);
+    g.gain.exponentialRampToValueAtTime(0.26,start+0.025);
+    g.gain.setValueAtTime(0.26,start+len-0.05);
+    g.gain.exponentialRampToValueAtTime(0.0001,start+len);
+    o.connect(g); g.connect(a.destination);
+    o.start(start); o.stop(start+len);
+    lfo.start(start); lfo.stop(start+len);
+  };
+  toot(t0,0.16); toot(t0+0.22,0.16); toot(t0+0.44,0.45);
+}
+/* همهمه و تشویق جمعیت (نویز فیلترشده با اوج‌گیری) */
+function crowdCheer(){
+  if(!soundOn) return; const a=audio(); if(!a) return;
+  const dur=1.7, n=Math.floor(a.sampleRate*dur);
+  const buf=a.createBuffer(1,n,a.sampleRate), d=buf.getChannelData(0);
+  for(let i=0;i<n;i++) d[i]=Math.random()*2-1;
+  const src=a.createBufferSource(); src.buffer=buf;
+  const hp=a.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=450;
+  const bp=a.createBiquadFilter(); bp.type='bandpass'; bp.Q.value=0.6;
+  const g=a.createGain();
+  const t=a.currentTime;
+  bp.frequency.setValueAtTime(700,t);
+  bp.frequency.linearRampToValueAtTime(1500,t+0.6);
+  bp.frequency.linearRampToValueAtTime(1000,t+dur);
+  g.gain.setValueAtTime(0.0001,t);
+  g.gain.exponentialRampToValueAtTime(0.55,t+0.28);
+  g.gain.exponentialRampToValueAtTime(0.30,t+0.95);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  src.connect(hp); hp.connect(bp); bp.connect(g); g.connect(a.destination);
+  src.start(t); src.stop(t+dur);
+}
+/* جشن گل: وقتی بازیکن گل می‌زند، سوت + تشویق + آهنگک */
+function celebrate(scorer){
+  if(!soundOn) return;
+  whistle();
+  if(scorer==='red'){ crowdCheer(); setTimeout(goalJingle,120); }
+  else { setTimeout(()=>beep(160,0.25,'sine',0.12),60); } // گل حریف: نُتِ آرام
+}
+
+/* ---------- ناوبری صفحات ---------- */
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById('gameScreen').classList.remove('on');
+  if(id==='game'){ document.getElementById('gameScreen').classList.add('on'); }
+  else document.getElementById(id).classList.add('on');
+}
+function startGame(lv){
+  show('game');
+  document.getElementById('overlay').classList.remove('on');
+  resize();
+  setupLevel(lv);
+  showHintOnce();
+  if(!running){ running=true; requestAnimationFrame(loop); }
+}
+function stopGame(){ running=false; }
+
+document.getElementById('goPlay').onclick = ()=>{ audio(); show('levelScreen'); };
+document.getElementById('backMenu').onclick = ()=> show('menuScreen');
+document.querySelectorAll('.btn.lvl').forEach(b=>{
+  b.onclick = ()=> startGame(parseInt(b.dataset.lvl,10));
+});
+function refreshSoundBtns(){
+  document.getElementById('soundBtn').textContent = soundOn ? '🔊 صدا: روشن' : '🔇 صدا: خاموش';
+  document.getElementById('hSound').textContent  = soundOn ? '🔊' : '🔇';
+}
+document.getElementById('soundBtn').onclick = ()=>{ soundOn=!soundOn; refreshSoundBtns(); if(soundOn)beep(440,0.1); };
+document.getElementById('hSound').onclick   = ()=>{ soundOn=!soundOn; refreshSoundBtns(); if(soundOn)beep(440,0.1); };
+document.getElementById('hBack').onclick = ()=>{ stopGame(); show('levelScreen'); };
+document.getElementById('ovMenu').onclick = ()=>{ stopGame(); document.getElementById('overlay').classList.remove('on'); show('menuScreen'); };
+document.getElementById('ovReplay').onclick = ()=>{ startGame(level); };
+
+/* ---------- راه‌اندازی ---------- */
+window.addEventListener('load', ()=>{ resize(); refreshSoundBtns(); });
+resize();
+// نگه‌داشتن صفحه روشن در حالت آفلاین (در صورت پشتیبانی)
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+function norm(x,y){ const d=Math.hypot(x,y)||1; return {x:x/d, y:y/d}; }
+</script>
+</body>
+</html>
