@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>راهنمای جامع روانکاوی — از فروید تا لکان</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Markazi+Text:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#221c33;
+  --ink-soft:#534b68;
+  --paper:#faf6ef;
+  --paper-2:#f2ece1;
+  --paper-3:#ece4d6;
+  --line:#ddd2c0;
+  --gold:#c19a3e;
+  --gold-deep:#9a7820;
+  --accent:#36529e;          /* default, overridden per chapter */
+  --accent-soft:#36529e22;
+  --accent-tint:#36529e14;
+  --shadow:0 10px 40px -18px rgba(34,28,51,.45);
+  --radius:18px;
+  --maxw:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(1200px 600px at 100% -5%, #f6efe2 0%, transparent 60%),
+    radial-gradient(1000px 700px at -10% 10%, #f3ece0 0%, transparent 55%),
+    var(--paper);
+  color:var(--ink);
+  font-family:"Vazirmatn",system-ui,Tahoma,sans-serif;
+  font-size:17.5px;
+  line-height:2.15;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--gold);color:#fff}
+
+/* ---------- reading progress ---------- */
+#progress{
+  position:fixed;top:0;right:0;height:4px;width:0%;
+  background:linear-gradient(90deg,#138a72,#a32a3c,#36529e,#7b3aa8,#b8860b);
+  z-index:1000;box-shadow:0 0 12px rgba(0,0,0,.15);
+  transition:width .12s linear;
+}
+
+/* ---------- HERO ---------- */
+header.hero{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(900px 500px at 80% -10%, #3a2c63 0%, transparent 60%),
+    linear-gradient(160deg,#1a1430 0%,#241a44 45%,#2f2055 100%);
+  color:#f4eede;
+  padding:clamp(54px,9vw,120px) 24px clamp(70px,10vw,130px);
+  text-align:center;
+}
+.hero .eyebrow{
+  font-size:.95rem;letter-spacing:.18em;color:var(--gold);
+  font-weight:600;margin-bottom:14px;text-transform:none;
+}
+.hero h1{
+  font-family:"Markazi Text",serif;
+  font-weight:700;
+  font-size:clamp(3rem,9vw,6.6rem);
+  line-height:1.04;margin:.1em 0 .15em;
+  background:linear-gradient(180deg,#fff 0%,#f3dca0 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 2px 40px rgba(193,154,62,.25);
+}
+.hero .sub{
+  font-size:clamp(1.05rem,2.4vw,1.45rem);
+  color:#d9d0e6;max-width:620px;margin:0 auto;font-weight:300;
+}
+.hero .ring-wrap{margin:34px auto 6px;width:min(280px,70vw)}
+.hero .meta{
+  margin-top:30px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+  font-size:.9rem;color:#cabfdc;
+}
+.hero .meta span{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+  padding:6px 16px;border-radius:100px;
+}
+.hero::after{
+  content:"";position:absolute;inset-inline:0;bottom:-1px;height:60px;
+  background:linear-gradient(180deg,transparent,var(--paper));
+}
+
+/* ---------- LAYOUT ---------- */
+.layout{
+  max-width:var(--maxw);margin:0 auto;padding:0 22px;
+  display:grid;grid-template-columns:288px 1fr;gap:46px;align-items:start;
+}
+@media(max-width:980px){.layout{grid-template-columns:1fr;gap:0}}
+
+/* ---------- TOC ---------- */
+aside.toc{
+  position:sticky;top:18px;align-self:start;
+  max-height:calc(100vh - 36px);overflow:auto;
+  background:linear-gradient(180deg,#fff,var(--paper-2));
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px 20px;box-shadow:var(--shadow);
+  margin-top:-46px;
+}
+aside.toc h2{
+  font-family:"Markazi Text",serif;font-size:1.7rem;margin:0 0 6px;
+  color:var(--ink);font-weight:700;
+}
+aside.toc .hint{font-size:.8rem;color:var(--ink-soft);margin:0 0 14px;line-height:1.7}
+.toc ol{list-style:none;margin:0;padding:0;counter-reset:ch}
+.toc>ol>li{margin-bottom:6px}
+.toc .ch-link{
+  display:flex;align-items:center;gap:9px;
+  font-weight:700;font-size:1rem;text-decoration:none;color:var(--ink);
+  padding:8px 10px;border-radius:11px;transition:.18s;
+}
+.toc .ch-link .dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+.toc .ch-link:hover{background:var(--paper-3)}
+.toc ul{list-style:none;margin:2px 0 8px;padding:0 26px 0 0;border-right:2px solid var(--line);margin-right:14px}
+.toc ul li a{
+  display:block;text-decoration:none;color:var(--ink-soft);
+  font-size:.86rem;padding:4px 8px;border-radius:8px;line-height:1.6;transition:.15s;
+}
+.toc ul li a:hover{color:var(--ink);background:var(--paper-3)}
+.toc a.active{color:#fff !important;background:var(--accent) !important;font-weight:600}
+.toc-toggle{display:none}
+
+/* ---------- ARTICLE ---------- */
+article{min-width:0;padding-bottom:80px}
+section.chapter{scroll-margin-top:20px;margin-bottom:30px}
+.ch1{--accent:#138a72;--accent-soft:#138a7222;--accent-tint:#138a720f}
+.ch2{--accent:#a32a3c;--accent-soft:#a32a3c22;--accent-tint:#a32a3c0f}
+.ch3{--accent:#36529e;--accent-soft:#36529e22;--accent-tint:#36529e0f}
+.ch4{--accent:#7b3aa8;--accent-soft:#7b3aa822;--accent-tint:#7b3aa80f}
+.chS{--accent:#b8860b;--accent-soft:#b8860b22;--accent-tint:#b8860b0f}
+
+.ch-head{
+  position:relative;margin:46px 0 26px;padding:30px 28px;
+  border-radius:var(--radius);overflow:hidden;color:#fff;
+  background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 62%,#000));
+  box-shadow:var(--shadow);
+}
+.ch-head .ch-num{
+  font-family:"JetBrains Mono",monospace;font-size:.85rem;letter-spacing:.2em;
+  opacity:.85;
+}
+.ch-head h2{
+  font-family:"Markazi Text",serif;font-weight:700;
+  font-size:clamp(2.1rem,5vw,3.2rem);margin:.05em 0 .1em;line-height:1.1;
+}
+.ch-head p{margin:0;opacity:.92;font-weight:300;font-size:1.02rem;max-width:60ch}
+.ch-head .emoji{position:absolute;left:24px;top:50%;transform:translateY(-50%);
+  font-size:clamp(3rem,9vw,5.5rem);opacity:.22;filter:grayscale(.1)}
+
+h3.sub{
+  font-family:"Markazi Text",serif;font-weight:700;
+  font-size:1.95rem;margin:42px 0 6px;color:var(--ink);
+  scroll-margin-top:16px;display:flex;align-items:center;gap:12px;
+  border-bottom:2px solid var(--accent-soft);padding-bottom:8px;
+}
+h3.sub .n{
+  font-family:"JetBrains Mono",monospace;font-size:.95rem;font-weight:700;
+  color:#fff;background:var(--accent);border-radius:9px;
+  padding:3px 11px;flex:0 0 auto;direction:ltr;
+}
+h4{font-family:"Markazi Text",serif;font-size:1.4rem;margin:26px 0 4px;color:var(--accent)}
+p{margin:0 0 16px;text-align:justify}
+strong{color:var(--accent);font-weight:700}
+em{color:var(--gold-deep);font-style:normal;font-weight:600}
+
+/* ---------- BOXES ---------- */
+.box{border-radius:14px;padding:18px 20px 8px;margin:22px 0;border:1px solid var(--line);position:relative}
+.box .box-title{font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:8px;font-size:1.05rem}
+.note{background:var(--accent-tint);border-color:var(--accent-soft)}
+.note .box-title{color:var(--accent)}
+.key{background:linear-gradient(135deg,#fff8e6,#fdf0cf);border-color:#eccf7e}
+.key .box-title{color:var(--gold-deep)}
+.example{background:#f3f8f6;border-color:#cfe6dd}
+.example .box-title{color:#0e7a63}
+.warn{background:#fdf1f1;border-color:#f0c7c7}
+.warn .box-title{color:#b23b3b}
+
+/* English / Latin box — keeps LTR isolated */
+.en{
+  direction:ltr;text-align:left;
+  font-family:"Crimson Pro",Georgia,serif;
+  background:#1e1830;color:#efe9dc;
+  border-radius:12px;padding:14px 18px;margin:18px 0;
+  border-right:5px solid var(--gold);font-size:1.02rem;line-height:1.7;
+  box-shadow:0 6px 22px -12px rgba(0,0,0,.5);
+}
+.en .lbl{
+  display:block;direction:ltr;font-family:"JetBrains Mono",monospace;
+  font-size:.7rem;letter-spacing:.15em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:6px;
+}
+.en i{color:#f3dca0;font-style:italic}
+.term{
+  direction:ltr;display:inline-block;font-family:"Crimson Pro",serif;
+  background:var(--accent);color:#fff;padding:1px 9px;border-radius:7px;
+  font-size:.92em;margin:0 2px;vertical-align:middle;font-style:italic;
+}
+
+/* ---------- FORMULA / MATHEME ---------- */
+.formula{
+  direction:ltr;text-align:center;
+  font-family:"JetBrains Mono","Crimson Pro",serif;
+  background:linear-gradient(135deg,#161126,#241b3f);
+  color:#f4eede;border-radius:14px;padding:22px 18px;margin:20px 0;
+  font-size:1.45rem;letter-spacing:.02em;line-height:1.9;
+  box-shadow:var(--shadow);border:1px solid #3a2e5e;position:relative;
+}
+.formula .cap{
+  display:block;direction:rtl;font-family:"Vazirmatn",sans-serif;
+  font-size:.9rem;color:#c9bce2;margin-top:12px;line-height:1.8;letter-spacing:0;
+}
+.frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 4px}
+.frac>span:first-child{border-bottom:2px solid #f4eede;padding:0 8px}
+.frac>span:last-child{padding:2px 8px 0}
+.bar-over{border-bottom:2px solid #f4eede;padding-bottom:1px}
+
+/* four discourses grid */
+.discourses{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:22px 0}
+@media(max-width:560px){.discourses{grid-template-columns:1fr}}
+.disc{
+  background:linear-gradient(135deg,#1b1530,#2a2049);color:#f4eede;
+  border-radius:14px;padding:18px;text-align:center;border:1px solid #3a2e5e;
+}
+.disc .dt{font-family:"Vazirmatn";font-weight:700;color:var(--gold);margin-bottom:12px;font-size:1.05rem}
+.disc .grid2{
+  direction:ltr;display:grid;grid-template-columns:1fr 1fr;gap:4px 22px;
+  font-family:"JetBrains Mono",monospace;font-size:1.25rem;
+  width:max-content;margin:0 auto;align-items:center;
+}
+.disc .grid2 .row-top{border-bottom:2px solid #6b5a98;padding-bottom:6px}
+.disc .arrow{grid-column:1/3;color:var(--gold);font-size:.9rem;margin:-2px 0}
+
+/* ---------- TABLE ---------- */
+.tablewrap{overflow-x:auto;margin:22px 0;border-radius:14px;box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:520px;background:#fff;font-size:.95rem}
+th,td{padding:12px 14px;text-align:right;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{background:var(--accent);color:#fff;font-weight:700;position:sticky;top:0}
+tbody tr:nth-child(even){background:var(--accent-tint)}
+tbody tr:hover{background:var(--accent-soft)}
+td .term{font-size:.82em}
+
+/* ---------- SVG diagram cards ---------- */
+.diagram{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px;margin:24px 0;box-shadow:var(--shadow);text-align:center;
+}
+.diagram .cap{font-size:.9rem;color:var(--ink-soft);margin-top:12px;line-height:1.8}
+.diagram svg{max-width:100%;height:auto}
+
+/* stages timeline */
+.stages{display:flex;gap:0;flex-wrap:wrap;margin:24px 0;counter-reset:st}
+.stage{
+  flex:1 1 150px;background:#fff;border:1px solid var(--line);
+  border-top:5px solid var(--accent);border-radius:12px;padding:14px;margin:5px;
+  box-shadow:0 6px 18px -14px rgba(0,0,0,.4);
+}
+.stage .age{font-family:"JetBrains Mono",monospace;direction:ltr;font-size:.78rem;color:var(--accent);font-weight:700}
+.stage h5{font-family:"Markazi Text";font-size:1.3rem;margin:2px 0 6px;color:var(--ink)}
+.stage p{font-size:.86rem;margin:0;line-height:1.8}
+
+/* schools chips */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.chip{background:#fff;border:1px solid var(--line);border-radius:100px;padding:7px 16px;font-size:.9rem;box-shadow:0 4px 12px -10px rgba(0,0,0,.4)}
+.chip b{color:var(--accent)}
+
+/* back to top */
+#top{
+  position:fixed;bottom:22px;left:22px;z-index:900;
+  background:var(--ink);color:#fff;border:none;cursor:pointer;
+  width:52px;height:52px;border-radius:50%;font-size:1.3rem;
+  box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.3s;
+}
+#top.show{opacity:1;pointer-events:auto}
+#top:hover{background:var(--gold-deep)}
+
+footer{
+  background:linear-gradient(160deg,#1a1430,#241a44);color:#cabfdc;
+  text-align:center;padding:46px 22px;font-size:.92rem;line-height:2;
+}
+footer b{color:var(--gold)}
+
+/* mobile toc */
+@media(max-width:980px){
+  aside.toc{
+    position:relative;top:0;margin-top:18px;margin-bottom:8px;max-height:none;
+  }
+  .toc-toggle{
+    display:flex;align-items:center;justify-content:space-between;width:100%;
+    background:none;border:none;cursor:pointer;font-family:"Markazi Text";
+    font-size:1.7rem;font-weight:700;color:var(--ink);padding:0;
+  }
+  .toc-body{display:none;margin-top:12px}
+  aside.toc.open .toc-body{display:block}
+  .toc-toggle .caret{transition:.25s}
+  aside.toc.open .toc-toggle .caret{transform:rotate(180deg)}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="hero">
+  <div class="eyebrow">راهنمای جامع روان‌کاوی · از ریشه تا اوج</div>
+  <h1>ناخودآگاه و زبانِ آن</h1>
+  <p class="sub">سفری گام‌به‌گام از روان‌شناسی عمومی، به نظریهٔ فروید، و سپس به دستگاه فکری ژاک لکان — همراه با نمودار، فرمول‌های صوری و واژه‌نامه.</p>
+  <div class="ring-wrap">
+    <!-- Borromean rings: Real / Symbolic / Imaginary -->
+    <svg viewBox="0 0 240 210" xmlns="http://www.w3.org/2000/svg" aria-label="گره بورومه‌ای">
+      <g fill="none" stroke-width="9" opacity="0.95">
+        <circle cx="90" cy="80" r="62" stroke="#e0556b"/>
+        <circle cx="150" cy="80" r="62" stroke="#6fa8ff"/>
+        <circle cx="120" cy="130" r="62" stroke="#f3c969"/>
+      </g>
+      <text x="55" y="55" fill="#f3dca0" font-size="13" font-family="Markazi Text">واقعی</text>
+      <text x="160" y="55" fill="#f3dca0" font-size="13" font-family="Markazi Text">نمادین</text>
+      <text x="98" y="185" fill="#f3dca0" font-size="13" font-family="Markazi Text">خیالی</text>
+    </svg>
+  </div>
+  <div class="meta">
+    <span>۵ بخش</span><span>۴۰+ زیربخش</span><span>نمودار و فرمول</span><span>واژه‌نامهٔ دوزبانه</span>
+  </div>
+</header>
+
+<div class="layout">
+
+<!-- ============ TOC ============ -->
+<aside class="toc" id="toc">
+  <button class="toc-toggle" id="tocToggle">
+    <span>فهرست مطالب</span><span class="caret">▾</span>
+  </button>
+  <div class="toc-body">
+  <p class="hint">برای جابه‌جایی سریع روی هر سرفصل کلیک کنید. ترتیب مطالب از مقدمات به مفاهیم پیچیده‌تر چیده شده است.</p>
+  <ol>
+    <li>
+      <a class="ch-link" href="#intro"><span class="dot" style="background:#b8860b"></span>مقدمه: روان‌کاوی چیست؟</a>
+    </li>
+    <li>
+      <a class="ch-link" href="#ch1"><span class="dot" style="background:#138a72"></span>فصل ۱ — روان‌شناسی عمومی</a>
+      <ul>
+        <li><a href="#s1-1">۱.۱ تعریف و موضوع روان‌شناسی</a></li>
+        <li><a href="#s1-2">۱.۲ پیدایش علم روان‌شناسی</a></li>
+        <li><a href="#s1-3">۱.۳ مکاتب بزرگ روان‌شناسی</a></li>
+        <li><a href="#s1-4">۱.۴ سطوح ذهن و مفهوم ناخودآگاه</a></li>
+        <li><a href="#s1-5">۱.۵ مفاهیم بنیادی</a></li>
+        <li><a href="#s1-6">۱.۶ جایگاه روان‌کاوی</a></li>
+        <li><a href="#s1-7">۱.۷ روش روان‌کاوانه</a></li>
+      </ul>
+    </li>
+    <li>
+      <a class="ch-link" href="#ch2"><span class="dot" style="background:#a32a3c"></span>فصل ۲ — فروید</a>
+      <ul>
+        <li><a href="#s2-1">۲.۱ زمینهٔ تاریخی و زندگی</a></li>
+        <li><a href="#s2-2">۲.۲ کشف ناخودآگاه</a></li>
+        <li><a href="#s2-3">۲.۳ نظریهٔ نخست: توپوگرافیک</a></li>
+        <li><a href="#s2-4">۲.۴ نظریهٔ دوم: ساختاری</a></li>
+        <li><a href="#s2-5">۲.۵ سائق‌ها، لیبیدو، اروس و تاناتوس</a></li>
+        <li><a href="#s2-6">۲.۶ اصل لذت و اصل واقعیت</a></li>
+        <li><a href="#s2-7">۲.۷ مراحل رشد روانی‑جنسی</a></li>
+        <li><a href="#s2-8">۲.۸ عقدهٔ ادیپ و اضطراب اختگی</a></li>
+        <li><a href="#s2-9">۲.۹ سرکوب و بازگشت سرکوب‌شده</a></li>
+        <li><a href="#s2-10">۲.۱۰ مکانیسم‌های دفاعی</a></li>
+        <li><a href="#s2-11">۲.۱۱ رؤیا و تعبیر آن</a></li>
+        <li><a href="#s2-12">۲.۱۲ لغزش‌ها و لطیفه</a></li>
+        <li><a href="#s2-13">۲.۱۳ انتقال و انتقال متقابل</a></li>
+        <li><a href="#s2-14">۲.۱۴ ساختارهای بالینی</a></li>
+        <li><a href="#s2-15">۲.۱۵ نقد و میراث فروید</a></li>
+      </ul>
+    </li>
+    <li>
+      <a class="ch-link" href="#ch3"><span class="dot" style="background:#36529e"></span>فصل ۳ — مقدمات لکان</a>
+      <ul>
+        <li><a href="#s3-1">۳.۱ لکان و «بازگشت به فروید»</a></li>
+        <li><a href="#s3-2">۳.۲ سه نظم: خیالی، نمادین، واقعی</a></li>
+        <li><a href="#s3-3">۳.۳ مرحلهٔ آینه</a></li>
+        <li><a href="#s3-4">۳.۴ ناخودآگاه همچون زبان</a></li>
+        <li><a href="#s3-5">۳.۵ سوسور: دال و مدلول</a></li>
+        <li><a href="#s3-6">۳.۶ استعاره و مجاز</a></li>
+        <li><a href="#s3-7">۳.۷ نقطهٔ آجیدن</a></li>
+        <li><a href="#s3-8">۳.۸ دیگریِ بزرگ و سوژهٔ منقسم</a></li>
+        <li><a href="#s3-9">۳.۹ نام‑پدر</a></li>
+        <li><a href="#s3-10">۳.۱۰ اسکیمای L</a></li>
+      </ul>
+    </li>
+    <li>
+      <a class="ch-link" href="#ch4"><span class="dot" style="background:#7b3aa8"></span>فصل ۴ — لکان پیشرفته</a>
+      <ul>
+        <li><a href="#s4-1">۴.۱ نیاز، درخواست، میل</a></li>
+        <li><a href="#s4-2">۴.۲ میل آدمی، میلِ دیگری</a></li>
+        <li><a href="#s4-3">۴.۳ ابژهٔ a</a></li>
+        <li><a href="#s4-4">۴.۴ فانتزی بنیادین</a></li>
+        <li><a href="#s4-5">۴.۵ ژوئیسانس</a></li>
+        <li><a href="#s4-6">۴.۶ گراف میل</a></li>
+        <li><a href="#s4-7">۴.۷ فرمول‌های جنسیت</a></li>
+        <li><a href="#s4-8">۴.۸ چهار گفتمان</a></li>
+        <li><a href="#s4-9">۴.۹ سَنتوم</a></li>
+        <li><a href="#s4-10">۴.۱۰ توپولوژی</a></li>
+        <li><a href="#s4-11">۴.۱۱ پایان تحلیل</a></li>
+      </ul>
+    </li>
+    <li>
+      <a class="ch-link" href="#synth"><span class="dot" style="background:#b8860b"></span>پیوند فروید و لکان</a>
+      <ul>
+        <li><a href="#sS-1">جدول تطبیقی مفاهیم</a></li>
+        <li><a href="#sS-2">آنچه لکان نگه داشت و افزود</a></li>
+        <li><a href="#glossary">واژه‌نامهٔ دوزبانه</a></li>
+        <li><a href="#formulae">فرمول‌نامه</a></li>
+      </ul>
+    </li>
+  </ol>
+  </div>
+</aside>
+
+<!-- ============ ARTICLE ============ -->
+<article>
+
+<!-- ================= INTRO ================= -->
+<section class="chapter chS" id="intro">
+  <div class="ch-head">
+    <span class="emoji">🛋️</span>
+    <div class="ch-num">P R O L O G U E</div>
+    <h2>مقدمه: روان‌کاوی چیست؟</h2>
+    <p>پیش از آن‌که وارد دستگاه فکری فروید و لکان شویم، باید بدانیم اصلاً با چه چیزی سروکار داریم و این متن را چگونه باید خواند.</p>
+  </div>
+
+  <p><strong>روان‌کاوی</strong> هم یک نظریهٔ ذهن است، هم یک روش درمان، و هم روشی برای پژوهش دربارهٔ فرایندهای ذهنی‌ای که از آگاهی ما پنهان‌اند. بنیان‌گذار آن، زیگموند فروید، پزشک اعصاب اهل وین، در پایان سدهٔ نوزدهم میلادی این رشته را پایه نهاد. فرض بنیادینِ روان‌کاوی ساده اما رادیکال است: بخش بزرگی از زندگی روانی ما در <em>ناخودآگاه</em> می‌گذرد و رفتار، رؤیا، لغزش‌های زبانی و نشانه‌های بیماری ما، معنایی پنهان دارند که می‌توان آن را آشکار کرد.</p>
+
+  <p>حدود نیم‌قرن بعد، روان‌کاو فرانسوی <strong>ژاک لکان</strong> با شعار «بازگشت به فروید» کوشید تا میراث فروید را از تفسیرهای ساده‌انگارانه پاک کند و آن را در پرتو زبان‌شناسی، فلسفه و ریاضیات از نو بخواند. لکان دشوارنویس است، اما هستهٔ کار او روشن است: <em>ناخودآگاه ساختاری همچون زبان دارد</em>.</p>
+
+  <div class="box key">
+    <div class="box-title">🧭 این متن را چگونه بخوانیم؟</div>
+    <p>ترتیب مطالب از پایین به بالا چیده شده است: نخست مفاهیم پایه‌ای روان‌شناسی، سپس بنیان‌های فروید، آنگاه مقدمات لکان و در پایان مفاهیم پیشرفتهٔ او. هر مفهوم تازه بر مفاهیم پیشین تکیه دارد، پس خواندنِ پشت‌سرهم توصیه می‌شود. اصطلاحات لاتین درون <span style="color:var(--gold-deep)">باکس‌های جداگانه</span> آمده‌اند تا متن فارسی به‌هم نریزد.</p>
+  </div>
+
+  <div class="box note">
+    <div class="box-title">📌 یک یادآوری روش‌شناختی</div>
+    <p>روان‌کاوی نظریه‌ای مناقشه‌برانگیز است؛ بسیاری از گزاره‌های فروید از منظر علم تجربیِ امروز اثبات‌ناپذیر شمرده می‌شوند. هدف این متن، آموزشِ <em>دستگاه مفهومی</em> فروید و لکان است، نه داوری دربارهٔ درستی یا نادرستی تجربیِ آن. در بخش پایانیِ فروید به نقدها نیز می‌پردازیم.</p>
+  </div>
+</section>
+
+<!-- ================= CHAPTER 1 ================= -->
+<section class="chapter ch1" id="ch1">
+  <div class="ch-head">
+    <span class="emoji">🧠</span>
+    <div class="ch-num">C H A P T E R · 1</div>
+    <h2>فصل یکم — روان‌شناسی عمومی</h2>
+    <p>برای فهم جایگاه روان‌کاوی، نخست باید نقشهٔ کلیِ علم روان‌شناسی را در دست داشته باشیم: موضوع، تاریخچه، مکاتب و مفاهیم پایه.</p>
+  </div>
+
+  <h3 class="sub" id="s1-1"><span class="n">1.1</span>تعریف و موضوع روان‌شناسی</h3>
+  <p><strong>روان‌شناسی</strong> دانشِ مطالعهٔ علمیِ رفتار و فرایندهای ذهنی است. «رفتار» به کنش‌های قابل‌مشاهده اشاره دارد و «فرایندهای ذهنی» به رویدادهای درونی مانند ادراک، اندیشه، هیجان و انگیزش. واژهٔ آن از دو ریشهٔ یونانی ساخته شده است.</p>
+  <div class="en"><span class="lbl">Etymology</span><i>Psyche</i> (soul / mind) + <i>logos</i> (study, discourse) → <i>Psychology</i></div>
+  <p>روان‌شناسی هم‌زمان یک علمِ تجربی و یک رشتهٔ کاربردی است. در سطح پایه به پرسش‌های بنیادین دربارهٔ کارکرد ذهن می‌پردازد و در سطح کاربردی، در درمان، آموزش، سازمان و جامعه به کار گرفته می‌شود.</p>
+
+  <h3 class="sub" id="s1-2"><span class="n">1.2</span>پیدایش علم روان‌شناسی</h3>
+  <p>تأمل دربارهٔ ذهن قدمتی فلسفی دارد و به افلاطون و ارسطو بازمی‌گردد؛ اما روان‌شناسی به‌مثابهٔ یک <em>علم مستقل</em> در سال ۱۸۷۹ میلادی زاده شد، آنگاه که <strong>ویلهلم وونت</strong> نخستین آزمایشگاه روان‌شناسی را در شهر لایپزیگ آلمان بنیاد نهاد. از این لحظه به بعد، ذهن نه با حدس فلسفی بلکه با مشاهدهٔ روشمند مطالعه شد.</p>
+  <div class="en"><span class="lbl">Founding moment</span>Wilhelm Wundt — first psychology laboratory, Leipzig, 1879. Method: <i>introspection</i> (systematic self-observation).</div>
+
+  <h3 class="sub" id="s1-3"><span class="n">1.3</span>مکاتب بزرگ روان‌شناسی</h3>
+  <p>روان‌شناسی از آغاز به مکاتب گوناگونی شاخه شاخه شد که هر یک از زاویه‌ای متفاوت به ذهن نگریستند. شناخت این مکاتب به ما کمک می‌کند تا جایگاه روان‌کاوی را در کل میدان بهتر دریابیم.</p>
+
+  <div class="chips">
+    <span class="chip"><b>ساختارگرایی</b> · تجزیهٔ تجربه به اجزای پایه</span>
+    <span class="chip"><b>کارکردگرایی</b> · کارکردِ ذهن در سازگاری</span>
+    <span class="chip"><b>رفتارگرایی</b> · فقط رفتارِ مشاهده‌پذیر</span>
+    <span class="chip"><b>گشتالت</b> · کل بیش از مجموع اجزاست</span>
+    <span class="chip"><b>روان‌پویشی</b> · نیروهای ناخودآگاه</span>
+    <span class="chip"><b>انسان‌گرا</b> · خودشکوفایی و معنا</span>
+    <span class="chip"><b>شناختی</b> · پردازش اطلاعات</span>
+    <span class="chip"><b>زیستی/عصب‌شناختی</b> · مغز و ژن</span>
+  </div>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>مکتب</th><th>چهرهٔ شاخص</th><th>پرسش محوری</th></tr></thead>
+    <tbody>
+      <tr><td>ساختارگرایی <span class="term">Structuralism</span></td><td>وونت، تیچنر</td><td>ذهن از چه اجزایی ساخته شده است؟</td></tr>
+      <tr><td>کارکردگرایی <span class="term">Functionalism</span></td><td>ویلیام جیمز</td><td>ذهن چه کاری برای بقا انجام می‌دهد؟</td></tr>
+      <tr><td>رفتارگرایی <span class="term">Behaviorism</span></td><td>واتسون، اسکینر</td><td>محیط چگونه رفتار را شکل می‌دهد؟</td></tr>
+      <tr><td>گشتالت <span class="term">Gestalt</span></td><td>ورتهایمر</td><td>ادراک چگونه کل‌ها را می‌سازد؟</td></tr>
+      <tr><td>روان‌پویشی <span class="term">Psychodynamic</span></td><td>فروید، یونگ</td><td>نیروهای ناخودآگاه چه نقشی دارند؟</td></tr>
+      <tr><td>انسان‌گرا <span class="term">Humanistic</span></td><td>راجرز، مزلو</td><td>انسان چگونه به شکوفایی می‌رسد؟</td></tr>
+      <tr><td>شناختی <span class="term">Cognitive</span></td><td>نایسر، پیاژه</td><td>ذهن اطلاعات را چگونه پردازش می‌کند؟</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="sub" id="s1-4"><span class="n">1.4</span>سطوح ذهن و مفهوم ناخودآگاه</h3>
+  <p>یکی از سهم‌های ماندگار سنت روان‌پویشی، تمایز نهادنِ میان سطوح آگاهی است. ذهن را می‌توان به سه لایه تقسیم کرد که در آن، آگاهیِ ما تنها نوکِ کوهِ یخ است.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg" aria-label="استعارهٔ کوه یخ ذهن">
+      <defs><linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#bfe3ef"/><stop offset="1" stop-color="#2f78a8"/></linearGradient></defs>
+      <rect x="0" y="95" width="360" height="205" fill="url(#sea)" opacity=".55"/>
+      <polygon points="180,20 235,95 125,95" fill="#f4f7f8" stroke="#cfd8dc"/>
+      <polygon points="125,95 235,95 300,290 60,290" fill="#dfeaf0" stroke="#b9cdd6"/>
+      <line x1="20" y1="95" x2="340" y2="95" stroke="#1c5b80" stroke-dasharray="6 5" stroke-width="2"/>
+      <text x="180" y="62" text-anchor="middle" font-family="Markazi Text" font-size="16" fill="#234">خودآگاه</text>
+      <text x="180" y="135" text-anchor="middle" font-family="Markazi Text" font-size="16" fill="#234">پیش‌آگاه</text>
+      <text x="180" y="220" text-anchor="middle" font-family="Markazi Text" font-size="22" fill="#0f3a55" font-weight="700">ناخودآگاه</text>
+      <text x="345" y="90" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#0f3a55" direction="ltr">سطح آگاهی</text>
+    </svg>
+    <div class="cap">استعارهٔ مشهور کوه یخ: آنچه از آن آگاهیم، بخش کوچکی از کل زندگی روانی است.</div>
+  </div>
+
+  <p><strong>خودآگاه</strong> آنچه را در همین لحظه بدان آگاهیم دربر می‌گیرد. <strong>پیش‌آگاه</strong> خاطرات و دانشی است که اکنون در ذهن نیست اما به‌سادگی می‌تواند به آگاهی فراخوانده شود. <strong>ناخودآگاه</strong> انبارهٔ خواست‌ها، خاطرات و سائق‌هایی است که سرکوب شده‌اند و به‌آسانی در دسترس نیستند؛ این لایه است که فروید آن را به قلمرو اصلیِ روان‌کاوی بدل کرد.</p>
+
+  <h3 class="sub" id="s1-5"><span class="n">1.5</span>مفاهیم بنیادی</h3>
+  <p>چند مفهوم در سراسر روان‌شناسی تکرار می‌شوند و در ادامهٔ متن نیز به کارمان می‌آیند:</p>
+  <h4>انگیزش</h4>
+  <p>نیرویی که رفتار را آغاز می‌کند، جهت می‌دهد و پایدار نگه می‌دارد. در روان‌کاوی، انگیزشِ بنیادین از سائق‌های ناخودآگاه برمی‌خیزد.</p>
+  <h4>هیجان</h4>
+  <p>حالت روانی‑بدنیِ کوتاه‌مدتی که با ارزیابیِ موقعیت پیوند دارد و رفتار را رنگ می‌زند.</p>
+  <h4>شخصیت</h4>
+  <p>الگوی نسبتاً پایدارِ اندیشه، هیجان و رفتار که هر فرد را از دیگری متمایز می‌کند. نظریهٔ ساختاریِ فروید (نهاد، خود، فراخود) خود یک نظریهٔ شخصیت است.</p>
+  <h4>رشد</h4>
+  <p>دگرگونیِ روان در طول زندگی. فروید مدلی مرحله‌ای از رشد ارائه داد که در فصل دوم بررسی می‌شود.</p>
+
+  <h3 class="sub" id="s1-6"><span class="n">1.6</span>جایگاه روان‌کاوی در میان رشته‌ها</h3>
+  <p>سه واژه را که اغلب با هم اشتباه می‌شوند، باید از یکدیگر بازشناخت:</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>رشته</th><th>تعریف</th><th>دارندهٔ پروانه</th></tr></thead>
+    <tbody>
+      <tr><td>روان‌پزشکی <span class="term">Psychiatry</span></td><td>شاخه‌ای از پزشکی؛ تشخیص و درمان اختلال‌ها، اغلب با دارو</td><td>پزشک</td></tr>
+      <tr><td>روان‌شناسی بالینی <span class="term">Clinical Psychology</span></td><td>ارزیابی و درمان با روش‌های روان‌شناختی</td><td>روان‌شناس</td></tr>
+      <tr><td>روان‌کاوی <span class="term">Psychoanalysis</span></td><td>روش و نظریهٔ خاصی برآمده از فروید؛ کار بر ناخودآگاه از راه گفتار</td><td>روان‌کاو (پس از تحلیلِ شخصی)</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="sub" id="s1-7"><span class="n">1.7</span>روش روان‌کاوانه</h3>
+  <p>روان‌کاوی روشِ ویژهٔ خود را دارد که آن را از دیگر درمان‌ها جدا می‌کند. سنگ‌بنای این روش، <strong>تداعی آزاد</strong> است: از تحلیل‌شونده خواسته می‌شود هرآنچه به ذهنش می‌آید را بی هیچ سانسوری بر زبان آورد. درمانگر به <em>گفتهٔ آشکار</em> اکتفا نمی‌کند، بلکه در پیِ معنای پنهانی است که در گسست‌ها، تکرارها و لغزش‌ها خود را نشان می‌دهد.</p>
+  <div class="en"><span class="lbl">The fundamental rule</span><i>Free association</i> — “Say whatever comes to mind, without selection or judgement.”</div>
+  <p>دیگر ارکان روش عبارت‌اند از: تحلیل رؤیا، توجه به لغزش‌های زبانی، و کار بر <em>انتقال</em> — رابطه‌ای که در آن، تحلیل‌شونده ناخودآگاه احساسات گذشته را به درمانگر فرافکنی می‌کند. این مفاهیم را در فصل فروید به‌تفصیل می‌بینیم.</p>
+
+  <div class="box note">
+    <div class="box-title">🔗 پل به فصل بعد</div>
+    <p>اکنون که نقشهٔ کلی را داریم و مفهوم ناخودآگاه را شناختیم، آماده‌ایم به سراغ کسی برویم که این مفهوم را به مرکز اندیشهٔ خود بدل کرد: زیگموند فروید.</p>
+  </div>
+</section>
+
+<!-- ================= CHAPTER 2: FREUD ================= -->
+<section class="chapter ch2" id="ch2">
+  <div class="ch-head">
+    <span class="emoji">⚓</span>
+    <div class="ch-num">C H A P T E R · 2</div>
+    <h2>فصل دوم — زیگموند فروید</h2>
+    <p>در این فصل، دستگاه فکری فروید را از پایه می‌سازیم: از کشف ناخودآگاه تا نظریهٔ ساختاری، سائق‌ها، رؤیا، دفاع‌ها و ساختارهای بالینی.</p>
+  </div>
+
+  <h3 class="sub" id="s2-1"><span class="n">2.1</span>زمینهٔ تاریخی و زندگی</h3>
+  <p>زیگموند فروید در سال ۱۸۵۶ در شهر فرایبرگ (در قلمرو امپراتوری اتریش) زاده شد و بیشتر عمر خود را در وین گذراند. او پزشکی خواند و به‌عنوان متخصص اعصاب کار خود را آغاز کرد. در آن دوران، بیماری‌ای به نام <em>هیستری</em> رواج داشت که در آن، نشانه‌های بدنی بدون هیچ علت عضویِ روشنی پدید می‌آمدند. همین معما، فروید را به سوی کشف بزرگ زندگی‌اش راند.</p>
+  <div class="en"><span class="lbl">Timeline</span>Sigmund Freud · 1856–1939 · Vienna → London (1938, fleeing the Nazi annexation of Austria).</div>
+
+  <h3 class="sub" id="s2-2"><span class="n">2.2</span>کشف ناخودآگاه</h3>
+  <p>فروید نخست همراه با همکارش <strong>یوزف برویر</strong> روی بیماری هیستریک کار کرد. مشهورترین نمونه، بیماری‌ای با نام مستعار <em>آنا او.</em> بود. برویر دریافت که وقتی بیمار دربارهٔ ریشهٔ خاطرات دردناک سخن می‌گوید، نشانه‌هایش فروکش می‌کنند. خودِ بیمار این کار را «درمانِ گفتاری» نامید — عبارتی که تا امروز نیز کنایه از روان‌کاوی است.</p>
+  <div class="en"><span class="lbl">The patient’s phrase</span>“The talking cure” — coined by Bertha Pappenheim (case name: <i>Anna O.</i>).</div>
+  <p>فروید رفته‌رفته از هیپنوتیزم دست کشید و روش <strong>تداعی آزاد</strong> را جایگزین آن کرد. نتیجهٔ این تحول، فرضیه‌ای انقلابی بود: نشانه‌های بیماری، معنایی دارند؛ آن‌ها بیانِ نمادینِ تعارض‌هایی هستند که از آگاهی رانده شده‌اند. بدین‌سان، <em>ناخودآگاه</em> از یک مفهوم فلسفیِ مبهم به یک سازِکارِ پویا و قابل‌مطالعه بدل شد.</p>
+
+  <h3 class="sub" id="s2-3"><span class="n">2.3</span>نظریهٔ نخست: مدل توپوگرافیک</h3>
+  <p>فروید در نخستین نظریهٔ خود (پیش از سال ۱۹۲۰) ذهن را بر پایهٔ <em>میزان دسترسیِ آگاهی</em> به سه دستگاه تقسیم کرد. این همان سه لایه‌ای است که در فصل پیشین با استعارهٔ کوه یخ دیدیم، اما اکنون با جزئیات بیشتر.</p>
+  <div class="en"><span class="lbl">First topography</span>Unconscious (Ucs.) · Preconscious (Pcs.) · Conscious (Cs.)</div>
+  <p>مرز میان ناخودآگاه و پیش‌آگاه را نیرویی به نام <strong>سانسور</strong> پاسبانی می‌کند که اجازه نمی‌دهد محتوای سرکوب‌شده به‌سادگی به آگاهی راه یابد. هرگاه این محتوا بکوشد بازگردد، تنها به‌صورتِ دگرگون‌شده و نقاب‌دار — مثلاً در رؤیا یا نشانهٔ بیماری — ظاهر می‌شود.</p>
+
+  <h3 class="sub" id="s2-4"><span class="n">2.4</span>نظریهٔ دوم: مدل ساختاری</h3>
+  <p>فروید از سال ۱۹۲۳ به این نتیجه رسید که مدل سه‌لایه کافی نیست، زیرا بخشی از خودِ دفاع‌ها نیز ناخودآگاه‌اند. پس مدل تازه‌ای پیش نهاد که ذهن را نه بر پایهٔ آگاهی، بلکه بر پایهٔ <em>کارکرد</em> به سه نهاد تقسیم می‌کرد.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 340 250" xmlns="http://www.w3.org/2000/svg" aria-label="نهاد، خود، فراخود">
+      <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#c9415a"/><stop offset="1" stop-color="#7a1d2c"/></linearGradient></defs>
+      <ellipse cx="170" cy="130" rx="150" ry="110" fill="url(#g2)" opacity=".12" stroke="#a32a3c"/>
+      <text x="170" y="40" text-anchor="middle" font-family="Markazi Text" font-size="20" fill="#a32a3c" font-weight="700">فراخود</text>
+      <text x="170" y="60" text-anchor="middle" font-family="Vazirmatn" font-size="11" fill="#7a1d2c">وجدان و آرمان‌ها</text>
+      <text x="170" y="125" text-anchor="middle" font-family="Markazi Text" font-size="22" fill="#a32a3c" font-weight="700">خود</text>
+      <text x="170" y="145" text-anchor="middle" font-family="Vazirmatn" font-size="11" fill="#7a1d2c">میانجیِ واقعیت</text>
+      <text x="170" y="210" text-anchor="middle" font-family="Markazi Text" font-size="22" fill="#a32a3c" font-weight="700">نهاد</text>
+      <text x="170" y="230" text-anchor="middle" font-family="Vazirmatn" font-size="11" fill="#7a1d2c">سائق‌ها و اصل لذت</text>
+    </svg>
+    <div class="cap">«خود» میان فشارِ سائق‌های نهاد، سخت‌گیریِ فراخود و محدودیت‌های واقعیت میانجی‌گری می‌کند.</div>
+  </div>
+
+  <div class="en"><span class="lbl">Second topography (1923)</span>Id (<i>das Es</i>) · Ego (<i>das Ich</i>) · Super-ego (<i>das Über-Ich</i>)</div>
+  <p><strong>نهاد</strong> خاستگاهِ کور و ناخودآگاهِ سائق‌هاست و تنها از اصل لذت پیروی می‌کند؛ خواهانِ ارضای فوری است. <strong>فراخود</strong> درونی‌شدهٔ ممنوعیت‌ها و آرمان‌های والدینی و فرهنگی است؛ همان وجدان اخلاقیِ سرزنش‌گر. <strong>خود</strong> در میانهٔ این دو نیرو و در برخورد با واقعیت بیرونی ایستاده است و می‌کوشد میان آن‌ها سازش برقرار کند. هرگاه «خود» در این میانجی‌گری ناتوان بماند، اضطراب و نشانهٔ بیماری سر برمی‌آورد.</p>
+
+  <h3 class="sub" id="s2-5"><span class="n">2.5</span>سائق‌ها، لیبیدو، اروس و تاناتوس</h3>
+  <p><strong>سائق</strong> مفهومی مرزی میان امر بدنی و امر روانی است: فشاری درونی و پیوسته که ذهن را به فعالیت وامی‌دارد. سائق بر خلاف غریزهٔ جانوری، ابژهٔ ثابتی ندارد و می‌تواند جابه‌جا و دگرگون شود. انرژیِ سائق‌های جنسی را فروید <strong>لیبیدو</strong> می‌نامد.</p>
+  <p>فروید پس از سال ۱۹۲۰ سائق‌ها را به دو دستهٔ بنیادین تقسیم کرد:</p>
+  <div class="en"><span class="lbl">Dual drive theory</span><i>Eros</i> — the life drive (love, union, creation)<br><i>Thanatos</i> — the death drive (aggression, repetition, dissolution)</div>
+  <p><strong>اروس</strong> سائقِ زندگی است که به سوی پیوند و آفرینش می‌راند، و <strong>تاناتوس</strong> سائقِ مرگ است که به سوی تنش‌زدایی، پرخاش و بازگشت به حالت بی‌جانی گرایش دارد. تنشِ میان این دو، موتورِ پنهانِ زندگی روانی است.</p>
+
+  <h3 class="sub" id="s2-6"><span class="n">2.6</span>اصل لذت و اصل واقعیت</h3>
+  <p>دو اصل، دستگاه روانی را اداره می‌کنند. <strong>اصل لذت</strong> به سوی کاهشِ فوریِ تنش و دستیابی به لذت می‌راند؛ این اصل بر نهاد فرمان می‌راند. اما زندگی در جهان واقعی، ارضای فوری را همیشه ممکن نمی‌سازد. پس <strong>اصل واقعیت</strong> پدید می‌آید که لذت را به تعویق می‌اندازد تا با محدودیت‌های بیرونی سازگار شود؛ این اصل بر «خود» حاکم است.</p>
+  <div class="en"><span class="lbl">Two principles</span><i>Pleasure principle</i> (immediate gratification) ⟶ <i>Reality principle</i> (delayed, adapted gratification)</div>
+
+  <h3 class="sub" id="s2-7"><span class="n">2.7</span>مراحل رشد روانی‑جنسی</h3>
+  <p>فروید رشد کودک را زنجیره‌ای از مراحل دانست که در هر یک، لیبیدو بر ناحیه‌ای از بدن (ناحیهٔ شهوت‌زا) متمرکز می‌شود. تثبیتِ بیش از حد در هر مرحله، می‌تواند ویژگی‌های شخصیتیِ ماندگار به جا گذارد.</p>
+
+  <div class="stages">
+    <div class="stage"><div class="age">0–1.5 yr</div><h5>دهانی</h5><p>لذت از دهان: مکیدن و خوردن. اعتماد بنیادین یا وابستگی شکل می‌گیرد.</p></div>
+    <div class="stage"><div class="age">1.5–3 yr</div><h5>مقعدی</h5><p>کنترلِ دفع. درگیریِ نظم و اختیار؛ ریشهٔ سرسختی یا نظم‌گرایی.</p></div>
+    <div class="stage"><div class="age">3–6 yr</div><h5>آلتی</h5><p>کانون شدنِ اندام تناسلی؛ جایگاهِ عقدهٔ ادیپ.</p></div>
+    <div class="stage"><div class="age">6–puberty</div><h5>نهفتگی</h5><p>فروکش سائق جنسی؛ انرژی صرفِ یادگیری و دوستی می‌شود.</p></div>
+    <div class="stage"><div class="age">puberty +</div><h5>تناسلی</h5><p>بلوغ جنسی؛ توانِ عشق و رابطهٔ بالغانه.</p></div>
+  </div>
+  <div class="en"><span class="lbl">Psychosexual stages</span>Oral → Anal → Phallic → Latency → Genital</div>
+
+  <h3 class="sub" id="s2-8"><span class="n">2.8</span>عقدهٔ ادیپ و اضطراب اختگی</h3>
+  <p>قلبِ نظریهٔ فروید، <strong>عقدهٔ ادیپ</strong> است که در مرحلهٔ آلتی رخ می‌دهد. کودک به والدِ جنس مخالف کششی آمیخته به عشق می‌یابد و والدِ هم‌جنس را رقیب می‌بیند. این آرزوی ممنوع با <strong>اضطراب اختگی</strong> برخورد می‌کند؛ ترسی نمادین که کودک را وامی‌دارد آرزویش را واپس راند و به‌جای رقابت با والدِ هم‌جنس، با او <em>همانندسازی</em> کند. از دلِ همین همانندسازی است که فراخود شکل می‌گیرد.</p>
+  <div class="en"><span class="lbl">Key term</span><i>Oedipus complex</i> · resolved through <i>identification</i> with the same-sex parent · founds the <i>super-ego</i>.</div>
+  <div class="box note">
+    <div class="box-title">🔭 نگاهی به جلو</div>
+    <p>لکان بعدها عقدهٔ ادیپ را نه به‌صورت یک درامِ خانوادگیِ واقعی، بلکه همچون ساختاری <em>نمادین</em> بازخوانی خواهد کرد؛ ورودِ کودک به نظمِ قانون و زبان. این پل را در فصل سوم خواهیم دید.</p>
+  </div>
+
+  <h3 class="sub" id="s2-9"><span class="n">2.9</span>سرکوب و بازگشت سرکوب‌شده</h3>
+  <p><strong>سرکوب</strong> بنیادی‌ترین سازِکار دفاعی است: راندنِ یک تصور یا میلِ تحمل‌ناپذیر از آگاهی به ناخودآگاه. اما آنچه سرکوب می‌شود، نابود نمی‌شود؛ در ناخودآگاه فعال می‌ماند و می‌کوشد بازگردد. این <em>بازگشتِ سرکوب‌شده</em> در رؤیا، لغزش زبانی و نشانهٔ بیماری خود را به‌صورتِ نقاب‌دار نمایان می‌سازد.</p>
+  <div class="en"><span class="lbl">Core mechanism</span><i>Repression</i> (Verdrängung) → the <i>return of the repressed</i>.</div>
+
+  <h3 class="sub" id="s2-10"><span class="n">2.10</span>مکانیسم‌های دفاعی</h3>
+  <p>«خود» برای مهارِ اضطراب، شیوه‌های ناخودآگاهی به کار می‌گیرد که آن‌ها را مکانیسم‌های دفاعی می‌نامیم. سرکوب بنیادی‌ترین آن‌هاست، اما انواع دیگری نیز وجود دارد:</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>دفاع</th><th>توضیح</th></tr></thead>
+    <tbody>
+      <tr><td>انکار <span class="term">Denial</span></td><td>نپذیرفتنِ واقعیتی دردناک</td></tr>
+      <tr><td>فرافکنی <span class="term">Projection</span></td><td>نسبت‌دادنِ میل یا احساسِ خود به دیگری</td></tr>
+      <tr><td>جابه‌جایی <span class="term">Displacement</span></td><td>انتقال هیجان از هدف خطرناک به هدفی بی‌خطر</td></tr>
+      <tr><td>والایش <span class="term">Sublimation</span></td><td>تبدیل سائق به فعالیتی ارزشمند مانند هنر</td></tr>
+      <tr><td>واکنش‌سازی <span class="term">Reaction formation</span></td><td>تبدیل میل به ضدِ آشکار آن</td></tr>
+      <tr><td>واپس‌روی <span class="term">Regression</span></td><td>بازگشت به رفتارِ مرحله‌ای پیشین</td></tr>
+      <tr><td>عقلانی‌سازی <span class="term">Rationalization</span></td><td>تراشیدنِ دلیلِ منطقی برای رفتاری ناخودآگاه</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="sub" id="s2-11"><span class="n">2.11</span>رؤیا و تعبیر آن</h3>
+  <p>کتاب <em>تعبیر رؤیا</em> (۱۹۰۰) را فروید شاهراهِ شناختِ ناخودآگاه می‌دانست. به باور او، هر رؤیا <em>تحققِ نقاب‌دارِ یک آرزو</em> است. باید میان دو سطح تمایز نهاد:</p>
+  <div class="en"><span class="lbl">Two layers of the dream</span><i>Manifest content</i> — what you remember.<br><i>Latent content</i> — the hidden, repressed wish beneath it.</div>
+  <p>سازِکاری که محتوای نهان را به محتوای آشکار بدل می‌کند، <strong>کارِ رؤیا</strong> نام دارد و دو عملیات اصلیِ آن، <em>چگالش</em> (فشردنِ چند معنا در یک تصویر) و <em>جابه‌جایی</em> (انتقال اهمیت از عنصری مهم به عنصری کم‌اهمیت) است. این دو عملیات در فصل لکان نقشی کلیدی خواهند یافت.</p>
+  <div class="en"><span class="lbl">The dream-work</span><i>Condensation</i> (Verdichtung) · <i>Displacement</i> (Verschiebung)</div>
+
+  <h3 class="sub" id="s2-12"><span class="n">2.12</span>لغزش‌ها، فراموشی و لطیفه</h3>
+  <p>در کتاب <em>روان‌آسیب‌شناسیِ زندگیِ روزمره</em>، فروید نشان داد که خطاهای به‌ظاهر تصادفی — لغزش زبانی، فراموشیِ نام‌ها، گم‌کردنِ اشیا — نیز معنا دارند و حاصلِ مداخلهٔ ناخودآگاه‌اند. به همین سان، <em>لطیفه</em> راهی است که از طریق آن، میل سرکوب‌شده در پوششی مجاز به آگاهی راه می‌یابد.</p>
+  <div class="en"><span class="lbl">Famous term</span>The “Freudian slip” (<i>Fehlleistung</i> / parapraxis): a slip that reveals a hidden intention.</div>
+
+  <h3 class="sub" id="s2-13"><span class="n">2.13</span>انتقال و انتقال متقابل</h3>
+  <p>در جریان درمان، تحلیل‌شونده ناخودآگاه احساسات و الگوهای رابطه‌ایِ گذشته‌اش — به‌ویژه با والدین — را به درمانگر منتقل می‌کند؛ این پدیده را <strong>انتقال</strong> می‌نامیم. فروید آن را نه مانعِ کار، بلکه مهم‌ترین ابزارِ درمان دانست، زیرا تعارض‌های قدیمی را در «اینجا و اکنونِ» جلسه زنده می‌کند. واکنشِ هیجانیِ ناخودآگاهِ خودِ درمانگر را نیز <strong>انتقال متقابل</strong> می‌خوانند.</p>
+  <div class="en"><span class="lbl">Clinical concepts</span><i>Transference</i> (Übertragung) · <i>Counter-transference</i></div>
+
+  <h3 class="sub" id="s2-14"><span class="n">2.14</span>ساختارهای بالینی: نوروز، پسیکوز، پرورژن</h3>
+  <p>روان‌کاوی، بیماری روانی را نه فهرستی از نشانه‌ها، بلکه سه ساختارِ بنیادینِ متفاوت می‌بیند که هر یک شیوهٔ خاصی برای رویارویی با ممنوعیت و میل دارند. این تقسیم‌بندی در فصل لکان دقیق‌تر می‌شود.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>ساختار</th><th>سازِکار محوری</th><th>نمونه</th></tr></thead>
+    <tbody>
+      <tr><td>نوروز <span class="term">Neurosis</span></td><td>سرکوب</td><td>هیستری، وسواس</td></tr>
+      <tr><td>پسیکوز <span class="term">Psychosis</span></td><td>طرد <span class="term">Foreclosure</span></td><td>پارانویا، اسکیزوفرنی</td></tr>
+      <tr><td>پرورژن <span class="term">Perversion</span></td><td>انکار/تکذیب <span class="term">Disavowal</span></td><td>فتیشیسم</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="sub" id="s2-15"><span class="n">2.15</span>نقد و میراث فروید</h3>
+  <p>میراث فروید سترگ اما مناقشه‌آمیز است. منتقدان، نظریهٔ او را به دلایلی به چالش کشیده‌اند:</p>
+  <div class="box warn">
+    <div class="box-title">⚖️ مهم‌ترین نقدها</div>
+    <p>۱) <em>اثبات‌ناپذیری</em>: بسیاری از گزاره‌های فروید را نمی‌توان به‌شکل تجربی آزمود (نقد کارل پوپر). ۲) <em>سوگیری جنسیتی</em>: مفاهیمی مانند «حسادت آلتی» از سوی فمینیست‌ها رد شده‌اند. ۳) <em>تعمیمِ نمونه‌های محدود</em>: نظریه بر شمار اندکی بیمار بنا شده بود. ۴) <em>تأکید افراطی بر جنسیت</em> در تبیین رفتار.</p>
+  </div>
+  <p>با این همه، مفاهیمِ ناخودآگاه، دفاع‌های روانی، اهمیت کودکی و اثرِ گفتار بر روان، عمیقاً در فرهنگ، هنر و علوم انسانی نشست کرده‌اند. درست همین‌جاست که لکان وارد می‌شود تا فروید را نه رد، بلکه از نو و بر شالوده‌ای استوارتر بازسازی کند.</p>
+</section>
+
+<!-- ================= CHAPTER 3: LACAN INTRO ================= -->
+<section class="chapter ch3" id="ch3">
+  <div class="ch-head">
+    <span class="emoji">🪞</span>
+    <div class="ch-num">C H A P T E R · 3</div>
+    <h2>فصل سوم — مقدمات لکان</h2>
+    <p>اکنون به دستگاه ژاک لکان وارد می‌شویم. در این فصل، شالوده‌ها را می‌سازیم: سه نظم، مرحلهٔ آینه، زبان، دال و مدلول، و سوژهٔ منقسم.</p>
+  </div>
+
+  <h3 class="sub" id="s3-1"><span class="n">3.1</span>لکان و «بازگشت به فروید»</h3>
+  <p><strong>ژاک لکان</strong> (۱۹۰۱–۱۹۸۱)، روان‌کاو و روان‌پزشک فرانسوی، بر این باور بود که پیروانِ فروید نظریهٔ او را به نظریه‌ای دربارهٔ «سازگاریِ خود با واقعیت» فروکاسته و هستهٔ رادیکالِ آن را گم کرده‌اند. شعار او چنین بود:</p>
+  <div class="en"><span class="lbl">Lacan’s slogan</span><i>Retour à Freud</i> — “a return to Freud”: reading Freud through the letter of his texts and through structural linguistics.</div>
+  <p>لکان از سال ۱۹۵۳ به مدتِ نزدیک به سه دهه «سمینار»های هفتگی برگزار کرد و در آن‌ها دستگاه فکری خود را به‌تدریج ساخت. اندیشهٔ او سه دورهٔ بزرگ دارد که حول سه نظمِ بنیادین می‌چرخند.</p>
+
+  <h3 class="sub" id="s3-2"><span class="n">3.2</span>سه نظم: خیالی، نمادین، واقعی</h3>
+  <p>کلِ دستگاه لکان بر سه «نظم» یا سه «ساحت» استوار است که با هم درهم‌تنیده‌اند، درست مانند سه حلقهٔ گره بورومه‌ایِ روی جلد این متن.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>نظم</th><th>قلمرو</th><th>پرسش</th></tr></thead>
+    <tbody>
+      <tr><td>خیالی <span class="term">The Imaginary</span></td><td>تصویر، همانندسازی، «من»، فریب</td><td>«من چه کسی به نظر می‌رسم؟»</td></tr>
+      <tr><td>نمادین <span class="term">The Symbolic</span></td><td>زبان، قانون، دال، دیگریِ بزرگ</td><td>«قانون و زبان از من چه می‌خواهد؟»</td></tr>
+      <tr><td>واقعی <span class="term">The Real</span></td><td>آنچه نمادین‌ناپذیر است؛ ناممکن</td><td>آنچه از چنگِ کلام می‌گریزد</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><strong>خیالی</strong> ساحتِ تصویر و همانندسازی است؛ جایی که «منِ» ما در آینهٔ دیگران شکل می‌گیرد. <strong>نمادین</strong> ساحتِ زبان و قانون است که از پیش از تولدِ ما وجود داشته و ما را درون خود جای می‌دهد. <strong>واقعی</strong> نه واقعیتِ بیرونی، بلکه آن هسته‌ای است که هرگز در زبان نمی‌گنجد و همواره به‌مثابهٔ امری ناممکن باز می‌گردد.</p>
+
+  <h3 class="sub" id="s3-3"><span class="n">3.3</span>مرحلهٔ آینه</h3>
+  <p>نخستین سهمِ بزرگ لکان، نظریهٔ <strong>مرحلهٔ آینه</strong> است. کودکِ شش تا هجده‌ماهه که هنوز بدنش را تکه‌تکه و ناهماهنگ تجربه می‌کند، تصویرِ خود را در آینه می‌بیند و شادمانه با آن همانندسازی می‌کند. این تصویرِ یکپارچه و بیرونی، هستهٔ «من» (ego) را پدید می‌آورد.</p>
+  <div class="box key">
+    <div class="box-title">💡 نکتهٔ کلیدی</div>
+    <p>برای لکان، «من» از همان آغاز بر یک <em>بیگانگی</em> بنا شده است: کودک خود را در تصویری بیرون از خویش بازمی‌شناسد. پس «من» نه مرکزِ راستینِ سوژه، بلکه نوعی <em>بدفهمی</em> است. این درست برخلافِ تصورِ رایجی است که «منِ» نیرومند را هدفِ درمان می‌داند.</p>
+  </div>
+  <div class="en"><span class="lbl">Term</span><i>The mirror stage</i> (le stade du miroir) · the ego is born in <i>misrecognition</i> (méconnaissance).</div>
+
+  <h3 class="sub" id="s3-4"><span class="n">3.4</span>ناخودآگاه همچون زبان</h3>
+  <p>مشهورترین گزارهٔ لکان این است:</p>
+  <div class="en"><span class="lbl">Lacan’s central thesis</span>“The unconscious is structured like a language.” — <i>L’inconscient est structuré comme un langage.</i></div>
+  <p>لکان دریافت که دو عملیاتِ اصلیِ رؤیا نزدِ فروید — چگالش و جابه‌جایی — دقیقاً همان دو سازِکارِ زبان‌اند که زبان‌شناس رومن یاکوبسن آن‌ها را <em>استعاره</em> و <em>مجاز</em> نامیده بود. بدین‌سان ناخودآگاه نه دریایی از غرایزِ تاریک، بلکه نظامی است که بر پایهٔ قواعدِ زبان کار می‌کند. برای فهم این ادعا، نخست باید به سراغ زبان‌شناسیِ سوسور برویم.</p>
+
+  <h3 class="sub" id="s3-5"><span class="n">3.5</span>سوسور: دال و مدلول</h3>
+  <p>زبان‌شناس سوئیسی <strong>فردینان دو سوسور</strong> نشانهٔ زبانی را پیوندِ دو روی یک سکه دانست: <em>دال</em> (تصویر صوتیِ واژه) و <em>مدلول</em> (مفهوم). لکان این رابطه را برمی‌گیرد، اما آن را دگرگون می‌کند و بر <em>تقدمِ دال</em> پا می‌فشارد. او این ساختار را همچون یک «الگوریتم» می‌نویسد:</p>
+  <div class="formula">
+    <span class="frac"><span>S</span><span>s</span></span>
+    <span class="cap">الگوریتم دال: دالِ بزرگ (S) بر مدلولِ کوچک (s)، که میانشان «خطِ مقاومت» قرار دارد. برای لکان، دال بر مدلول تقدم دارد و معنا همواره می‌لغزد.</span>
+  </div>
+  <p>نکتهٔ لکان این است که میانِ دال و مدلول، خطی مقاوم وجود دارد؛ معنا هیچ‌گاه تثبیت نمی‌شود و دائماً زیرِ زنجیرهٔ دال‌ها می‌لغزد. هیچ دالی به‌تنهایی معنا ندارد، بلکه معنا تنها از <em>تفاوتِ</em> دال‌ها با یکدیگر و در <em>زنجیرهٔ دلالت</em> پدید می‌آید.</p>
+
+  <h3 class="sub" id="s3-6"><span class="n">3.6</span>استعاره و مجاز: دو محور زبان</h3>
+  <p>زبان بر دو محور کار می‌کند. <strong>استعاره</strong> جانشینیِ یک دال به‌جای دالی دیگر است و در نقطه‌ای که این جایگزینی رخ می‌دهد، معنای تازه (جرقهٔ معنا) زاده می‌شود. <strong>مجاز</strong> پیوندِ افقیِ دال‌ها در زنجیره و لغزشِ معنا از یکی به دیگری است. لکان این دو را با فرمول‌های صوری نوشت:</p>
+  <div class="formula">
+    f(S'/S)S ≅ S(+)s
+    <span class="cap">فرمولِ استعاره: جانشینیِ دالِ نو (S') به‌جای دالِ کهنه (S) نشانهٔ (+) را پدید می‌آورد؛ یعنی عبورِ خطِ معنا و زایشِ معنای تازه. لکان می‌گوید: «نشانهٔ بیماری یک استعاره است».</span>
+  </div>
+  <div class="formula">
+    f(S…S')S ≅ S(−)s
+    <span class="cap">فرمولِ مجاز: پیوندِ دال‌ها در زنجیره، نشانهٔ (−) را پدید می‌آورد؛ یعنی پایداریِ خطِ معنا و لغزشِ پیوستهٔ آن. لکان می‌گوید: «میل یک مجاز است».</span>
+  </div>
+  <div class="box note">
+    <div class="box-title">🔁 تناظرِ فروید و لکان</div>
+    <p>چگالشِ فرویدی ≡ استعارهٔ لکانی &nbsp;|&nbsp; جابه‌جاییِ فرویدی ≡ مجازِ لکانی. این همان پلی است که لکان میان <em>تعبیر رؤیا</em> و زبان‌شناسی می‌زند.</p>
+  </div>
+
+  <h3 class="sub" id="s3-7"><span class="n">3.7</span>نقطهٔ آجیدن</h3>
+  <p>اگر معنا همواره می‌لغزد، پس چگونه اصلاً معنایی تثبیت می‌شود؟ لکان پاسخ می‌دهد: از طریقِ <strong>نقطهٔ آجیدن</strong>. این اصطلاح از کارِ روکشِ مبل گرفته شده است؛ همان نقطه‌ای که در آن، نخ، رویه و لایهٔ زیرین را به‌هم می‌دوزد و موقتاً ثابت می‌کند. در زبان نیز برخی دال‌ها چنین نقشی دارند و لغزشِ معنا را لحظه‌ای متوقف می‌سازند.</p>
+  <div class="en"><span class="lbl">Term</span><i>Point de capiton</i> — “quilting point” / “anchoring point”.</div>
+
+  <h3 class="sub" id="s3-8"><span class="n">3.8</span>دیگریِ بزرگ، دیگریِ کوچک، و سوژهٔ منقسم</h3>
+  <p>لکان دو «دیگری» را از هم جدا می‌کند. <strong>دیگریِ کوچک</strong> (با حرفِ کوچک: o/a) دیگرانی هستند که در ساحتِ خیالی، مانند آینه، تصویرِ ما را بازمی‌تابانند. <strong>دیگریِ بزرگ</strong> (با حرفِ بزرگ: A، از واژهٔ فرانسویِ Autre) خودِ ساحتِ نمادین است: زبان، قانون، و آن جایگاهی که گفتار از آن خطاب می‌شود. ما هنگام سخن‌گفتن، همواره دیگریِ بزرگ را مخاطب قرار می‌دهیم.</p>
+  <p>از آنجا که سوژه باید خود را در زبانِ دیگری بیان کند، هرگز به‌تمامی در آن نمی‌گنجد؛ بخشی از او همواره جا می‌ماند. پس سوژهٔ لکانی، سوژه‌ای <strong>منقسم</strong> و «خط‌خورده» است. لکان آن را با این نماد می‌نویسد:</p>
+  <div class="formula">
+    $
+    <span class="cap">سوژهٔ منقسم: حرفِ S (سوژه) با خطی روی آن، که نشانهٔ شکافِ بنیادینِ سوژه در زبان است. سوژه نه یک «منِ» یکپارچه، بلکه یک شکاف است.</span>
+  </div>
+  <p>تعریفِ بنیادینِ سوژه نزد لکان چنین است: «دال، سوژه را برای دالِ دیگر نمایندگی می‌کند». یعنی سوژه میانِ دال‌ها پدید می‌آید و در دل‌شان ناپدید می‌شود.</p>
+
+  <h3 class="sub" id="s3-9"><span class="n">3.9</span>نام‑پدر و استعارهٔ پدری</h3>
+  <p>لکان عقدهٔ ادیپِ فروید را به امری نمادین بدل می‌کند. آنچه میلِ کودک به مادر را می‌شکند و او را به نظمِ قانون و زبان وارد می‌کند، نه پدرِ واقعی، بلکه یک <em>کارکردِ نمادین</em> است: <strong>نام‑پدر</strong>. این کارکرد، میلِ مادر را با قانون جایگزین می‌کند و همین جایگزینی، خودش یک استعاره است.</p>
+  <div class="en"><span class="lbl">Terms</span><i>Nom-du-Père</i> (Name-of-the-Father) · the <i>paternal metaphor</i>.</div>
+  <p>اهمیت این مفهوم آنجاست که نوعِ رابطهٔ سوژه با نام‑پدر، ساختارِ بالینیِ او را تعیین می‌کند: اگر نام‑پدر سرکوب شود، نوروز؛ اگر طرد (پیشاپیش حذف) شود، پسیکوز؛ و اگر انکار شود، پرورژن پدید می‌آید. این، همان سه ساختارِ فصل دوم است، اکنون بر بنیانی زبانی.</p>
+
+  <h3 class="sub" id="s3-10"><span class="n">3.10</span>اسکیمای L</h3>
+  <p>لکان برای نمایشِ رابطهٔ این عناصر، نموداری به شکلِ حرفِ L رسم کرد. این نمودار نشان می‌دهد که چگونه رابطهٔ خیالیِ میانِ «من» و دیگریِ کوچک، گفتگوی راستینِ سوژه با دیگریِ بزرگ را قطع و دچار اختلال می‌کند.</p>
+  <div class="diagram">
+    <svg viewBox="0 0 360 240" xmlns="http://www.w3.org/2000/svg" aria-label="اسکیمای L">
+      <g font-family="JetBrains Mono" font-size="15" fill="#36529e" font-weight="700">
+        <text x="30" y="40">$ (سوژه)</text>
+        <text x="270" y="40">a' (دیگریِ کوچک)</text>
+        <text x="40" y="215">a (من)</text>
+        <text x="250" y="215">A (دیگریِ بزرگ)</text>
+      </g>
+      <line x1="55" y1="55" x2="300" y2="200" stroke="#7a1d2c" stroke-width="2"/>
+      <line x1="65" y1="200" x2="295" y2="55" stroke="#138a72" stroke-width="2" stroke-dasharray="7 5"/>
+      <text x="150" y="95" font-family="Vazirmatn" font-size="11" fill="#138a72">محورِ خیالی (a — a')</text>
+      <text x="120" y="175" font-family="Vazirmatn" font-size="11" fill="#7a1d2c">محورِ نمادین ($ — A)</text>
+    </svg>
+    <div class="cap">محورِ خیالی (خط‌چینِ سبز) همچون پرده‌ای بر محورِ نمادین (خطِ سرخ) می‌افتد و پیامِ ناخودآگاه را که از دیگریِ بزرگ می‌آید، مخدوش می‌کند.</div>
+  </div>
+  <div class="box note">
+    <div class="box-title">🔗 پل به فصل پایانی لکان</div>
+    <p>تا اینجا شالوده‌ها را ساختیم: سه نظم، آینه، زبان، دال، سوژهٔ منقسم و دیگری. اکنون بر این بنیان، به مفاهیم پیچیده‌ترِ لکان می‌رسیم: میل، ابژهٔ a، ژوئیسانس و فرمول‌های صوری.</p>
+  </div>
+</section>
+
+<!-- ================= CHAPTER 4: ADVANCED LACAN ================= -->
+<section class="chapter ch4" id="ch4">
+  <div class="ch-head">
+    <span class="emoji">♾️</span>
+    <div class="ch-num">C H A P T E R · 4</div>
+    <h2>فصل چهارم — لکان پیشرفته</h2>
+    <p>بر شالودهٔ فصل پیش، اکنون به اوجِ دستگاه لکان می‌رسیم: میل و ابژه‌اش، فانتزی، ژوئیسانس، گراف میل، فرمول‌های جنسیت، چهار گفتمان و توپولوژی.</p>
+  </div>
+
+  <h3 class="sub" id="s4-1"><span class="n">4.1</span>نیاز، درخواست، میل</h3>
+  <p>لکان سه‌گانه‌ای ظریف را از هم جدا می‌کند که فهمِ کلِ نظریهٔ میل بر آن استوار است:</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>مفهوم</th><th>تعریف</th><th>ابژه</th></tr></thead>
+    <tbody>
+      <tr><td>نیاز <span class="term">Need</span></td><td>خواستِ زیستیِ ارضاپذیر (مانند گرسنگی)</td><td>ابژهٔ واقعی (شیر)</td></tr>
+      <tr><td>درخواست <span class="term">Demand</span></td><td>نیاز که در زبان بیان می‌شود؛ همواره درخواستِ عشق نیز هست</td><td>حضورِ دیگری</td></tr>
+      <tr><td>میل <span class="term">Desire</span></td><td>تفاوتِ میانِ درخواست و نیاز؛ بخشی که هرگز ارضا نمی‌شود</td><td>ندارد؛ بی‌پایان است</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>هنگامی که نیازِ زیستی در زبان بیان می‌شود، به <em>درخواست</em> بدل می‌گردد و همواره چیزی بیش از خودِ نیاز را می‌طلبد: عشقِ بی‌قیدوشرطِ دیگری. این «مازاد» که هیچ‌گاه ارضا نمی‌شود، همان <strong>میل</strong> است. به همین سبب میل، تمام‌نشدنی است.</p>
+
+  <h3 class="sub" id="s4-2"><span class="n">4.2</span>میل آدمی، میلِ دیگری است</h3>
+  <p>یکی از فرمول‌بندی‌های بنیادینِ لکان این است:</p>
+  <div class="en"><span class="lbl">Lacan’s formula</span>“Man’s desire is the desire of the Other.” — <i>le désir de l’homme, c’est le désir de l’Autre.</i></div>
+  <p>این عبارت چندلایه است: میلِ ما با میلِ دیگری شکل می‌گیرد؛ ما آنچه را می‌خواهیم که دیگری می‌خواهد؛ و از همه ژرف‌تر، آنچه می‌خواهیم آن است که <em>ابژهٔ میلِ دیگری</em> باشیم. پرسشِ بنیادینِ سوژه همواره این است: «دیگری از من چه می‌خواهد؟»</p>
+
+  <h3 class="sub" id="s4-3"><span class="n">4.3</span>ابژهٔ a — ابژه‑علتِ میل</h3>
+  <p>مهم‌ترین مفهومِ ابداعیِ لکان، <strong>ابژهٔ a</strong> است (که آن را ترجمه‌ناپذیر می‌دانست). این، ابژه‌ای نیست که میل به سوی آن برود، بلکه آن باقی‌ماندهٔ گم‌شده‌ای است که میل را به حرکت درمی‌آورد. ابژهٔ a، همان شکافِ بنیادین، همان چیزی است که در ورود به زبان از دست رفت و اکنون هر ابژهٔ میل، تنها جایگزینی موقت برای آن است.</p>
+  <div class="formula">
+    a
+    <span class="cap">ابژهٔ a (objet petit a): ابژه‑علتِ میل. نه هدفِ میل، بلکه آنچه میل را راه می‌اندازد. باقی‌ماندهٔ ناممکنِ امرِ واقعی در دلِ نظمِ نمادین.</span>
+  </div>
+
+  <h3 class="sub" id="s4-4"><span class="n">4.4</span>فانتزی بنیادین</h3>
+  <p>سوژه برای رویارویی با میلِ دست‌نیافتنیِ خود و معمای «دیگری از من چه می‌خواهد؟»، صحنه‌ای خیالی می‌سازد که به آن <strong>فانتزی بنیادین</strong> می‌گویند. فانتزی، رابطهٔ سوژهٔ منقسم با ابژهٔ a را تنظیم می‌کند و به میلِ سرگردانِ او چارچوب می‌دهد. لکان آن را چنین می‌نویسد:</p>
+  <div class="formula">
+    $ ◊ a
+    <span class="cap">ماتمِ فانتزی: سوژهٔ منقسم ($) در پیوند با ابژهٔ a، که نشانهٔ ◊ (poinçon) رابطهٔ پیچیدهٔ آن دو را — جدایی و پیوند، بیگانگی و ارضا — یکجا بازمی‌نماید.</span>
+  </div>
+
+  <h3 class="sub" id="s4-5"><span class="n">4.5</span>ژوئیسانس — لذت‑کامی</h3>
+  <p>لکان میانِ «لذتِ» معمولی و چیزی فراتر از آن تمایز می‌نهد: <strong>ژوئیسانس</strong>. این واژهٔ فرانسوی به معنای کام‌جویی‌ای است که از مرزِ لذت می‌گذرد و به رنج پهلو می‌زند؛ نوعی ارضای آمیخته به درد. این درست همان قلمروِ فرویدیِ «فراسوی اصل لذت» است که در آن، سائق مرگ کار می‌کند.</p>
+  <div class="en"><span class="lbl">Term (kept untranslated)</span><i>Jouissance</i> — an excessive enjoyment beyond the pleasure principle, bordering on pain.</div>
+  <p>سوژه از یک سو از ژوئیسانسِ سرشار محروم شده است (بهای ورود به زبان)، و از سوی دیگر در نشانهٔ بیماریِ خویش، نوعی ژوئیسانسِ پنهان می‌یابد. همین است که چرا گاه آدمی به رنجِ خود چسبیده است.</p>
+
+  <h3 class="sub" id="s4-6"><span class="n">4.6</span>گراف میل</h3>
+  <p>لکان برای نمایشِ پیوندِ همهٔ این عناصر — زنجیرهٔ دال، سوژه، دیگری، میل و ژوئیسانس — نموداری پیچیده به نام <strong>گراف میل</strong> ساخت. صورتِ ساده‌شدهٔ آن، تقاطعِ زنجیرهٔ دلالت با مسیرِ سوژه را نشان می‌دهد و دو نقطهٔ آجیدن را آشکار می‌کند.</p>
+  <div class="diagram">
+    <svg viewBox="0 0 380 230" xmlns="http://www.w3.org/2000/svg" aria-label="گراف میل ساده‌شده">
+      <path d="M30,180 C120,40 260,40 350,150" fill="none" stroke="#7b3aa8" stroke-width="2.5"/>
+      <path d="M40,70 C120,200 270,200 345,90" fill="none" stroke="#36529e" stroke-width="2.5" stroke-dasharray="6 5"/>
+      <circle cx="120" cy="92" r="5" fill="#b8860b"/><circle cx="262" cy="92" r="5" fill="#b8860b"/>
+      <g font-family="JetBrains Mono" font-size="13" fill="#221c33">
+        <text x="20" y="195">$</text><text x="350" y="150">A</text>
+        <text x="100" y="80" fill="#b8860b">s(A)</text><text x="255" y="80" fill="#b8860b">A</text>
+      </g>
+      <text x="190" y="218" text-anchor="middle" font-family="Vazirmatn" font-size="11" fill="#534b68">زنجیرهٔ دلالت، مسیرِ سوژه را در دو نقطه می‌دوزد</text>
+    </svg>
+    <div class="cap">نمایشِ ساده‌شدهٔ گراف میل: تلاقیِ زنجیرهٔ دال (بنفش) با بردارِ سوژه (آبیِ خط‌چین) دو نقطهٔ آجیدن (طلایی) را پدید می‌آورد.</div>
+  </div>
+
+  <h3 class="sub" id="s4-7"><span class="n">4.7</span>فرمول‌های جنسیت و «رابطهٔ جنسی وجود ندارد»</h3>
+  <p>در سمینارِ بیستم (با نام <em>Encore</em>، ۱۹۷۲–۱۹۷۳)، لکان «جنسیت‌یافتگی» را نه امری زیستی بلکه شیوهٔ نوشته‌شدنِ سوژه در نظمِ نمادین دانست و آن را با منطقِ صوریِ سور (کوانتیفایر) نوشت. اینها مشهورترین فرمول‌های صوریِ او هستند:</p>
+
+  <div class="formula">
+    <div style="display:grid;grid-template-columns:1fr 1px 1fr;gap:0 26px;align-items:center">
+      <div>
+        <div style="color:#f3dca0;font-family:Vazirmatn;font-size:.85rem;margin-bottom:8px">سمتِ مردانه</div>
+        ∃x ¬Φx<br>∀x Φx
+      </div>
+      <div style="background:#5b4a86;width:1px;height:64px;margin:0 auto"></div>
+      <div>
+        <div style="color:#f3dca0;font-family:Vazirmatn;font-size:.85rem;margin-bottom:8px">سمتِ زنانه</div>
+        ¬∃x ¬Φx<br>¬∀x Φx
+      </div>
+    </div>
+    <span class="cap"><b>سمتِ مردانه:</b> «دستِ‌کم یک x هست که تابعِ کارکردِ آلتی (Φ) نیست» (استثنای پدرِ نخستین) و «همهٔ x ها تابعِ Φ هستند». ساختاری مبتنی بر استثنا و کلیت.<br><br><b>سمتِ زنانه:</b> «هیچ x ای نیست که تابعِ Φ نباشد» و «نه‑همهٔ x تابعِ Φ است» (منطقِ «نه‑همه»). ساختاری بدونِ استثنا و بدونِ کلیت.</span>
+  </div>
+  <p>از همین ساختارِ نامتقارن، لکان دو گزارهٔ تکان‌دهنده را نتیجه می‌گیرد:</p>
+  <div class="en"><span class="lbl">Two notorious statements</span>“<i>La Femme n’existe pas</i>” — Woman (as a universal) does not exist.<br>“<i>Il n’y a pas de rapport sexuel</i>” — There is no sexual relationship.</div>
+  <div class="box note">
+    <div class="box-title">🧩 معنای این گزاره‌ها</div>
+    <p>«زن وجود ندارد» یعنی هیچ دالِ واحدی نمی‌تواند کلِ امرِ زنانه را در نظمِ نمادین فروبسته و کامل کند. «رابطهٔ جنسی وجود ندارد» یعنی در سطحِ ساختار، هیچ دالی نیست که پیوندی متقارن و کامل میانِ دو جنس بنویسد؛ همواره عدمِ تطابقی باقی می‌ماند. اینها داوریِ ارزشی دربارهٔ زنان یا رابطه نیستند، بلکه گزاره‌هایی ساختاری‌اند.</p>
+  </div>
+
+  <h3 class="sub" id="s4-8"><span class="n">4.8</span>چهار گفتمان</h3>
+  <p>در سمینارِ هفدهم، لکان <strong>چهار گفتمان</strong> را همچون چهار نوعِ بنیادینِ «پیوندِ اجتماعی» معرفی کرد. هر گفتمان از چهار جایگاه و چهار عنصرِ ثابت ساخته شده است که با چرخشِ یک‌چهارم به یکدیگر بدل می‌شوند.</p>
+  <div class="box key">
+    <div class="box-title">🔣 عناصر و جایگاه‌ها</div>
+    <p><b>چهار عنصر:</b> &nbsp;<span dir="ltr" style="font-family:'JetBrains Mono'">S1</span> دالِ ارباب · <span dir="ltr" style="font-family:'JetBrains Mono'">S2</span> دانش · <span dir="ltr" style="font-family:'JetBrains Mono'">$</span> سوژهٔ منقسم · <span dir="ltr" style="font-family:'JetBrains Mono'">a</span> ابژهٔ a.<br>
+    <b>چهار جایگاه:</b> بالا‑راست = کنشگر (فاعل)، بالا‑چپ = دیگری (مخاطب)، پایین‑راست = حقیقت (پنهان)، پایین‑چپ = محصول (مازاد). در نمایشِ لاتین که چپ‌به‌راست خوانده می‌شود، کنشگر در بالا‑چپ و دیگری در بالا‑راست قرار می‌گیرد.</p>
+  </div>
+
+  <div class="discourses">
+    <div class="disc">
+      <div class="dt">گفتمانِ ارباب 👑</div>
+      <div class="grid2">
+        <span class="row-top">S1</span><span class="row-top">S2</span>
+        <span>$</span><span>a</span>
+        <span class="arrow">⟶</span>
+      </div>
+    </div>
+    <div class="disc">
+      <div class="dt">گفتمانِ دانشگاه 🎓</div>
+      <div class="grid2">
+        <span class="row-top">S2</span><span class="row-top">a</span>
+        <span>S1</span><span>$</span>
+        <span class="arrow">⟶</span>
+      </div>
+    </div>
+    <div class="disc">
+      <div class="dt">گفتمانِ هیستریک ❓</div>
+      <div class="grid2">
+        <span class="row-top">$</span><span class="row-top">S1</span>
+        <span>a</span><span>S2</span>
+        <span class="arrow">⟶</span>
+      </div>
+    </div>
+    <div class="disc">
+      <div class="dt">گفتمانِ تحلیلگر 🛋️</div>
+      <div class="grid2">
+        <span class="row-top">a</span><span class="row-top">$</span>
+        <span>S2</span><span>S1</span>
+        <span class="arrow">⟶</span>
+      </div>
+    </div>
+  </div>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>گفتمان</th><th>منطق</th></tr></thead>
+    <tbody>
+      <tr><td>ارباب</td><td>فرمان‌دادن و مسلط‌شدن؛ دالِ ارباب بی‌چون‌وچرا حکم می‌راند</td></tr>
+      <tr><td>دانشگاه</td><td>دانشِ به‌ظاهر بی‌طرف که اغلب در خدمتِ پنهانِ یک اربابِ دیگر است</td></tr>
+      <tr><td>هیستریک</td><td>پرسش و اعتراض؛ سوژهٔ منقسم از دیگری دانش می‌طلبد و ناتوانیِ او را آشکار می‌کند</td></tr>
+      <tr><td>تحلیلگر</td><td>وارونهٔ گفتمانِ ارباب؛ تحلیلگر در جایگاهِ ابژهٔ a می‌نشیند تا سوژه حقیقتِ خود را بزاید</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>نکتهٔ ظریف آن است که گفتمانِ تحلیلگر، حاصلِ چرخشِ یک‌چهارمِ گفتمانِ هیستریک است؛ درست همان‌گونه که فروید روان‌کاوی را با تابِ تفسیری‌ای که به گفتارِ بیمارانِ هیستریکِ خود داد، کشف کرد.</p>
+
+  <h3 class="sub" id="s4-9"><span class="n">4.9</span>سَنتوم</h3>
+  <p>در واپسین دورهٔ کارش، لکان مفهومِ <strong>سَنتوم</strong> را پیش نهاد؛ شکلِ کهنِ نوشتنِ واژهٔ «نشانهٔ بیماری». اگر در آغاز، نشانه را چیزی دانست که باید رمزگشایی و حل شود، اکنون سنتوم را آن گرهِ یگانه‌ای می‌داند که سه نظمِ خیالی، نمادین و واقعی را برای یک سوژهٔ خاص به‌هم می‌بندد و او را از فروپاشی نگه می‌دارد. هدفِ درمان دیگر نه حذفِ نشانه، بلکه آموختنِ شیوه‌ای برای زیستن با آن است.</p>
+  <div class="en"><span class="lbl">Late Lacan</span><i>Sinthome</i> — the singular knot that holds R-S-I together; what makes the subject hold.</div>
+
+  <h3 class="sub" id="s4-10"><span class="n">4.10</span>توپولوژی</h3>
+  <p>لکان در سال‌های پایانی به ریاضیاتِ توپولوژی روی آورد تا ساختارِ سوژه را نه با استعاره، بلکه با شکل‌هایی نشان دهد که خودشان همان ساختار هستند.</p>
+  <h4>نوارِ موبیوس</h4>
+  <p>سطحی که تنها یک رو دارد؛ نشان می‌دهد که چگونه درون و بیرون، خودآگاه و ناخودآگاه، در حقیقت یک پیوستارِ واحدند.</p>
+  <h4>بطریِ کلاین</h4>
+  <p>سطحی که در آن، درون و بیرون به‌گونه‌ای تفکیک‌ناپذیر به‌هم می‌پیوندند؛ نمادی برای رابطهٔ سوژه و دیگری.</p>
+  <h4>گرهِ بورومه‌ای</h4>
+  <p>سه حلقه که چنان درهم‌تنیده‌اند که اگر تنها یکی بریده شود، هر سه از هم می‌پاشند. این، بهترین نمایشِ پیوندِ سه نظم است.</p>
+  <div class="diagram">
+    <svg viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg" aria-label="نوار موبیوس و گره بورومه‌ای">
+      <path d="M30,75 C30,30 110,30 110,75 C110,120 30,120 30,75 Z" fill="none" stroke="#7b3aa8" stroke-width="6"/>
+      <text x="70" y="140" text-anchor="middle" font-family="Vazirmatn" font-size="11" fill="#534b68">نوار موبیوس</text>
+      <g fill="none" stroke-width="6">
+        <circle cx="210" cy="60" r="32" stroke="#e0556b"/>
+        <circle cx="245" cy="60" r="32" stroke="#36529e"/>
+        <circle cx="227" cy="90" r="32" stroke="#b8860b"/>
+      </g>
+      <text x="227" y="140" text-anchor="middle" font-family="Vazirmatn" font-size="11" fill="#534b68">گره بورومه‌ای (R · S · I)</text>
+    </svg>
+    <div class="cap">دو نمونه از توپولوژیِ لکانی: نوارِ موبیوسِ تک‌رویه و گرهِ بورومه‌ایِ سه‌حلقه.</div>
+  </div>
+
+  <h3 class="sub" id="s4-11"><span class="n">4.11</span>پایان تحلیل: عبور از فانتزی</h3>
+  <p>پرسشِ بنیادینِ بالینی این است: تحلیل کِی و چگونه به پایان می‌رسد؟ برای لکان، هدفِ تحلیل نه تقویتِ «من» و نه سازگاری با هنجار، بلکه <strong>عبور از فانتزی</strong> است؛ یعنی سوژه به رابطهٔ خود با ابژهٔ a و با میلِ دیگری آگاه شود و دیگر اسیرِ صحنهٔ خیالیِ پیشین نباشد. در دورهٔ متأخر، این هدف به «همانندسازی با سنتوم» بدل می‌شود: آموختنِ زیستن با گرهِ یگانهٔ خویش.</p>
+  <div class="en"><span class="lbl">End of analysis</span>“Traversing the fantasy” (<i>la traversée du fantasme</i>) — and, later, identification with the <i>sinthome</i>.</div>
+</section>
+
+<!-- ================= SYNTHESIS ================= -->
+<section class="chapter chS" id="synth">
+  <div class="ch-head">
+    <span class="emoji">🔗</span>
+    <div class="ch-num">S Y N T H E S I S</div>
+    <h2>پیوندِ فروید و لکان</h2>
+    <p>اکنون که هر دو دستگاه را ساختیم، می‌توانیم به پرسشِ آغازین بازگردیم: لکان دقیقاً چه نسبتی با فروید دارد؟</p>
+  </div>
+
+  <h3 class="sub" id="sS-1"><span class="n">★</span>جدولِ تطبیقیِ مفاهیم</h3>
+  <p>بسیاری از مفاهیمِ لکان، بازخوانیِ صریحِ مفاهیمِ فروید با ابزارِ زبان‌شناسی‌اند. این جدول، تناظرها را یکجا گرد می‌آورد:</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>نزدِ فروید</th><th>نزدِ لکان</th></tr></thead>
+    <tbody>
+      <tr><td>چگالش <span class="term">Condensation</span></td><td>استعاره <span class="term">Metaphor</span></td></tr>
+      <tr><td>جابه‌جایی <span class="term">Displacement</span></td><td>مجاز <span class="term">Metonymy</span></td></tr>
+      <tr><td>ناخودآگاه به‌مثابهٔ انبارِ غرایز</td><td>ناخودآگاه ساختاری همچون زبان</td></tr>
+      <tr><td>عقدهٔ ادیپِ خانوادگی</td><td>نام‑پدر و استعارهٔ پدری (نمادین)</td></tr>
+      <tr><td>«من» (ego) به‌مثابهٔ هستهٔ سازگاری</td><td>«من» به‌مثابهٔ بدفهمیِ خیالی</td></tr>
+      <tr><td>لیبیدو و سائق جنسی</td><td>میل، و ابژهٔ a همچون علتِ آن</td></tr>
+      <tr><td>فراسوی اصل لذت / سائق مرگ</td><td>ژوئیسانس <span class="term">Jouissance</span></td></tr>
+      <tr><td>نوروز / پسیکوز / پرورژن</td><td>سرکوب / طرد / انکارِ نام‑پدر</td></tr>
+      <tr><td>تحققِ آرزو در رؤیا</td><td>کارِ دال در زنجیرهٔ دلالت</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="sub" id="sS-2"><span class="n">★</span>آنچه لکان نگه داشت، بازخواند و افزود</h3>
+  <h4>آنچه نگه داشت</h4>
+  <p>لکان به هستهٔ کشفِ فروید وفادار ماند: واقعیتِ ناخودآگاه، تعیین‌کنندگیِ کودکی و جنسیت، اهمیتِ رؤیا و لغزش، و مرکزیتِ انتقال در درمان. شعارِ «بازگشت به فروید» دقیقاً همین وفاداری را اعلام می‌کرد.</p>
+  <h4>آنچه بازخواند</h4>
+  <p>لکان فروید را در پرتوِ زبان‌شناسیِ سوسور و یاکوبسن، انسان‌شناسیِ ساختاریِ لوی‑استروس، و فلسفهٔ هگل و هایدگر از نو خواند. نتیجه آن بود که سازِکارهای رؤیا به سازِکارهای زبان، و درامِ ادیپ به ساختاری نمادین بدل شد.</p>
+  <h4>آنچه افزود</h4>
+  <p>لکان مفاهیمِ تازه‌ای آفرید که نزدِ فروید نبودند: سه نظمِ خیالی‑نمادین‑واقعی، مرحلهٔ آینه، ابژهٔ a، تمایزِ نیاز‑درخواست‑میل، فرمول‌های جنسیت، چهار گفتمان و توپولوژیِ سوژه. او همچنین جهتِ درمان را دگرگون کرد: نه تقویتِ «من»، بلکه رویاروییِ سوژه با میل و حقیقتِ خویش.</p>
+
+  <div class="box key">
+    <div class="box-title">🎯 جمع‌بندیِ نهایی</div>
+    <p>اگر بخواهیم کلِ این مسیر را در یک جمله فشرده کنیم: <em>فروید ناخودآگاه را کشف کرد و لکان نشان داد که این ناخودآگاه به زبانِ دال سخن می‌گوید</em>. فروید به ما آموخت که در پسِ هر نشانه معنایی پنهان است؛ لکان افزود که این معنا را تنها در ساختارِ زبان و در رابطه با دیگری می‌توان یافت.</p>
+  </div>
+
+  <!-- GLOSSARY -->
+  <h3 class="sub" id="glossary"><span class="n">📖</span>واژه‌نامهٔ دوزبانه</h3>
+  <p>برای مرورِ سریع، مهم‌ترین اصطلاحات همراه با معادلِ لاتینِ آن‌ها گرد آمده‌اند. هر مدخل، اصطلاح را در یک خط تعریف می‌کند.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>اصطلاح</th><th>معادل</th><th>تعریفِ کوتاه</th></tr></thead>
+    <tbody>
+      <tr><td>ناخودآگاه</td><td><span class="term">Unconscious</span></td><td>قلمروِ روانیِ پنهان از آگاهی</td></tr>
+      <tr><td>سرکوب</td><td><span class="term">Repression</span></td><td>راندنِ میلِ تحمل‌ناپذیر به ناخودآگاه</td></tr>
+      <tr><td>سائق</td><td><span class="term">Drive</span></td><td>فشارِ درونیِ پیوسته بر دستگاهِ روانی</td></tr>
+      <tr><td>لیبیدو</td><td><span class="term">Libido</span></td><td>انرژیِ سائق‌های جنسی</td></tr>
+      <tr><td>انتقال</td><td><span class="term">Transference</span></td><td>فرافکنیِ روابطِ گذشته بر درمانگر</td></tr>
+      <tr><td>دال</td><td><span class="term">Signifier</span></td><td>تصویرِ صوتیِ واژه؛ واحدِ زبان نزدِ لکان</td></tr>
+      <tr><td>مدلول</td><td><span class="term">Signified</span></td><td>مفهومِ پیوسته به دال</td></tr>
+      <tr><td>دیگریِ بزرگ</td><td><span class="term">The Other</span></td><td>ساحتِ نمادین؛ زبان و قانون</td></tr>
+      <tr><td>سوژهٔ منقسم</td><td><span class="term">Barred subject ($)</span></td><td>سوژهٔ شکاف‌خورده در زبان</td></tr>
+      <tr><td>ابژهٔ a</td><td><span class="term">Objet petit a</span></td><td>ابژه‑علتِ میل؛ باقی‌ماندهٔ گم‌شده</td></tr>
+      <tr><td>ژوئیسانس</td><td><span class="term">Jouissance</span></td><td>کام‌جوییِ فراسوی لذت، آمیخته به رنج</td></tr>
+      <tr><td>نام‑پدر</td><td><span class="term">Name-of-the-Father</span></td><td>کارکردِ نمادینِ قانون</td></tr>
+      <tr><td>سَنتوم</td><td><span class="term">Sinthome</span></td><td>گرهِ یگانه‌ای که سه نظم را به‌هم می‌بندد</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- FORMULAE -->
+  <h3 class="sub" id="formulae"><span class="n">∑</span>فرمول‌نامه</h3>
+  <p>گردآوریِ همهٔ فرمول‌های صوریِ لکان که در متن آمدند، در یک نگاه:</p>
+  <div class="en"><span class="lbl">Algorithm of the signifier</span>S / s &nbsp;&nbsp;(Signifier over signified)</div>
+  <div class="en"><span class="lbl">Metaphor</span>f(S'/S)S ≅ S(+)s</div>
+  <div class="en"><span class="lbl">Metonymy</span>f(S…S')S ≅ S(−)s</div>
+  <div class="en"><span class="lbl">Barred subject · objet a · big Other</span>$ &nbsp;·&nbsp; a &nbsp;·&nbsp; A</div>
+  <div class="en"><span class="lbl">Fantasy · Drive</span>$ ◊ a &nbsp;&nbsp;|&nbsp;&nbsp; $ ◊ D</div>
+  <div class="en"><span class="lbl">Sexuation — masculine side</span>∃x ¬Φx &nbsp;&nbsp;/&nbsp;&nbsp; ∀x Φx</div>
+  <div class="en"><span class="lbl">Sexuation — feminine side</span>¬∃x ¬Φx &nbsp;&nbsp;/&nbsp;&nbsp; ¬∀x Φx</div>
+  <div class="en"><span class="lbl">Four discourses (Master, rotate ¼ turn)</span>S1→S2 over $·a &nbsp;⟶&nbsp; University, Hysteric, Analyst</div>
+
+  <div class="box note">
+    <div class="box-title">📚 برای ادامهٔ مطالعه</div>
+    <p>متونِ کلیدی: فروید، <em>تعبیر رؤیا</em> و <em>پنج درس‌گفتار دربارهٔ روان‌کاوی</em>؛ لکان، <em>نوشته‌ها (Écrits)</em> و مجموعهٔ <em>سمینارها</em>. برای آغاز، آثارِ شارحانی مانند دیلن اوانز و بروس فینک راهگشاست. این متن، نقشهٔ راه است؛ سفرِ واقعی با خواندنِ خودِ منابع آغاز می‌شود.</p>
+  </div>
+</section>
+
+</article>
+</div>
+
+<button id="top" aria-label="بازگشت به بالا">↑</button>
+
+<footer>
+  <p>راهنمای جامع روان‌کاوی · از <b>فروید</b> تا <b>لکان</b></p>
+  <p style="opacity:.7;font-size:.82rem">این متن برای آموزش و مرورِ مفاهیم تهیه شده است و جایگزینِ خواندنِ منابعِ اصلی نیست.</p>
+</footer>
+
+<script>
+// reading progress
+const progress=document.getElementById('progress');
+const topBtn=document.getElementById('top');
+function onScroll(){
+  const h=document.documentElement;
+  const scrolled=h.scrollTop/(h.scrollHeight-h.clientHeight);
+  progress.style.width=(scrolled*100)+'%';
+  topBtn.classList.toggle('show',h.scrollTop>500);
+}
+window.addEventListener('scroll',onScroll,{passive:true});
+onScroll();
+
+// back to top
+topBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+// mobile TOC toggle
+const toc=document.getElementById('toc');
+document.getElementById('tocToggle').addEventListener('click',()=>toc.classList.toggle('open'));
+// close mobile TOC after clicking a link
+toc.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  if(window.innerWidth<=980) toc.classList.remove('open');
+}));
+
+// scroll-spy: highlight active TOC link
+const links=[...document.querySelectorAll('.toc a[href^="#"]')];
+const map=new Map();
+links.forEach(l=>{const id=l.getAttribute('href').slice(1);const el=document.getElementById(id);if(el)map.set(el,l);});
+const spy=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      links.forEach(l=>l.classList.remove('active'));
+      const link=map.get(e.target);
+      if(link){
+        link.classList.add('active');
+        // tint TOC accent to the active chapter color
+        const dot=link.closest('li')?.querySelector('.dot')||link.querySelector('.dot');
+      }
+    }
+  });
+},{rootMargin:'-15% 0px -75% 0px',threshold:0});
+map.forEach((_,el)=>spy.observe(el));
+
+// set TOC accent based on current chapter section in view
+const chapters=[...document.querySelectorAll('section.chapter')];
+const accentByClass={ch1:'#138a72',ch2:'#a32a3c',ch3:'#36529e',ch4:'#7b3aa8',chS:'#b8860b'};
+const chSpy=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      for(const c in accentByClass){
+        if(e.target.classList.contains(c)){
+          toc.style.setProperty('--accent',accentByClass[c]);
+        }
+      }
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+chapters.forEach(c=>chSpy.observe(c));
+</script>
+</body>
+</html>
