@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --bg:#FCFCFD;
@@ -47,15 +48,71 @@ nav.toc{
   background:linear-gradient(180deg,#fff, #fbfdfc);
 }
 main{flex:1;min-width:0;padding:46px 52px 120px;max-width:920px}
+
+/* --- اصلاح فیکس شده برای موبایل و تبلت --- */
 @media(max-width:1024px){
-  main{padding:30px 22px 90px}
-  nav.toc{position:fixed;inset-block:0;inset-inline-end:0;z-index:60;transform:translateX(100%);
-    transition:transform .28s ease;box-shadow:-20px 0 50px rgba(0,0,0,.15);width:300px;flex-basis:300px}
-  nav.toc.open{transform:translateX(0)}
-  .shell{display:block}
-  .menu-btn{display:flex !important}
-  .scrim{display:none;position:fixed;inset:0;background:rgba(16,32,43,.45);z-index:55}
-  .scrim.show{display:block}
+  .shell {
+    display: block;
+    position: relative;
+  }
+  main {
+    padding: 30px 22px 90px;
+    max-width: 100%;
+    display: block;
+  }
+
+  /* رفع مشکل فهرست: تبدیل به منوی کشویی سمت راست (مناسب فارسی) */
+  nav.toc {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: auto;
+    right: 0; /* در سایت راست‌چین، منوی کناری باید سمت راست باشد */
+    width: 300px;
+    height: 100vh;
+    z-index: 60;
+    transform: translateX(100%); /* پنهان شدن در سمت راست بیرون کادر */
+    transition: transform .28s ease;
+    box-shadow: -10px 0 30px rgba(0,0,0,.18); /* سایه روی لبه سمت چپ منو */
+    background: var(--surface); /* پس‌زمینه محکم برای پوشاندن متن */
+    border-inline-start: 1px solid var(--line); /* خط جداکننده سمت چپ منو */
+    border-inline-end: none;
+  }
+  nav.toc.open {
+    transform: translateX(0); /* ورود منو به صفحه */
+  }
+
+  /* دکمه همبرگر */
+  .menu-btn {
+    display: flex !important;
+    position: fixed;
+    top: 16px;
+    right: 16px; /* دکمه در سمت راست بالا قرار می‌گیرد */
+    left: auto;
+    z-index: 70;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 22px rgba(31,122,84,.4);
+  }
+
+  /* پس‌زمینه تاریک پشت منو */
+  .scrim {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(16,32,43,.45);
+    z-index: 55;
+  }
+  .scrim.show {
+    display: block;
+  }
 }
 
 /* ---------- TOC ---------- */
@@ -165,10 +222,12 @@ td .en{font-size:.8em}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
 .card h4{margin-top:0;color:var(--primary-d)}
 hr.sep{border:0;border-top:1px dashed var(--line);margin:40px 0}
+
 .menu-btn{display:none;position:fixed;inset-block-start:16px;inset-inline-end:16px;z-index:70;
   width:48px;height:48px;border-radius:12px;background:var(--primary);color:#fff;border:none;cursor:pointer;
   align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(31,122,84,.4)}
 .menu-btn svg{width:24px;height:24px}
+
 .top{position:fixed;inset-block-end:22px;inset-inline-start:22px;z-index:50;width:46px;height:46px;border-radius:50%;
   background:var(--ink);color:#fff;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;
   box-shadow:0 10px 24px rgba(0,0,0,.25);font-size:20px}
@@ -178,6 +237,8 @@ hr.sep{border:0;border-top:1px dashed var(--line);margin:40px 0}
 footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:.85rem;text-align:center;margin-top:40px}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
 </style>
+
+
 </head>
 <body>
 <div class="progress"><span id="bar"></span></div>
