@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+
+
 <style>
 :root{
   --bg:#FCFCFD;
@@ -49,71 +51,33 @@ nav.toc{
 }
 main{flex:1;min-width:0;padding:46px 52px 120px;max-width:920px}
 
-/* --- اصلاح فیکس شده برای موبایل و تبلت --- */
+/* --- چیدمان موبایل: فهرست ثابت بالای متن --- */
 @media(max-width:1024px){
   .shell {
-    display: block;
-    position: relative;
+    display: flex;
+    flex-direction: column; /* چیدمان عمودی */
+  }
+  nav.toc {
+    position: static; /* استاتیک شدن فهرست */
+    width: 100%;
+    height: auto; /* ارتفاع خودکار بر اساس محتوا */
+    overflow-y: visible; /* نمایش همه لینک‌ها */
+    transform: none !important;
+    box-shadow: none;
+    border-inline-start: none;
+    border-bottom: 2px solid var(--primary-soft); /* خط زیر فهرست */
+    background: var(--surface);
+    order: 1; /* فهرست بالاتر از متن بیاد */
+    padding: 24px 22px 14px;
   }
   main {
-    padding: 30px 22px 90px;
+    padding: 20px 22px 90px;
     max-width: 100%;
-    display: block;
+    order: 2; /* متن اصلی پایین فهرست بیاد */
   }
-
-  /* رفع مشکل فهرست: تبدیل به منوی کشویی سمت راست (مناسب فارسی) */
-  nav.toc {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: auto;
-    right: 0; /* در سایت راست‌چین، منوی کناری باید سمت راست باشد */
-    width: 300px;
-    height: 100vh;
-    z-index: 60;
-    transform: translateX(100%); /* پنهان شدن در سمت راست بیرون کادر */
-    transition: transform .28s ease;
-    box-shadow: -10px 0 30px rgba(0,0,0,.18); /* سایه روی لبه سمت چپ منو */
-    background: var(--surface); /* پس‌زمینه محکم برای پوشاندن متن */
-    border-inline-start: 1px solid var(--line); /* خط جداکننده سمت چپ منو */
-    border-inline-end: none;
-  }
-  nav.toc.open {
-    transform: translateX(0); /* ورود منو به صفحه */
-  }
-
-  /* دکمه همبرگر */
-    /* دکمه همبرگر */
-  .menu-btn {
-    display: flex !important;
-    position: fixed;
-    top: 10px;
-    right: 10px; /* چسبیدن کامل به گوشه سمت راست */
-    left: auto;
-    z-index: 70;
-    width: 46px;
-    height: 46px;
-    border-radius: 14px;
-    background: var(--primary);
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 6px 16px rgba(31,122,84,.35);
-    transition: opacity 0.2s ease, transform 0.2s ease; /* انیمیشن برای غیب شدن */
-  }
-
-  /* پس‌زمینه تاریک پشت منو */
-  .scrim {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(16,32,43,.45);
-    z-index: 55;
-  }
-  .scrim.show {
-    display: block;
+  /* مخفی کردن کامل دکمه همبرگر و پس‌زمینه تاریک */
+  .menu-btn, .scrim {
+    display: none !important;
   }
 }
 
@@ -224,12 +188,7 @@ td .en{font-size:.8em}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
 .card h4{margin-top:0;color:var(--primary-d)}
 hr.sep{border:0;border-top:1px dashed var(--line);margin:40px 0}
-
-.menu-btn{display:none;position:fixed;inset-block-start:16px;inset-inline-end:16px;z-index:70;
-  width:48px;height:48px;border-radius:12px;background:var(--primary);color:#fff;border:none;cursor:pointer;
-  align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(31,122,84,.4)}
-.menu-btn svg{width:24px;height:24px}
-
+.menu-btn{display:none} /* همبرگر کلاً مخفی */
 .top{position:fixed;inset-block-end:22px;inset-inline-start:22px;z-index:50;width:46px;height:46px;border-radius:50%;
   background:var(--ink);color:#fff;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;
   box-shadow:0 10px 24px rgba(0,0,0,.25);font-size:20px}
@@ -239,7 +198,6 @@ hr.sep{border:0;border-top:1px dashed var(--line);margin:40px 0}
 footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:.85rem;text-align:center;margin-top:40px}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
 </style>
-
 
 </head>
 <body>
@@ -1015,18 +973,36 @@ pool.<span class="f">shutdown</span>();</pre>
   var topBtn = document.getElementById('topBtn');
   var bar = document.getElementById('bar');
 
-  function closeMenu(){ toc.classList.remove('open'); scrim.classList.remove('show'); }
-  menuBtn.addEventListener('click', function(){
-    toc.classList.toggle('open'); scrim.classList.toggle('show');
-  });
+  // تابع باز کردن منو و غیب کردن همبرگر
+  function openMenu(){ 
+    toc.classList.add('open'); 
+    scrim.classList.add('show');
+    menuBtn.style.opacity = '0';
+    menuBtn.style.pointerEvents = 'none';
+    menuBtn.style.transform = 'scale(0.8)';
+  }
+  
+  // تابع بستن منو و برگرداندن همبرگر
+  function closeMenu(){ 
+    toc.classList.remove('open'); 
+    scrim.classList.remove('show'); 
+    menuBtn.style.opacity = '1';
+    menuBtn.style.pointerEvents = 'auto';
+    menuBtn.style.transform = 'scale(1)';
+  }
+
+  // کلیک روی دکمه همبرگر
+  menuBtn.addEventListener('click', openMenu);
+  
+  // کلیک روی پس‌زمینه تاریک
   scrim.addEventListener('click', closeMenu);
 
-  // close on link click (mobile)
+  // بستن منو با کلیک روی لینک‌ها (در موبایل)
   toc.querySelectorAll('a').forEach(function(a){
     a.addEventListener('click', function(){ if(window.innerWidth<=1024) closeMenu(); });
   });
 
-  // scroll progress + back-to-top
+  // اسکرول و دکمه بازگشت به بالا
   function onScroll(){
     var h = document.documentElement;
     var scrolled = h.scrollTop;
@@ -1038,7 +1014,7 @@ pool.<span class="f">shutdown</span>();</pre>
   onScroll();
   topBtn.addEventListener('click', function(){ window.scrollTo({top:0,behavior:'smooth'}); });
 
-  // scrollspy: highlight active top-level section
+  // هایلایت کردن بخش فعال در فهرست
   var sections = Array.prototype.slice.call(document.querySelectorAll('main section'));
   var topLinks = {};
   toc.querySelectorAll('ol > li > a').forEach(function(a){
@@ -1057,5 +1033,6 @@ pool.<span class="f">shutdown</span>();</pre>
   sections.forEach(function(s){ observer.observe(s); });
 })();
 </script>
+
 </body>
 </html>
