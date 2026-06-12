@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مستند جامع آشنایی با سوالات متداول در مصاحبه‌های Java و Spring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FCFCFD;
+  --surface:#FFFFFF;
+  --ink:#16202B;
+  --muted:#5A6B7B;
+  --primary:#1F7A54;        /* Spring green */
+  --primary-d:#155D40;
+  --primary-soft:#E7F3EC;
+  --accent:#DD6B20;         /* Java amber */
+  --accent-soft:#FBEAD9;
+  --code-bg:#1B1F2A;
+  --code-ink:#E6E9EF;
+  --line:#E3E8EE;
+  --line-2:#EEF1F5;
+  --blue:#2563A8;
+  --purple:#7C4DBF;
+  --rose:#C0395E;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(16,32,43,.04),0 8px 28px rgba(16,32,43,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Vazirmatn",system-ui,sans-serif;
+  font-size:17px;line-height:2;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--primary-soft)}
+
+/* ---------- Layout ---------- */
+.shell{display:flex;max-width:1340px;margin:0 auto;align-items:flex-start}
+nav.toc{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  width:320px;flex:0 0 320px;
+  padding:28px 22px 60px;border-inline-start:1px solid var(--line);
+  background:linear-gradient(180deg,#fff, #fbfdfc);
+}
+main{flex:1;min-width:0;padding:46px 52px 120px;max-width:920px}
+@media(max-width:1024px){
+  main{padding:30px 22px 90px}
+  nav.toc{position:fixed;inset-block:0;inset-inline-end:0;z-index:60;transform:translateX(100%);
+    transition:transform .28s ease;box-shadow:-20px 0 50px rgba(0,0,0,.15);width:300px;flex-basis:300px}
+  nav.toc.open{transform:translateX(0)}
+  .shell{display:block}
+  .menu-btn{display:flex !important}
+  .scrim{display:none;position:fixed;inset:0;background:rgba(16,32,43,.45);z-index:55}
+  .scrim.show{display:block}
+}
+
+/* ---------- TOC ---------- */
+.toc-title{font-weight:800;font-size:.95rem;color:var(--primary-d);letter-spacing:.02em;
+  margin:0 0 14px;padding-bottom:12px;border-bottom:2px solid var(--primary-soft)}
+.toc ol{list-style:none;margin:0;padding:0;counter-reset:c}
+.toc>ol>li{margin:2px 0}
+.toc a{display:block;text-decoration:none;color:var(--muted);font-size:.9rem;
+  padding:7px 12px;border-radius:9px;line-height:1.6;transition:.15s;border-inline-start:3px solid transparent}
+.toc>ol>li>a{font-weight:600;color:var(--ink)}
+.toc a:hover{background:var(--primary-soft);color:var(--primary-d)}
+.toc a.active{background:var(--primary-soft);color:var(--primary-d);border-inline-start-color:var(--primary)}
+.toc ol ol{margin:1px 0 8px;padding-inline-start:14px}
+.toc ol ol a{font-size:.82rem;padding:4px 12px}
+.toc .chip-num{display:inline-block;min-width:1.4em;color:var(--accent);font-weight:700;font-family:"JetBrains Mono",monospace;font-size:.8em}
+
+/* ---------- Header / hero ---------- */
+header.hero{
+  background:
+    radial-gradient(900px 300px at 90% -10%, rgba(221,107,32,.10), transparent 60%),
+    radial-gradient(900px 360px at 5% 0%, rgba(31,122,84,.14), transparent 55%),
+    linear-gradient(180deg,#fff,#fff);
+  border:1px solid var(--line);border-radius:22px;padding:42px 38px;margin-bottom:40px;
+  position:relative;overflow:hidden;box-shadow:var(--shadow)}
+header.hero::before{content:"{ }";position:absolute;font-family:"JetBrains Mono",monospace;
+  font-size:200px;font-weight:700;color:rgba(31,122,84,.05);inset-block-start:-40px;inset-inline-start:-10px;line-height:1}
+.kicker{display:inline-flex;gap:8px;align-items:center;font-size:.8rem;font-weight:600;color:var(--primary-d);
+  background:var(--primary-soft);padding:6px 14px;border-radius:999px;margin-bottom:18px}
+.kicker .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+header.hero h1{font-size:2.15rem;font-weight:800;line-height:1.5;margin:0 0 14px;letter-spacing:-.01em}
+header.hero h1 b{color:var(--primary-d)}
+header.hero p{color:var(--muted);max-width:640px;margin:0;font-size:1.02rem}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.hero-tags span{font-family:"JetBrains Mono",monospace;font-size:.74rem;color:var(--ink);
+  background:#fff;border:1px solid var(--line);padding:5px 11px;border-radius:8px}
+
+/* ---------- Sections / headings ---------- */
+section{scroll-margin-top:20px;margin-bottom:54px}
+h2{font-size:1.62rem;font-weight:800;margin:0 0 8px;display:flex;align-items:center;gap:14px;letter-spacing:-.01em}
+h2 .h-num{font-family:"JetBrains Mono",monospace;font-size:1rem;font-weight:700;color:#fff;
+  background:var(--primary);min-width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;
+  border-radius:12px;box-shadow:0 6px 16px rgba(31,122,84,.28)}
+.h-rule{height:3px;background:linear-gradient(90deg,var(--primary),var(--primary-soft) 45%,transparent);
+  border-radius:3px;margin:6px 0 26px}
+h3{font-size:1.22rem;font-weight:700;color:var(--primary-d);margin:34px 0 10px;
+  padding-inline-start:14px;border-inline-start:4px solid var(--accent)}
+h4{font-size:1.02rem;font-weight:700;color:var(--ink);margin:22px 0 6px}
+p{margin:10px 0}
+.lead{color:var(--muted);font-size:1.02rem}
+ul,ol{padding-inline-start:24px}
+li{margin:7px 0}
+b,strong{color:var(--primary-d);font-weight:700}
+
+/* ---------- English term chip (keeps RTL intact) ---------- */
+.en{font-family:"JetBrains Mono",monospace;direction:ltr;unicode-bidi:isolate;
+  background:var(--line-2);border:1px solid var(--line);color:#243140;
+  padding:1px 7px;border-radius:6px;font-size:.84em;font-weight:500;white-space:nowrap}
+.en.g{background:var(--primary-soft);border-color:#cfe6da;color:var(--primary-d)}
+.en.a{background:var(--accent-soft);border-color:#f3d6bb;color:#9c4a13}
+
+/* ---------- Code boxes ---------- */
+.code{
+  direction:ltr;text-align:left;unicode-bidi:isolate;
+  background:var(--code-bg);color:var(--code-ink);border-radius:var(--radius);
+  font-family:"JetBrains Mono",monospace;font-size:.84rem;line-height:1.75;
+  overflow-x:auto;margin:16px 0;border:1px solid #2a2f3d;position:relative;box-shadow:var(--shadow)}
+.code .bar{display:flex;align-items:center;gap:7px;padding:10px 16px;border-bottom:1px solid #2a2f3d;background:#161a23}
+.code .bar i{width:11px;height:11px;border-radius:50%;display:inline-block}
+.code .bar .r{background:#ff5f57}.code .bar .y{background:#febc2e}.code .bar .gr{background:#28c840}
+.code .bar .lang{margin-inline-start:auto;font-size:.7rem;color:#8b94a7;letter-spacing:.08em;direction:ltr}
+.code pre{margin:0;padding:16px 18px;white-space:pre;tab-size:2}
+.code .k{color:#ff9d6f}      /* keyword */
+.code .t{color:#7dd3c0}      /* type */
+.code .s{color:#b5e890}      /* string */
+.code .c{color:#6b7689;font-style:italic} /* comment */
+.code .n{color:#c9a8ff}      /* number/annotation */
+.code .f{color:#ffd479}      /* fn/method */
+
+/* ---------- Callouts ---------- */
+.note{border-radius:var(--radius);padding:16px 18px 16px 18px;margin:18px 0;border:1px solid var(--line);
+  background:var(--surface);box-shadow:var(--shadow);position:relative}
+.note .tag{display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:.86rem;margin-bottom:4px}
+.note.tip{background:var(--primary-soft);border-color:#cfe6da}
+.note.tip .tag{color:var(--primary-d)}
+.note.warn{background:var(--accent-soft);border-color:#f3d6bb}
+.note.warn .tag{color:#9c4a13}
+.note.q{background:#F1F5FB;border-color:#d8e2f0}
+.note.q .tag{color:var(--blue)}
+.note p:first-of-type{margin-top:0}.note p:last-child{margin-bottom:0}
+
+/* ---------- Tables ---------- */
+.tbl-wrap{overflow-x:auto;margin:18px 0;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.9rem;background:var(--surface);min-width:520px}
+th,td{padding:11px 14px;text-align:right;border-bottom:1px solid var(--line-2);vertical-align:top}
+thead th{background:var(--primary);color:#fff;font-weight:700;font-size:.86rem;position:sticky;top:0}
+tbody tr:nth-child(even){background:#FAFBFC}
+tbody tr:hover{background:var(--primary-soft)}
+td .en{font-size:.8em}
+.badge{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:.72rem;font-weight:600;
+  padding:2px 8px;border-radius:6px;background:var(--accent-soft);color:#9c4a13}
+.badge.g{background:var(--primary-soft);color:var(--primary-d)}
+.badge.b{background:#e4edf8;color:var(--blue)}
+
+/* ---------- Misc ---------- */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+@media(max-width:620px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
+.card h4{margin-top:0;color:var(--primary-d)}
+hr.sep{border:0;border-top:1px dashed var(--line);margin:40px 0}
+.menu-btn{display:none;position:fixed;inset-block-start:16px;inset-inline-end:16px;z-index:70;
+  width:48px;height:48px;border-radius:12px;background:var(--primary);color:#fff;border:none;cursor:pointer;
+  align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(31,122,84,.4)}
+.menu-btn svg{width:24px;height:24px}
+.top{position:fixed;inset-block-end:22px;inset-inline-start:22px;z-index:50;width:46px;height:46px;border-radius:50%;
+  background:var(--ink);color:#fff;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);font-size:20px}
+.top.show{display:flex}
+.progress{position:fixed;top:0;inset-inline:0;height:3px;background:transparent;z-index:80}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--accent))}
+footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:.85rem;text-align:center;margin-top:40px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="progress"><span id="bar"></span></div>
+<button class="menu-btn" id="menuBtn" aria-label="فهرست مطالب">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+<main>
+  <header class="hero">
+    <div class="kicker"><span class="dot"></span> راهنمای مرجع مصاحبهٔ فنی</div>
+    <h1>مستند جامع آشنایی با سوالات متداول در مصاحبه‌های <b>Java</b> و <b>Spring</b></h1>
+    <p class="lead">از صفر تا صد؛ مبانی زبان، شیءگرایی و الگوهای طراحی، نکات کلیدی و کم‌شناخته، ساختمان داده و الگوریتم، کتابخانه‌های متداول و درون‌مایهٔ <span class="en">Spring / Spring Boot</span> — همراه با نمونه‌کد و جدول‌های جمع‌بندی.</p>
+    <div class="hero-tags">
+      <span>Core Java</span><span>OOP &amp; SOLID</span><span>Design Patterns</span><span>Concurrency</span><span>JVM &amp; GC</span><span>Collections</span><span>DSA</span><span>JDBC / Hibernate</span><span>Spring IoC / AOP</span><span>Spring Boot</span><span>@Transactional</span>
+    </div>
+  </header>
+
+  <!-- ============ 1. HISTORY ============ -->
+  <section id="s1">
+    <h2><span class="h-num">01</span> تاریخچهٔ مختصر</h2>
+    <div class="h-rule"></div>
+    <p>پیش از ورود به جزئیات فنی، یک نگاه کوتاه به سیر تکامل این دو فناوری کمک می‌کند بفهمیم چرا برخی تصمیم‌های طراحی به این شکل گرفته شده‌اند.</p>
+
+    <h3>۱.۱ تاریخچهٔ Java</h3>
+    <p>زبان <span class="en">Java</span> در ابتدا با نام <span class="en">Oak</span> در سال ۱۹۹۱ توسط تیمی به سرپرستی <span class="en">James Gosling</span> در شرکت <span class="en">Sun Microsystems</span> ساخته شد و در سال ۱۹۹۵ به‌صورت عمومی معرفی گردید. شعار اصلی آن <span class="en">«Write Once, Run Anywhere»</span> بود؛ یعنی کدی که یک‌بار نوشته می‌شود روی هر سکّویی که <span class="en g">JVM</span> داشته باشد اجرا می‌شود.</p>
+    <ul>
+      <li>در سال ۲۰۱۰ شرکت <span class="en">Oracle</span> با خریدِ <span class="en">Sun</span>، مالکیت <span class="en">Java</span> را به دست گرفت.</li>
+      <li>نسخهٔ <span class="en a">Java 8</span> (سال ۲۰۱۴) نقطهٔ عطف بزرگی بود: ورود <span class="en">Lambda</span>، <span class="en">Stream API</span> و <span class="en">Functional Interface</span>.</li>
+      <li>از <span class="en a">Java 9</span> به بعد چرخهٔ انتشار به مدل <span class="en">«شش‌ماهه»</span> تغییر کرد و نسخه‌های <span class="en">LTS</span> (پشتیبانی بلندمدت) مثل ۸، ۱۱، ۱۷ و ۲۱ معرفی شدند.</li>
+    </ul>
+
+    <h3>۱.۲ تاریخچهٔ Spring</h3>
+    <p>چارچوب <span class="en">Spring</span> در سال ۲۰۰۳ توسط <span class="en">Rod Johnson</span> به‌عنوان واکنشی به پیچیدگی بیش‌ازحدِ <span class="en">EJB</span> (نسخهٔ قدیمیِ <span class="en">Java EE</span>) ساخته شد. ایدهٔ مرکزی آن <span class="en g">Inversion of Control</span> و <span class="en g">Dependency Injection</span> بود تا توسعه‌دهنده به‌جای ساختنِ وابستگی‌ها، آن‌ها را از کانتینر دریافت کند.</p>
+    <ul>
+      <li><b>۲۰۰۳:</b> انتشار <span class="en">Spring 1.0</span> با هستهٔ <span class="en">IoC Container</span>.</li>
+      <li><b>۲۰۰۶ به بعد:</b> اضافه‌شدن <span class="en">AOP</span>، <span class="en">Spring MVC</span>، <span class="en">Spring Security</span> و <span class="en">Spring Data</span>.</li>
+      <li><b>۲۰۱۴:</b> معرفی <span class="en g">Spring Boot</span> با شعار <span class="en">«Convention over Configuration»</span> و حذف پیکربندی‌های دست‌وپاگیر <span class="en">XML</span>.</li>
+      <li><b>امروز:</b> <span class="en">Spring 6</span> و <span class="en">Spring Boot 3</span> روی <span class="en">Java 17+</span>، با پشتیبانی از <span class="en">GraalVM Native Image</span> و فضای‌نام <span class="en">Jakarta EE</span>.</li>
+    </ul>
+  </section>
+
+  <!-- ============ 2. OOP ============ -->
+  <section id="s2">
+    <h2><span class="h-num">02</span> شیءگرایی (OOP)</h2>
+    <div class="h-rule"></div>
+    <p>برنامه‌نویسی شیءگرا <span class="en">(Object-Oriented Programming)</span> ستون فقرات <span class="en">Java</span> است و تقریباً در هر مصاحبه‌ای از آن پرسیده می‌شود. چهار اصل بنیادین آن را می‌شناسیم.</p>
+
+    <h3>۲.۱ چهار اصل اصلی</h3>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>اصل</th><th>معادل انگلیسی</th><th>توضیح کوتاه</th></tr></thead>
+      <tbody>
+        <tr><td>کپسوله‌سازی</td><td><span class="en">Encapsulation</span></td><td>پنهان‌کردن جزئیات داخلی و دسترسی از طریق <span class="en">getter/setter</span> و سطح‌های دسترسی <span class="en">private/public</span>.</td></tr>
+        <tr><td>وراثت</td><td><span class="en">Inheritance</span></td><td>یک کلاس ویژگی‌ها و رفتار کلاس دیگر را با <span class="en">extends</span> به ارث می‌برد و کد بازاستفاده می‌شود.</td></tr>
+        <tr><td>چندریختی</td><td><span class="en">Polymorphism</span></td><td>یک رابط، رفتارهای متفاوت؛ شامل <span class="en">Overloading</span> (زمان کامپایل) و <span class="en">Overriding</span> (زمان اجرا).</td></tr>
+        <tr><td>انتزاع</td><td><span class="en">Abstraction</span></td><td>نمایش فقط مفاهیم ضروری و پنهان‌کردن پیاده‌سازی، با <span class="en">abstract class</span> و <span class="en">interface</span>.</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>۲.۲ تفاوت Overloading و Overriding</h3>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>ویژگی</th><th><span class="en">Overloading</span></th><th><span class="en">Overriding</span></th></tr></thead>
+      <tbody>
+        <tr><td>زمان تصمیم‌گیری</td><td><span class="en">Compile-time</span> (پیوند ایستا)</td><td><span class="en">Runtime</span> (پیوند پویا)</td></tr>
+        <tr><td>امضای متد</td><td>پارامترها متفاوت‌اند</td><td>امضا یکسان است</td></tr>
+        <tr><td>محل</td><td>در همان کلاس یا زیرکلاس</td><td>فقط بین والد و فرزند</td></tr>
+        <tr><td>نوع بازگشتی</td><td>می‌تواند فرق کند</td><td>یکسان یا <span class="en">Covariant</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>۲.۳ Interface در برابر Abstract Class</h3>
+    <p>این یکی از پرتکرارترین سوالات است. هر دو برای <span class="en">Abstraction</span> به کار می‌روند اما تفاوت‌های مهمی دارند.</p>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>معیار</th><th><span class="en">Interface</span></th><th><span class="en">Abstract Class</span></th></tr></thead>
+      <tbody>
+        <tr><td>وراثت چندگانه</td><td>پشتیبانی می‌شود (یک کلاس چند <span class="en">interface</span>)</td><td>پشتیبانی نمی‌شود</td></tr>
+        <tr><td>فیلدها</td><td>فقط <span class="en">public static final</span> (ثابت)</td><td>هر نوع فیلد ممکن است</td></tr>
+        <tr><td>سازنده</td><td>ندارد</td><td>دارد</td></tr>
+        <tr><td>متد بدنه‌دار</td><td>از <span class="en a">Java 8</span> با <span class="en">default/static</span></td><td>بله، آزادانه</td></tr>
+        <tr><td>کاربرد</td><td>تعریف یک «قرارداد» <span class="en">(contract)</span></td><td>پایهٔ مشترک با کد آماده</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="code">
+      <div class="bar"><i class="r"></i><i class="y"></i><i class="gr"></i><span class="lang">Java</span></div>
+<pre><span class="k">interface</span> <span class="t">Payment</span> {
+    <span class="k">void</span> <span class="f">pay</span>(<span class="k">double</span> amount);          <span class="c">// متد انتزاعی</span>
+    <span class="k">default</span> <span class="k">void</span> <span class="f">log</span>() {              <span class="c">// متد default از Java 8</span>
+        System.out.<span class="f">println</span>(<span class="s">"paid"</span>);
+    }
+}
+
+<span class="k">abstract class</span> <span class="t">Animal</span> {
+    <span class="k">private final</span> <span class="t">String</span> name;       <span class="c">// فیلد + سازنده مجاز است</span>
+    <span class="t">Animal</span>(<span class="t">String</span> name) { <span class="k">this</span>.name = name; }
+    <span class="k">abstract</span> <span class="t">String</span> <span class="f">sound</span>();             <span class="c">// انتزاعی</span>
+}</pre>
+    </div>
+
+    <h3>۲.۴ اصول SOLID</h3>
+    <p>پنج اصل طراحیِ شیءگرا که کد را قابل‌نگهداری و توسعه‌پذیر می‌کند.</p>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>حرف</th><th>اصل</th><th>چه می‌گوید؟</th></tr></thead>
+      <tbody>
+        <tr><td><b>S</b></td><td><span class="en">Single Responsibility</span></td><td>هر کلاس فقط یک دلیل برای تغییر داشته باشد.</td></tr>
+        <tr><td><b>O</b></td><td><span class="en">Open/Closed</span></td><td>باز برای توسعه، بسته برای تغییر.</td></tr>
+        <tr><td><b>L</b></td><td><span class="en">Liskov Substitution</span></td><td>زیرکلاس باید بدون شکستن برنامه جای والد بنشیند.</td></tr>
+        <tr><td><b>I</b></td><td><span class="en">Interface Segregation</span></td><td>رابط‌های کوچک و تخصصی بهتر از یک رابط بزرگ‌اند.</td></tr>
+        <tr><td><b>D</b></td><td><span class="en">Dependency Inversion</span></td><td>به انتزاع‌ها وابسته باش، نه به پیاده‌سازی‌ها — پایهٔ <span class="en g">DI</span> در Spring.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <!-- ============ 3. DESIGN PATTERNS ============ -->
+  <section id="s3">
+    <h2><span class="h-num">03</span> الگوهای طراحی (Design Patterns)</h2>
+    <div class="h-rule"></div>
+    <p>الگوهای طراحی راه‌حل‌های آزموده‌شده برای مسائل تکرارشونده‌اند. در سه دستهٔ <span class="en">Creational</span>، <span class="en">Structural</span> و <span class="en">Behavioral</span> قرار می‌گیرند.</p>
+
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>دسته</th><th>الگوهای مهم</th><th>کاربرد</th></tr></thead>
+      <tbody>
+        <tr><td><span class="en g">Creational</span> (ساختنی)</td><td><span class="en">Singleton, Factory, Abstract Factory, Builder, Prototype</span></td><td>کنترل نحوهٔ ساخت اشیاء</td></tr>
+        <tr><td><span class="en g">Structural</span> (ساختاری)</td><td><span class="en">Adapter, Decorator, Proxy, Facade, Composite</span></td><td>ترکیب اشیاء و کلاس‌ها</td></tr>
+        <tr><td><span class="en g">Behavioral</span> (رفتاری)</td><td><span class="en">Strategy, Observer, Template Method, Command, Iterator</span></td><td>تعامل و توزیع مسئولیت</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>۳.۱ Singleton</h3>
+    <p>تضمین می‌کند که از یک کلاس فقط یک نمونه ساخته شود. نسخهٔ امن در برابر چند نخ، با <span class="en">enum</span> یا <span class="en">double-checked locking</span> پیاده می‌شود.</p>
+    <div class="code">
+      <div class="bar"><i class="r"></i><i class="y"></i><i class="gr"></i><span class="lang">Java</span></div>
+<pre><span class="k">public class</span> <span class="t">Config</span> {
+    <span class="k">private static volatile</span> <span class="t">Config</span> instance;
+    <span class="k">private</span> <span class="t">Config</span>() {}                 <span class="c">// سازنده خصوصی</span>
+    <span class="k">public static</span> <span class="t">Config</span> <span class="f">getInstance</span>() {
+        <span class="k">if</span> (instance == <span class="k">null</span>) {
+            <span class="k">synchronized</span> (<span class="t">Config</span>.<span class="k">class</span>) {
+                <span class="k">if</span> (instance == <span class="k">null</span>) instance = <span class="k">new</span> <span class="t">Config</span>();
+            }
+        }
+        <span class="k">return</span> instance;
+    }
+}</pre>
+    </div>
+
+    <h3>۳.۲ Factory Method</h3>
+    <p>به‌جای فراخوانی مستقیم سازنده، ساختِ شیء را به یک متد کارخانه‌ای می‌سپاریم؛ کلاینت از کلاس بتنی بی‌خبر می‌ماند.</p>
+
+    <h3>۳.۳ Builder</h3>
+    <p>برای ساختن اشیاء با پارامترهای زیاد و اختیاری مناسب است و کد را خواناتر می‌کند (مثل <span class="en">StringBuilder</span> یا <span class="en">Lombok @Builder</span>).</p>
+
+    <h3>۳.۴ Strategy و Observer</h3>
+    <ul>
+      <li><b><span class="en">Strategy</span>:</b> الگوریتم را در قالب یک رابط جدا می‌کند تا در زمان اجرا قابل تعویض باشد.</li>
+      <li><b><span class="en">Observer</span>:</b> رابطهٔ یک‌به‌چند؛ با تغییر وضعیتِ <span class="en">Subject</span>، همهٔ <span class="en">Observer</span>ها مطلع می‌شوند (پایهٔ سیستم رویداد در Spring).</li>
+    </ul>
+
+    <div class="note tip">
+      <div class="tag">💡 نکتهٔ مصاحبه</div>
+      <p><span class="en">Spring</span> پر از این الگوهاست: <span class="en">BeanFactory</span> همان <span class="en">Factory</span> است، هر <span class="en">@Bean</span> به‌صورت پیش‌فرض <span class="en">Singleton</span> است، <span class="en">RestTemplate/JdbcTemplate</span> از <span class="en">Template Method</span> استفاده می‌کنند و <span class="en">AOP Proxy</span> همان الگوی <span class="en">Proxy</span> است.</p>
+    </div>
+  </section>
+
+  <!-- ============ 4. CORE JAVA ============ -->
+  <section id="s4">
+    <h2><span class="h-num">04</span> مبانی و نکات کلیدی Java</h2>
+    <div class="h-rule"></div>
+    <p>این بخش زیرساختی‌ترین مفاهیمی است که هر توسعه‌دهندهٔ <span class="en">Java</span> باید مسلط باشد.</p>
+
+    <h3>۴.۱ JDK و JRE و JVM</h3>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>مخفف</th><th>نام کامل</th><th>چیست؟</th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">JVM</span></td><td><span class="en">Java Virtual Machine</span></td><td>ماشین مجازی که <span class="en">bytecode</span> را اجرا می‌کند؛ مستقل از سکّو.</td></tr>
+        <tr><td><span class="en">JRE</span></td><td><span class="en">Java Runtime Environment</span></td><td><span class="en">JVM</span> + کتابخانه‌های پایه برای اجرا.</td></tr>
+        <tr><td><span class="en">JDK</span></td><td><span class="en">Java Development Kit</span></td><td><span class="en">JRE</span> + ابزارهای توسعه مثل <span class="en">javac</span> و <span class="en">debugger</span>.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>مسیر کلی: کد <span class="en">.java</span> توسط <span class="en">javac</span> به <span class="en">bytecode (.class)</span> کامپایل می‌شود، سپس <span class="en">JVM</span> آن را با کمک <span class="en g">JIT Compiler</span> در زمان اجرا به کد ماشین تبدیل و اجرا می‌کند.</p>
+
+    <h3>۴.۲ انواع داده — Primitive و Wrapper</h3>
+    <p>۸ نوع پایه‌ای داریم: <span class="en">byte, short, int, long, float, double, char, boolean</span>. هر کدام یک کلاس پوششی <span class="en">(Wrapper)</span> دارد (مثل <span class="en">int → Integer</span>). تبدیل خودکار بین آن‌ها <span class="en g">Autoboxing/Unboxing</span> نام دارد.</p>
+    <div class="note warn">
+      <div class="tag">⚠️ تله رایج</div>
+      <p><span class="en">Integer Cache</span>: مقادیر <span class="en">-128</span> تا <span class="en">127</span> در <span class="en">Integer</span> کش می‌شوند. به همین دلیل مقایسهٔ دو <span class="en">Integer</span> با <span class="en">==</span> برای ۱۰۰ درست <span class="en">true</span> و برای ۱۰۰۰ نادرست <span class="en">false</span> می‌شود! همیشه برای آبجکت‌ها از <span class="en">.equals()</span> استفاده کنید.</p>
+    </div>
+
+    <h3>۴.۳ String و String Pool و تغییرناپذیری</h3>
+    <p><span class="en">String</span> در <span class="en">Java</span> تغییرناپذیر <span class="en g">(Immutable)</span> است؛ یعنی پس از ساخت قابل تغییر نیست و هر «تغییر» یک شیء جدید می‌سازد. این ویژگی برای امنیت، اشتراک امن بین نخ‌ها و کشِ <span class="en">hashCode</span> مفید است.</p>
+    <p><span class="en g">String Pool</span> ناحیه‌ای ویژه در <span class="en">Heap</span> است که رشته‌های ثابت <span class="en">(literal)</span> در آن نگه داشته می‌شوند تا از تکرار جلوگیری شود.</p>
+    <div class="code">
+      <div class="bar"><i class="r"></i><i class="y"></i><i class="gr"></i><span class="lang">Java</span></div>
+<pre><span class="t">String</span> a = <span class="s">"hi"</span>;            <span class="c">// در String Pool</span>
+<span class="t">String</span> b = <span class="s">"hi"</span>;            <span class="c">// همان شیء از Pool</span>
+<span class="t">String</span> c = <span class="k">new</span> <span class="t">String</span>(<span class="s">"hi"</span>); <span class="c">// شیء جدید در Heap</span>
+
+a == b;            <span class="c">// true  (ارجاع یکسان)</span>
+a == c;            <span class="c">// false (ارجاع متفاوت)</span>
+a.<span class="f">equals</span>(c);     <span class="c">// true  (محتوای یکسان)</span>
+c.<span class="f">intern</span>() == a; <span class="c">// true  (intern رشته را به Pool می‌برد)</span></pre>
+    </div>
+    <p>برای دستکاری زیادِ رشته از <span class="en">StringBuilder</span> (غیرهمزمان، سریع) یا <span class="en">StringBuffer</span> (همزمان، امن در برابر نخ) استفاده کنید.</p>
+
+    <h3>۴.۴ تفاوت == و equals و نقش hashCode</h3>
+    <ul>
+      <li><span class="en">==</span> ارجاع‌ها <span class="en">(reference)</span> را مقایسه می‌کند، یعنی آیا به یک خانهٔ حافظه اشاره دارند.</li>
+      <li><span class="en">equals()</span> محتوای منطقی را مقایسه می‌کند (در صورت بازنویسی صحیح).</li>
+      <li><b>قرارداد طلایی:</b> اگر <span class="en">equals()</span> را بازنویسی کردید، حتماً <span class="en">hashCode()</span> را هم بازنویسی کنید؛ وگرنه ساختارهایی مثل <span class="en">HashMap</span> و <span class="en">HashSet</span> درست کار نمی‌کنند.</li>
+    </ul>
+
+    <h3>۴.۵ Pass by Value</h3>
+    <div class="note q">
+      <div class="tag">❓ سوال کلیدی: Java pass-by-value است یا pass-by-reference؟</div>
+      <p><span class="en">Java</span> همیشه <span class="en g">Pass by Value</span> است. برای انواع پایه، خودِ مقدار کپی می‌شود. برای آبجکت‌ها، <b>کپیِ ارجاع</b> منتقل می‌شود؛ پس می‌توان وضعیت داخلی شیء را تغییر داد، اما اگر داخل متد ارجاع را به شیء جدیدی بدهیم، متغیر بیرونی تغییر نمی‌کند.</p>
+    </div>
+    <div class="code">
+      <div class="bar"><i class="r"></i><i class="y"></i><i class="gr"></i><span class="lang">Java</span></div>
+<pre><span class="k">void</span> <span class="f">change</span>(<span class="t">List</span>&lt;<span class="t">String</span>&gt; list) {
+    list.<span class="f">add</span>(<span class="s">"x"</span>);          <span class="c">// تأثیر می‌گذارد (همان شیء)</span>
+    list = <span class="k">new</span> <span class="t">ArrayList</span>&lt;&gt;(); <span class="c">// بی‌اثر بیرون (ارجاعِ کپی عوض شد)</span>
+}</pre>
+    </div>
+
+    <h3>۴.۶ مدل حافظه — Stack و Heap</h3>
+    <div class="grid2">
+      <div class="card">
+        <h4><span class="en">Stack</span></h4>
+        <p>برای هر نخ جداست. متغیرهای محلی و ارجاع‌ها و قاب‌های فراخوانی متد <span class="en">(stack frame)</span> اینجا ذخیره می‌شوند. خیلی سریع و خودکار آزاد می‌شود. سرریز آن <span class="en">StackOverflowError</span> می‌دهد.</p>
+      </div>
+      <div class="card">
+        <h4><span class="en">Heap</span></h4>
+        <p>بین همهٔ نخ‌ها مشترک است. تمام آبجکت‌ها و آرایه‌ها اینجا ساخته می‌شوند و توسط <span class="en g">Garbage Collector</span> مدیریت می‌شوند. پُرشدن آن <span class="en">OutOfMemoryError</span> می‌دهد.</p>
+      </div>
+    </div>
+
+    <h3>۴.۷ زباله‌روبی (Garbage Collection)</h3>
+    <p><span class="en">GC</span> به‌صورت خودکار آبجکت‌هایی را که دیگر قابل‌دسترسی نیستند آزاد می‌کند. <span class="en">Heap</span> به نسل‌ها تقسیم می‌شود: <span class="en">Young Generation</span> (شامل <span class="en">Eden</span> و دو <span class="en">Survivor</span>) و <span class="en">Old/Tenured Generation</span>.</p>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>الگوریتم GC</th><th>ویژگی</th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">Serial</span></td><td>تک‌نخی، مناسب برنامه‌های کوچک.</td></tr>
+        <tr><td><span class="en">Parallel</span></td><td>چندنخی، تمرکز بر <span class="en">throughput</span>.</td></tr>
+        <tr><td><span class="en">G1</span> (پیش‌فرض)</td><td>ناحیه‌بندی <span class="en">Heap</span> و توقف‌های کوتاه و قابل‌پیش‌بینی.</td></tr>
+        <tr><td><span class="en">ZGC / Shenandoah</span></td><td>توقف‌های بسیار کوتاه (زیر میلی‌ثانیه) برای <span class="en">Heap</span>های بزرگ.</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>۴.۸ مدیریت خطا (Exception Handling)</h3>
+    <p>سلسله‌مراتب: ریشه <span class="en">Throwable</span> است که به <span class="en">Error</span> و <span class="en">Exception</span> تقسیم می‌شود.</p>
+    <ul>
+      <li><b><span class="en">Checked Exception</span>:</b> در زمان کامپایل بررسی می‌شود (مثل <span class="en">IOException</span>) و باید <span class="en">try/catch</span> یا <span class="en">throws</span> شود.</li>
+      <li><b><span class="en">Unchecked Exception</span>:</b> زیرمجموعهٔ <span class="en">RuntimeException</span> (مثل <span class="en">NullPointerException</span>)؛ اجباری به مدیریت نیست.</li>
+      <li><b><span class="en">Error</span>:</b> مشکلات جدی JVM که معمولاً قابل بازیابی نیستند (مثل <span class="en">OutOfMemoryError</span>).</li>
+    </ul>
+    <p><span class="en a">Java 7</span> امکانات <span class="en">try-with-resources</span> (بستن خودکار منابع) و <span class="en">multi-catch</span> را افزود.</p>
+
+    <h3>۴.۹ جنریک‌ها (Generics)</h3>
+    <p><span class="en">Generics</span> ایمنی نوع را در زمان کامپایل فراهم می‌کند. نکتهٔ مهم مصاحبه‌ای <span class="en g">Type Erasure</span> است: اطلاعات نوع در زمان اجرا پاک می‌شود و فقط در کامپایل وجود دارد. کاراکتر <span class="en">?</span> همان <span class="en">Wildcard</span> است (<span class="en">extends</span> برای خواندن، <span class="en">super</span> برای نوشتن — قانون <span class="en">PECS</span>).</p>
+
+    <h3>۴.۱۰ چارچوب مجموعه‌ها (Collections Framework)</h3>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>رابط/کلاس</th><th>ترتیب</th><th>تکراری؟</th><th>نکته</th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">ArrayList</span></td><td>بله</td><td>بله</td><td>دسترسی تصادفی سریع <span class="en">O(1)</span>، درج میانی کند.</td></tr>
+        <tr><td><span class="en">LinkedList</span></td><td>بله</td><td>بله</td><td>درج/حذف سریع، دسترسی <span class="en">O(n)</span>.</td></tr>
+        <tr><td><span class="en">HashSet</span></td><td>خیر</td><td>خیر</td><td>یکتایی با <span class="en">hashCode/equals</span>.</td></tr>
+        <tr><td><span class="en">TreeSet</span></td><td>مرتب</td><td>خیر</td><td>درخت قرمز-سیاه، <span class="en">O(log n)</span>.</td></tr>
+        <tr><td><span class="en">HashMap</span></td><td>خیر</td><td>کلید یکتا</td><td>پرکاربردترین <span class="en">key→value</span>.</td></tr>
+        <tr><td><span class="en">LinkedHashMap</span></td><td>ترتیب درج</td><td>کلید یکتا</td><td>برای کشِ <span class="en">LRU</span> عالی.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="note tip">
+      <div class="tag">💡 داخل HashMap چه می‌گذرد؟</div>
+      <p>از آرایه‌ای از <span class="en">bucket</span>ها تشکیل شده. هر کلید با <span class="en">hashCode</span> به یک سطل نگاشت می‌شود. در صورت برخورد <span class="en">(collision)</span> از <span class="en">LinkedList</span> استفاده می‌شود و از <span class="en a">Java 8</span> اگر طول زنجیره از ۸ بیشتر شود به <span class="en">Red-Black Tree</span> تبدیل می‌شود تا جست‌وجو از <span class="en">O(n)</span> به <span class="en">O(log n)</span> برسد.</p>
+    </div>
+  </section>
+
+  <!-- ============ 5. ADVANCED JAVA ============ -->
+  <section id="s5">
+    <h2><span class="h-num">05</span> نکات پیشرفته و کم‌شناخته Java</h2>
+    <div class="h-rule"></div>
+
+    <h3>۵.۱ final و finally و finalize</h3>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>کلمه</th><th>کاربرد</th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">final</span></td><td>متغیر ثابت، متد غیرقابل بازنویسی، کلاس غیرقابل ارث‌بری.</td></tr>
+        <tr><td><span class="en">finally</span></td><td>بلوکی که چه خطا رخ دهد چه ندهد همیشه اجرا می‌شود.</td></tr>
+        <tr><td><span class="en">finalize()</span></td><td>متدی که پیش از <span class="en">GC</span> فراخوانی می‌شد؛ منسوخ <span class="en">(deprecated)</span> است، استفاده نکنید.</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>۵.۲ static و volatile و transient</h3>
+    <ul>
+      <li><b><span class="en">static</span>:</b> متعلق به کلاس است نه نمونه؛ بین همهٔ آبجکت‌ها مشترک.</li>
+      <li><b><span class="en">volatile</span>:</b> تضمین می‌کند آخرین مقدار متغیر بین نخ‌ها دیده شود (<span class="en">visibility</span>)، اما اتمی‌بودن عملیات مرکب را تضمین نمی‌کند.</li>
+      <li><b><span class="en">transient</span>:</b> فیلد را از فرآیند <span class="en">Serialization</span> کنار می‌گذارد.</li>
+    </ul>
+
+    <h3>۵.۳ Reflection و Annotation</h3>
+    <p><span class="en g">Reflection</span> اجازه می‌دهد در زمان اجرا کلاس‌ها، متدها و فیلدها را بررسی و فراخوانی کنیم؛ پایهٔ کار بسیاری از چارچوب‌ها از جمله <span class="en">Spring</span> است. <span class="en">Annotation</span>ها فراداده <span class="en">(metadata)</span> هستند که با <span class="en">@interface</span> ساخته می‌شوند و توسط <span class="en">Reflection</span> یا پردازشگرهای زمان کامپایل خوانده می‌شوند.</p>
+
+    <h3>۵.۴ برنامه‌نویسی تابعی — Lambda و Stream</h3>
+    <p>از <span class="en a">Java 8</span>، <span class="en">Functional Interface</span> (رابط با یک متد انتزاعی، مانند <span class="en">Runnable, Comparator, Function</span>) را می‌توان با <span class="en">Lambda</span> پیاده کرد.</p>
+    <div class="code">
+      <div class="bar"><i class="r"></i><i class="y"></i><i class="gr"></i><span class="lang">Java</span></div>
+<pre><span class="t">List</span>&lt;<span class="t">String</span>&gt; names = <span class="t">List</span>.<span class="f">of</span>(<span class="s">"ali"</span>, <span class="s">"reza"</span>, <span class="s">"sara"</span>);
+
+<span class="t">List</span>&lt;<span class="t">String</span>&gt; result = names.<span class="f">stream</span>()
+    .<span class="f">filter</span>(n -&gt; n.<span class="f">length</span>() &gt; <span class="n">3</span>)        <span class="c">// عملیات میانی</span>
+    .<span class="f">map</span>(<span class="t">String</span>::<span class="f">toUpperCase</span>)             <span class="c">// method reference</span>
+    .<span class="f">sorted</span>()
+    .<span class="f">collect</span>(<span class="t">Collectors</span>.<span class="f">toList</span>());     <span class="c">// عملیات نهایی (terminal)</span></pre>
+    </div>
+    <p>نکته: <span class="en">Stream</span>ها تنبل <span class="en">(lazy)</span> هستند؛ عملیات میانی تا رسیدن به عملیات نهایی اجرا نمی‌شوند.</p>
+
+    <h3>۵.۵ Optional</h3>
+    <p>برای جلوگیری از <span class="en">NullPointerException</span> و بیان صریحِ «شاید مقداری نباشد». با <span class="en">map، filter، orElse، ifPresent</span> به‌کار می‌رود.</p>
+
+    <h3>۵.۶ Record و Sealed Class و Pattern Matching</h3>
+    <ul>
+      <li><b><span class="en">record</span></b> (<span class="en a">Java 16</span>): کلاس دادهٔ تغییرناپذیر با <span class="en">equals/hashCode/toString</span> خودکار.</li>
+      <li><b><span class="en">sealed</span></b> (<span class="en a">Java 17</span>): محدودکردن اینکه چه کلاس‌هایی می‌توانند یک کلاس را ارث ببرند.</li>
+      <li><b><span class="en">Pattern Matching</span></b> در <span class="en">instanceof</span> و <span class="en">switch</span> برای کد تمیزتر.</li>
+    </ul>
+    <div class="code">
+      <div class="bar"><i class="r"></i><i class="y"></i><i class="gr"></i><span class="lang">Java</span></div>
+<pre><span class="k">public record</span> <span class="t">Point</span>(<span class="k">int</span> x, <span class="k">int</span> y) {}   <span class="c">// همین یک خط کافی است!</span>
+
+<span class="k">if</span> (obj <span class="k">instanceof</span> <span class="t">Point</span> p) {            <span class="c">// pattern matching</span>
+    System.out.<span class="f">println</span>(p.<span class="f">x</span>() + p.<span class="f">y</span>());
+}</pre>
+    </div>
+  </section>
+
+  <!-- ============ 6. CONCURRENCY ============ -->
+  <section id="s6">
+    <h2><span class="h-num">06</span> همزمانی و امنیت نخ (Concurrency &amp; Thread Safety)</h2>
+    <div class="h-rule"></div>
+    <p>یکی از سخت‌ترین و پرتکرارترین مباحث مصاحبه است.</p>
+
+    <h3>۶.۱ ساخت نخ</h3>
+    <p>سه راه: ارث‌بری از <span class="en">Thread</span>، پیاده‌سازی <span class="en">Runnable</span> (ترجیحی)، و <span class="en">Callable</span> همراه با <span class="en">ExecutorService</span> برای بازگرداندن نتیجه از طریق <span class="en">Future</span>.</p>
+
+    <h3>۶.۲ Thread Safety چیست؟</h3>
+    <div class="note q">
+      <div class="tag">❓ سوال کلیدی</div>
+      <p>کدی <span class="en g">Thread-Safe</span> است که هنگام دسترسی همزمانِ چند نخ به منابع مشترک، رفتار درست و سازگار خود را حفظ کند. مشکلات رایج: <span class="en">Race Condition</span>، <span class="en">Visibility</span>، و <span class="en">Deadlock</span>.</p>
+    </div>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>ابزار</th><th>کاربرد</th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">synchronized</span></td><td>قفلِ ذاتی روی بلوک یا متد؛ هم اتمی‌بودن هم visibility را تأمین می‌کند.</td></tr>
+        <tr><td><span class="en">volatile</span></td><td>فقط visibility؛ برای فلگ‌های ساده.</td></tr>
+        <tr><td><span class="en">Atomic*</span></td><td><span class="en">AtomicInteger</span> و... عملیات اتمی بدون قفل با <span class="en">CAS</span>.</td></tr>
+        <tr><td><span class="en">ReentrantLock</span></td><td>قفل صریح با امکانات بیشتر (<span class="en">tryLock، fairness</span>).</td></tr>
+        <tr><td><span class="en">Concurrent Collections</span></td><td><span class="en">ConcurrentHashMap</span>، <span class="en">CopyOnWriteArrayList</span>.</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>۶.۳ Deadlock</h3>
+    <p>وقتی دو یا چند نخ هر کدام منتظر آزادشدن قفلی هستند که دیگری در اختیار دارد. چهار شرط <span class="en">Coffman</span> باید همزمان برقرار باشند. راه‌حل: ترتیب ثابت گرفتن قفل‌ها، <span class="en">tryLock</span> با <span class="en">timeout</span>.</p>
+
+    <h3>۶.۴ ExecutorService و Thread Pool</h3>
+    <p>به‌جای ساخت دستیِ نخ، از <span class="en">Thread Pool</span> استفاده می‌شود تا هزینهٔ ساخت نخ کم و منابع مدیریت شود. <span class="en a">Java 21</span> با <span class="en g">Virtual Threads</span> (پروژهٔ <span class="en">Loom</span>) امکان میلیون‌ها نخ سبک را فراهم کرد.</p>
+    <div class="code">
+      <div class="bar"><i class="r"></i><i class="y"></i><i class="gr"></i><span class="lang">Java</span></div>
+<pre><span class="t">ExecutorService</span> pool = <span class="t">Executors</span>.<span class="f">newFixedThreadPool</span>(<span class="n">4</span>);
+<span class="t">Future</span>&lt;<span class="t">Integer</span>&gt; f = pool.<span class="f">submit</span>(() -&gt; <span class="n">1</span> + <span class="n">2</span>);
+<span class="k">int</span> r = f.<span class="f">get</span>();   <span class="c">// منتظر نتیجه</span>
+pool.<span class="f">shutdown</span>();</pre>
+    </div>
+  </section>
+
+  <!-- ============ 7. VERSIONS TABLE ============ -->
+  <section id="s7">
+    <h2><span class="h-num">07</span> ویژگی‌های نسخه‌های Java</h2>
+    <div class="h-rule"></div>
+    <p>جدول زیر مهم‌ترین قابلیتی که در هر نسخه اضافه شد را خلاصه می‌کند. نسخه‌های <span class="badge g">LTS</span> پشتیبانی بلندمدت دارند.</p>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>نسخه</th><th>سال</th><th>مهم‌ترین قابلیت‌های اضافه‌شده</th></tr></thead>
+      <tbody>
+        <tr><td><b>Java 8</b> <span class="badge g">LTS</span></td><td>۲۰۱۴</td><td><span class="en">Lambda</span>, <span class="en">Stream API</span>, <span class="en">Functional Interface</span>, <span class="en">default method</span>, <span class="en">Optional</span>, <span class="en">new Date/Time API</span></td></tr>
+        <tr><td><b>Java 9</b></td><td>۲۰۱۷</td><td><span class="en">Module System (JPMS)</span>, <span class="en">JShell</span>, <span class="en">Collection factory (List.of)</span>, <span class="en">private interface methods</span></td></tr>
+        <tr><td><b>Java 10</b></td><td>۲۰۱۸</td><td><span class="en">var</span> (استنتاج نوع متغیر محلی)</td></tr>
+        <tr><td><b>Java 11</b> <span class="badge g">LTS</span></td><td>۲۰۱۸</td><td><span class="en">HttpClient</span> استاندارد, <span class="en">String</span> متدهای جدید, اجرای مستقیم فایل <span class="en">.java</span></td></tr>
+        <tr><td><b>Java 14</b></td><td>۲۰۲۰</td><td><span class="en">switch expression</span>, <span class="en">helpful NullPointerException</span>, <span class="en">records (preview)</span></td></tr>
+        <tr><td><b>Java 15</b></td><td>۲۰۲۰</td><td><span class="en">Text Blocks</span> (رشتهٔ چندخطی <span class="en">"""</span>)</td></tr>
+        <tr><td><b>Java 16</b></td><td>۲۰۲۱</td><td><span class="en">record</span>, <span class="en">pattern matching for instanceof</span></td></tr>
+        <tr><td><b>Java 17</b> <span class="badge g">LTS</span></td><td>۲۰۲۱</td><td><span class="en">sealed classes</span>, پایداری <span class="en">switch pattern matching</span>, حذف نهایی برخی API های قدیمی</td></tr>
+        <tr><td><b>Java 21</b> <span class="badge g">LTS</span></td><td>۲۰۲۳</td><td><span class="en">Virtual Threads</span>, <span class="en">Pattern Matching for switch</span>, <span class="en">Record Patterns</span>, <span class="en">Sequenced Collections</span></td></tr>
+        <tr><td><b>Java 22 / 23</b></td><td>۲۰۲۴</td><td><span class="en">Foreign Function &amp; Memory API</span>, بهبود <span class="en">Stream Gatherers (preview)</span></td></tr>
+        <tr><td><b>Java 24 / 25</b> <span class="badge g">LTS (25)</span></td><td>۲۰۲۵</td><td>بلوغ <span class="en">Structured Concurrency</span>, <span class="en">Scoped Values</span>, بهبودهای <span class="en">GC</span> و کارایی <span class="en">Virtual Threads</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="note warn">
+      <div class="tag">⚠️ توجه</div>
+      <p>قابلیت‌های نسخه‌های خیلی جدید (۲۴ و ۲۵) ممکن است هنوز در حال نهایی‌شدن باشند یا برخی به‌صورت <span class="en">preview</span> عرضه شده باشند؛ برای جزئیات دقیق به <span class="en">JEP</span>های رسمی هر نسخه مراجعه کنید.</p>
+    </div>
+  </section>
+
+  <!-- ============ 8. DSA ============ -->
+  <section id="s8">
+    <h2><span class="h-num">08</span> ساختمان داده و الگوریتم (DSA)</h2>
+    <div class="h-rule"></div>
+
+    <h3>۸.۱ نماد Big-O</h3>
+    <p>پیچیدگی زمانی/مکانی الگوریتم را نسبت به اندازهٔ ورودی نشان می‌دهد.</p>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>نماد</th><th>نام</th><th>مثال</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge g">O(1)</span></td><td>ثابت</td><td>دسترسی به عنصر آرایه با اندیس</td></tr>
+        <tr><td><span class="badge g">O(log n)</span></td><td>لگاریتمی</td><td>جست‌وجوی دودویی، <span class="en">TreeMap</span></td></tr>
+        <tr><td><span class="badge b">O(n)</span></td><td>خطی</td><td>پیمایش یک لیست</td></tr>
+        <tr><td><span class="badge b">O(n log n)</span></td><td>خطی-لگاریتمی</td><td><span class="en">MergeSort, QuickSort</span></td></tr>
+        <tr><td><span class="badge">O(n²)</span></td><td>درجه دوم</td><td>دو حلقهٔ تودرتو، <span class="en">BubbleSort</span></td></tr>
+        <tr><td><span class="badge">O(2ⁿ)</span></td><td>نمایی</td><td>فیبوناچی بازگشتیِ ساده</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>۸.۲ ساختمان داده‌های کلیدی</h3>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>ساختار</th><th>توضیح</th><th>کاربرد رایج</th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">Array</span></td><td>اندازهٔ ثابت، دسترسی <span class="en">O(1)</span></td><td>داده‌های پیوسته</td></tr>
+        <tr><td><span class="en">Linked List</span></td><td>گره‌های متصل با اشاره‌گر</td><td>درج/حذف زیاد</td></tr>
+        <tr><td><span class="en">Stack</span></td><td><span class="en">LIFO</span> (آخرین ورودی، اولین خروجی)</td><td>پشتهٔ فراخوانی، <span class="en">undo</span></td></tr>
+        <tr><td><span class="en">Queue</span></td><td><span class="en">FIFO</span> (اولین ورودی، اولین خروجی)</td><td>صف‌بندی کار، <span class="en">BFS</span></td></tr>
+        <tr><td><span class="en">Hash Table</span></td><td>نگاشت کلید→مقدار، میانگین <span class="en">O(1)</span></td><td><span class="en">HashMap</span></td></tr>
+        <tr><td><span class="en">Heap</span></td><td>درخت کامل با خاصیت کمینه/بیشینه</td><td><span class="en">PriorityQueue</span>, <span class="en">HeapSort</span></td></tr>
+        <tr><td><span class="en">Binary Tree</span></td><td>هر گره حداکثر دو فرزند</td><td>سلسله‌مراتب</td></tr>
+        <tr><td><span class="en">BST</span></td><td>درخت جست‌وجوی دودویی مرتب</td><td>جست‌وجوی <span class="en">O(log n)</span></td></tr>
+        <tr><td><span class="en">Graph</span></td><td>گره‌ها و یال‌ها</td><td>شبکه، مسیریابی</td></tr>
+        <tr><td><span class="en">Trie</span></td><td>درخت پیشوندی رشته‌ها</td><td>تکمیل خودکار</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>۸.۳ Heap و Stack (مفهوم ساختمان‌داده‌ای)</h3>
+    <ul>
+      <li><b><span class="en">Stack</span>:</b> عملیات <span class="en">push</span> و <span class="en">pop</span> از یک سر؛ مبنای ارزیابی عبارات و بازگشت.</li>
+      <li><b><span class="en">Heap</span>:</b> <span class="en">Min-Heap</span> ریشه کوچک‌ترین مقدار است و <span class="en">Max-Heap</span> برعکس؛ درج و حذف <span class="en">O(log n)</span>. در <span class="en">Java</span> با <span class="en">PriorityQueue</span> پیاده می‌شود.</li>
+    </ul>
+
+    <h3>۸.۴ الگوریتم‌های مرتب‌سازی (Sorting)</h3>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>الگوریتم</th><th>میانگین</th><th>بدترین</th><th>پایدار؟</th><th>نکته</th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">Bubble Sort</span></td><td>O(n²)</td><td>O(n²)</td><td>بله</td><td>آموزشی، کند</td></tr>
+        <tr><td><span class="en">Insertion Sort</span></td><td>O(n²)</td><td>O(n²)</td><td>بله</td><td>عالی برای داده‌های تقریباً مرتب</td></tr>
+        <tr><td><span class="en">Selection Sort</span></td><td>O(n²)</td><td>O(n²)</td><td>خیر</td><td>کمترین تعداد جابه‌جایی</td></tr>
+        <tr><td><span class="en">Merge Sort</span></td><td>O(n log n)</td><td>O(n log n)</td><td>بله</td><td>تقسیم و حل، حافظهٔ اضافی</td></tr>
+        <tr><td><span class="en">Quick Sort</span></td><td>O(n log n)</td><td>O(n²)</td><td>خیر</td><td>سریع در عمل، درجا</td></tr>
+        <tr><td><span class="en">Heap Sort</span></td><td>O(n log n)</td><td>O(n log n)</td><td>خیر</td><td>بدون حافظهٔ اضافی</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>نکته: متد <span class="en">Arrays.sort()</span> برای انواع پایه از <span class="en">Dual-Pivot QuickSort</span> و برای آبجکت‌ها از <span class="en">TimSort</span> (ترکیب <span class="en">Merge</span> و <span class="en">Insertion</span>) استفاده می‌کند.</p>
+
+    <h3>۸.۵ جست‌وجو و پیمایش</h3>
+    <ul>
+      <li><b><span class="en">Linear Search</span>:</b> <span class="en">O(n)</span>، بدون نیاز به مرتب‌بودن.</li>
+      <li><b><span class="en">Binary Search</span>:</b> <span class="en">O(log n)</span>، فقط روی دادهٔ مرتب.</li>
+      <li><b>پیمایش گراف/درخت:</b> <span class="en">BFS</span> (با <span class="en">Queue</span>) و <span class="en">DFS</span> (با <span class="en">Stack</span> یا بازگشت).</li>
+      <li><b>الگوریتم‌های مهم:</b> <span class="en">Dijkstra</span> (کوتاه‌ترین مسیر)، <span class="en">Dynamic Programming</span> (مثل <span class="en">knapsack</span>).</li>
+    </ul>
+  </section>
+
+  <!-- ============ 9. LIBRARIES ============ -->
+  <section id="s9">
+    <h2><span class="h-num">09</span> کتابخانه‌ها و چارچوب‌های متداول</h2>
+    <div class="h-rule"></div>
+
+    <h3>۹.۱ JDBC</h3>
+    <p><span class="en g">JDBC (Java Database Connectivity)</span> رابط استاندارد و سطح‌پایین برای ارتباط با پایگاه‌داده است. خودتان <span class="en">Connection</span>، <span class="en">PreparedStatement</span> و <span class="en">ResultSet</span> را مدیریت می‌کنید. برای جلوگیری از <span class="en">SQL Injection</span> همیشه از <span class="en">PreparedStatement</span> استفاده کنید.</p>
+    <div class="code">
+      <div class="bar"><i class="r"></i><i class="y"></i><i class="gr"></i><span class="lang">Java</span></div>
+<pre><span class="k">try</span> (<span class="t">PreparedStatement</span> ps =
+        conn.<span class="f">prepareStatement</span>(<span class="s">"SELECT * FROM users WHERE id = ?"</span>)) {
+    ps.<span class="f">setLong</span>(<span class="n">1</span>, id);
+    <span class="t">ResultSet</span> rs = ps.<span class="f">executeQuery</span>();
+}  <span class="c">// try-with-resources منابع را خودکار می‌بندد</span></pre>
+    </div>
+
+    <h3>۹.۲ JPA و Hibernate</h3>
+    <p><span class="en g">JPA (Jakarta Persistence API)</span> یک استاندارد (مشخصه) برای <span class="en">ORM</span> است و <span class="en g">Hibernate</span> پرکاربردترین پیاده‌سازی آن. <span class="en">ORM</span> یعنی نگاشت اشیاء جاوا به جدول‌های پایگاه‌داده.</p>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>مفهوم</th><th>توضیح</th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">@Entity</span></td><td>کلاسی که به یک جدول نگاشت می‌شود.</td></tr>
+        <tr><td><span class="en">Lazy vs Eager</span></td><td>بارگذاری تنبل (هنگام نیاز) در برابر بارگذاری فوری روابط.</td></tr>
+        <tr><td><span class="en">N+1 Problem</span></td><td>مشکل کارایی رایج؛ با <span class="en">JOIN FETCH</span> یا <span class="en">@EntityGraph</span> حل می‌شود.</td></tr>
+        <tr><td><span class="en">Persistence Context</span></td><td>کشِ سطح اول و ردیابی تغییرات <span class="en">(dirty checking)</span>.</td></tr>
+        <tr><td>چرخهٔ موجودیت</td><td><span class="en">Transient → Persistent → Detached → Removed</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>۹.۳ سایر کتابخانه‌های پرکاربرد</h3>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>کتابخانه</th><th>کاربرد</th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">Spring Web / MVC</span></td><td>ساخت <span class="en">REST API</span> و وب با <span class="en">@RestController</span>.</td></tr>
+        <tr><td><span class="en">Spring Data JPA</span></td><td>ساخت خودکار <span class="en">Repository</span> از روی نام متد.</td></tr>
+        <tr><td><span class="en">Spring Security</span></td><td>احراز هویت و مجوزدهی.</td></tr>
+        <tr><td><span class="en">Jackson</span></td><td>تبدیل <span class="en">JSON ↔ Object</span>.</td></tr>
+        <tr><td><span class="en">Lombok</span></td><td>حذف کد تکراری با <span class="en">@Getter، @Builder، @Data</span>.</td></tr>
+        <tr><td><span class="en">JUnit 5 / Mockito</span></td><td>تست واحد و <span class="en">mock</span> کردن وابستگی‌ها.</td></tr>
+        <tr><td><span class="en">SLF4J / Logback</span></td><td>لاگ‌نویسی.</td></tr>
+        <tr><td><span class="en">MapStruct</span></td><td>نگاشت بین <span class="en">DTO</span> و <span class="en">Entity</span>.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <!-- ============ 10. SPRING CORE ============ -->
+  <section id="s10">
+    <h2><span class="h-num">10</span> ساختار و عملکرد Spring Framework</h2>
+    <div class="h-rule"></div>
+
+    <h3>۱۰.۱ IoC و Dependency Injection</h3>
+    <p>قلب <span class="en">Spring</span>، کانتینر <span class="en g">IoC (Inversion of Control)</span> است. به‌جای اینکه کلاس‌ها وابستگی‌های خود را بسازند، کانتینر آن‌ها را <b>تزریق</b> می‌کند (<span class="en g">Dependency Injection</span>). سه نوع تزریق: <span class="en">Constructor</span> (توصیه‌شده)، <span class="en">Setter</span> و <span class="en">Field</span>.</p>
+    <div class="code">
+      <div class="bar"><i class="r"></i><i class="y"></i><i class="gr"></i><span class="lang">Java</span></div>
+<pre><span class="n">@Service</span>
+<span class="k">public class</span> <span class="t">OrderService</span> {
+    <span class="k">private final</span> <span class="t">PaymentRepository</span> repo;
+
+    <span class="c">// تزریق از طریق سازنده — بهترین روش</span>
+    <span class="k">public</span> <span class="t">OrderService</span>(<span class="t">PaymentRepository</span> repo) {
+        <span class="k">this</span>.repo = repo;
+    }
+}</pre>
+    </div>
+
+    <h3>۱۰.۲ Bean چیست و چرخهٔ عمر آن</h3>
+    <p>یک <span class="en g">Bean</span> آبجکتی است که کانتینر <span class="en">Spring</span> آن را می‌سازد، مدیریت و تزریق می‌کند. مراحل ساده‌شدهٔ چرخهٔ عمر:</p>
+    <ol>
+      <li>نمونه‌سازی <span class="en">(Instantiation)</span></li>
+      <li>تزریق وابستگی‌ها <span class="en">(Populate properties)</span></li>
+      <li>فراخوانی <span class="en">@PostConstruct</span> / <span class="en">afterPropertiesSet()</span></li>
+      <li>آماده برای استفاده</li>
+      <li>پیش از نابودی: <span class="en">@PreDestroy</span> / <span class="en">destroy()</span></li>
+    </ol>
+
+    <h3>۱۰.۳ محدودهٔ Bean (Scope)</h3>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Scope</th><th>توضیح</th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">singleton</span> (پیش‌فرض)</td><td>یک نمونه در کل کانتینر.</td></tr>
+        <tr><td><span class="en">prototype</span></td><td>هر بار درخواست، نمونهٔ جدید.</td></tr>
+        <tr><td><span class="en">request</span></td><td>یک نمونه به‌ازای هر درخواست <span class="en">HTTP</span>.</td></tr>
+        <tr><td><span class="en">session</span></td><td>یک نمونه به‌ازای هر نشست کاربر.</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>۱۰.۴ Annotationهای کلیدی</h3>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Annotation</th><th>کاربرد</th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">@Component</span></td><td>پایه‌ترین استریوتایپ <span class="en">bean</span>.</td></tr>
+        <tr><td><span class="en">@Service</span> / <span class="en">@Repository</span></td><td>لایهٔ منطق کسب‌وکار / لایهٔ دسترسی داده.</td></tr>
+        <tr><td><span class="en">@Controller</span> / <span class="en">@RestController</span></td><td>لایهٔ وب و <span class="en">REST</span>.</td></tr>
+        <tr><td><span class="en">@Autowired</span></td><td>تزریق خودکار وابستگی.</td></tr>
+        <tr><td><span class="en">@Configuration</span> / <span class="en">@Bean</span></td><td>تعریف دستی <span class="en">bean</span>ها.</td></tr>
+        <tr><td><span class="en">@Qualifier</span> / <span class="en">@Primary</span></td><td>رفع ابهام وقتی چند <span class="en">bean</span> هم‌نوع وجود دارد.</td></tr>
+        <tr><td><span class="en">@Value</span></td><td>تزریق مقدار از فایل پیکربندی.</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>۱۰.۵ AOP (برنامه‌نویسی جنبه‌گرا)</h3>
+    <p><span class="en g">AOP (Aspect-Oriented Programming)</span> دغدغه‌های عرضی <span class="en">(cross-cutting concerns)</span> مثل لاگ، امنیت و تراکنش را از منطق اصلی جدا می‌کند. <span class="en">Spring</span> این کار را با ساخت <span class="en g">Proxy</span> دور <span class="en">bean</span> انجام می‌دهد.</p>
+    <ul>
+      <li><b><span class="en">Aspect</span>:</b> ماژول حاوی دغدغهٔ عرضی.</li>
+      <li><b><span class="en">Advice</span>:</b> کدی که اجرا می‌شود (<span class="en">@Before، @After، @Around</span>).</li>
+      <li><b><span class="en">Pointcut</span>:</b> تعیین اینکه <span class="en">advice</span> کجا اعمال شود.</li>
+    </ul>
+
+    <h3>۱۰.۶ ‏@Transactional</h3>
+    <div class="note q">
+      <div class="tag">❓ سوال کلیدی</div>
+      <p><span class="en">@Transactional</span> با کمک <span class="en">AOP Proxy</span> یک تراکنش پایگاه‌داده باز می‌کند، و در صورت موفقیت <span class="en">commit</span> و در صورت بروز <span class="en">RuntimeException</span> به‌صورت پیش‌فرض <span class="en">rollback</span> می‌کند.</p>
+    </div>
+    <div class="note warn">
+      <div class="tag">⚠️ تله‌های مهم @Transactional</div>
+      <p>۱) فراخوانی <b>داخلی</b> یک متد <span class="en">@Transactional</span> از متد دیگرِ همان کلاس بی‌اثر است (چون از <span class="en">proxy</span> رد نمی‌شود — <span class="en">self-invocation</span>).<br>
+      ۲) به‌صورت پیش‌فرض فقط روی <span class="en">unchecked exception</span> رول‌بک می‌شود؛ برای <span class="en">checked</span> باید <span class="en">rollbackFor</span> بدهید.<br>
+      ۳) فقط روی متدهای <span class="en">public</span> اثر دارد.</p>
+    </div>
+    <p><b><span class="en">Propagation</span></b> رفتار تراکنش‌های تودرتو را تعیین می‌کند (مثل <span class="en">REQUIRED</span> پیش‌فرض و <span class="en">REQUIRES_NEW</span>). <b><span class="en">Isolation</span></b> سطح جداسازی را مشخص می‌کند (<span class="en">READ_COMMITTED، REPEATABLE_READ</span> و...).</p>
+  </section>
+
+  <!-- ============ 11. SPRING BOOT ============ -->
+  <section id="s11">
+    <h2><span class="h-num">11</span> Spring Boot</h2>
+    <div class="h-rule"></div>
+    <p><span class="en">Spring Boot</span> روی <span class="en">Spring</span> ساخته شده تا راه‌اندازی پروژه را سریع و بدون پیکربندی زیاد کند.</p>
+
+    <h3>۱۱.۱ پیکربندی خودکار (Auto-Configuration)</h3>
+    <p><span class="en g">@SpringBootApplication</span> ترکیبی از سه annotation است: <span class="en">@Configuration</span> + <span class="en">@EnableAutoConfiguration</span> + <span class="en">@ComponentScan</span>. <span class="en">Boot</span> بر اساس کتابخانه‌های موجود در <span class="en">classpath</span> به‌صورت هوشمند پیکربندی را انجام می‌دهد (<span class="en">@ConditionalOn...</span>).</p>
+
+    <h3>۱۱.۲ Starter Dependencies</h3>
+    <p>بسته‌های آماده‌ای که گروهی از وابستگی‌های سازگار را یک‌جا می‌آورند، مثل <span class="en">spring-boot-starter-web</span> یا <span class="en">spring-boot-starter-data-jpa</span>.</p>
+
+    <h3>۱۱.۳ سرور تعبیه‌شده و Actuator</h3>
+    <ul>
+      <li><b>سرور تعبیه‌شده:</b> <span class="en">Tomcat</span> داخل خود برنامه است؛ خروجی یک <span class="en">jar</span> اجراییِ مستقل.</li>
+      <li><b><span class="en">Actuator</span>:</b> نقاط انتهایی آمادهٔ پایش مثل <span class="en">/health</span> و <span class="en">/metrics</span>.</li>
+      <li><b>پیکربندی:</b> در <span class="en">application.properties</span> یا <span class="en">application.yml</span> و با <span class="en">Profile</span>ها (<span class="en">dev، prod</span>).</li>
+    </ul>
+    <div class="code">
+      <div class="bar"><i class="r"></i><i class="y"></i><i class="gr"></i><span class="lang">Java</span></div>
+<pre><span class="n">@SpringBootApplication</span>
+<span class="k">public class</span> <span class="t">App</span> {
+    <span class="k">public static</span> <span class="k">void</span> <span class="f">main</span>(<span class="t">String</span>[] args) {
+        <span class="t">SpringApplication</span>.<span class="f">run</span>(<span class="t">App</span>.<span class="k">class</span>, args);
+    }
+}
+
+<span class="n">@RestController</span>
+<span class="k">class</span> <span class="t">HelloController</span> {
+    <span class="n">@GetMapping</span>(<span class="s">"/hello"</span>)
+    <span class="t">String</span> <span class="f">hello</span>() { <span class="k">return</span> <span class="s">"Hello Spring Boot"</span>; }
+}</pre>
+    </div>
+  </section>
+
+  <!-- ============ 12. COMMON QUESTIONS ============ -->
+  <section id="s12">
+    <h2><span class="h-num">12</span> سوالات پرتکرار و کلیدی مصاحبه</h2>
+    <div class="h-rule"></div>
+    <p>جمع‌بندیِ سریعِ سوالاتی که تقریباً همیشه پرسیده می‌شوند.</p>
+
+    <div class="note q">
+      <div class="tag">❓ String Pool چرا مهم است؟</div>
+      <p>چون رشته‌های <span class="en">literal</span> یکسان فقط یک‌بار در حافظه ذخیره می‌شوند؛ این صرفه‌جویی به‌خاطر تغییرناپذیریِ <span class="en">String</span> ممکن است. مقایسهٔ آن با <span class="en">new String()</span> سوال محبوب است.</p>
+    </div>
+    <div class="note q">
+      <div class="tag">❓ Thread Safety را چطور تضمین می‌کنید؟</div>
+      <p>با تغییرناپذیری <span class="en">(immutability)</span>، <span class="en">synchronized</span>، انواع <span class="en">Atomic</span>، <span class="en">ConcurrentHashMap</span> یا محصورکردن وضعیت در یک نخ <span class="en">(ThreadLocal)</span>.</p>
+    </div>
+    <div class="note q">
+      <div class="tag">❓ تفاوت Checked و Unchecked Exception؟</div>
+      <p><span class="en">Checked</span> در زمان کامپایل اجباری به مدیریت دارد؛ <span class="en">Unchecked</span> (زیرمجموعهٔ <span class="en">RuntimeException</span>) ندارد.</p>
+    </div>
+    <div class="note q">
+      <div class="tag">❓ چرا تزریق از طریق سازنده بهتر از فیلد است؟</div>
+      <p>چون وابستگی‌ها می‌توانند <span class="en">final</span> و اجباری شوند، تست‌پذیری بالا می‌رود، و از وابستگی‌های حلقوی <span class="en">(circular dependency)</span> پنهان جلوگیری می‌کند.</p>
+    </div>
+    <div class="note q">
+      <div class="tag">❓ ‏@Transactional چرا گاهی کار نمی‌کند؟</div>
+      <p>به‌خاطر <span class="en">self-invocation</span> (فراخوانی داخلی)، متد غیر<span class="en">public</span>، یا رول‌بک‌نشدن روی <span class="en">checked exception</span> بدون <span class="en">rollbackFor</span>.</p>
+    </div>
+    <div class="note q">
+      <div class="tag">❓ Java pass-by-value است یا reference؟</div>
+      <p>همیشه <span class="en">pass-by-value</span>؛ برای آبجکت‌ها مقدارِ منتقل‌شده «کپیِ ارجاع» است (به بخش ۴.۵ مراجعه کنید).</p>
+    </div>
+    <div class="note q">
+      <div class="tag">❓ تفاوت HashMap و ConcurrentHashMap و Hashtable؟</div>
+      <p><span class="en">HashMap</span> امن در برابر نخ نیست. <span class="en">Hashtable</span> کل ساختار را قفل می‌کند (کند). <span class="en">ConcurrentHashMap</span> با قفل‌گذاری بخشی، همزمانی بالا و کارایی خوب می‌دهد.</p>
+    </div>
+    <div class="note q">
+      <div class="tag">❓ تفاوت ‎==‎ و equals؟</div>
+      <p><span class="en">==</span> برابریِ ارجاع و <span class="en">equals()</span> برابریِ منطقیِ محتوا را بررسی می‌کند (همراه با قرارداد <span class="en">hashCode</span>).</p>
+    </div>
+
+    <div class="note tip">
+      <div class="tag">✅ جمع‌بندی نهایی</div>
+      <p>تسلط بر این سرفصل‌ها — مبانی <span class="en">OOP</span>، مدل حافظه و <span class="en">GC</span>، همزمانی، چارچوب مجموعه‌ها، الگوهای طراحی، هستهٔ <span class="en">Spring (IoC/AOP/Transaction)</span> و <span class="en">Spring Boot</span> — شما را برای اکثریت قاطع سوالات مصاحبهٔ <span class="en">Java/Spring</span> آماده می‌کند. موفق باشید!</p>
+    </div>
+  </section>
+
+  <footer>
+    مستند جامع آشنایی با سوالات متداول در مصاحبه‌های <span class="en">Java</span> و <span class="en">Spring</span> — مرجع مطالعهٔ شخصی
+  </footer>
+</main>
+
+<!-- ============ SIDEBAR TOC ============ -->
+<nav class="toc" id="toc">
+  <div class="toc-title">فهرست مطالب</div>
+  <ol>
+    <li><a href="#s1"><span class="chip-num">01</span> تاریخچهٔ مختصر</a>
+      <ol>
+        <li><a href="#s1">تاریخچهٔ Java</a></li>
+        <li><a href="#s1">تاریخچهٔ Spring</a></li>
+      </ol>
+    </li>
+    <li><a href="#s2"><span class="chip-num">02</span> شیءگرایی (OOP)</a>
+      <ol>
+        <li><a href="#s2">چهار اصل اصلی</a></li>
+        <li><a href="#s2">Overloading و Overriding</a></li>
+        <li><a href="#s2">Interface و Abstract Class</a></li>
+        <li><a href="#s2">اصول SOLID</a></li>
+      </ol>
+    </li>
+    <li><a href="#s3"><span class="chip-num">03</span> الگوهای طراحی</a></li>
+    <li><a href="#s4"><span class="chip-num">04</span> مبانی کلیدی Java</a>
+      <ol>
+        <li><a href="#s4">JDK/JRE/JVM</a></li>
+        <li><a href="#s4">String &amp; String Pool</a></li>
+        <li><a href="#s4">Pass by Value</a></li>
+        <li><a href="#s4">Stack &amp; Heap</a></li>
+        <li><a href="#s4">Garbage Collection</a></li>
+        <li><a href="#s4">Collections</a></li>
+      </ol>
+    </li>
+    <li><a href="#s5"><span class="chip-num">05</span> نکات پیشرفته Java</a></li>
+    <li><a href="#s6"><span class="chip-num">06</span> همزمانی و Thread Safety</a></li>
+    <li><a href="#s7"><span class="chip-num">07</span> ویژگی‌های نسخه‌های Java</a></li>
+    <li><a href="#s8"><span class="chip-num">08</span> ساختمان داده و الگوریتم</a>
+      <ol>
+        <li><a href="#s8">Big-O</a></li>
+        <li><a href="#s8">ساختمان داده‌ها</a></li>
+        <li><a href="#s8">مرتب‌سازی</a></li>
+      </ol>
+    </li>
+    <li><a href="#s9"><span class="chip-num">09</span> کتابخانه‌ها (JDBC/Hibernate)</a></li>
+    <li><a href="#s10"><span class="chip-num">10</span> Spring Framework</a>
+      <ol>
+        <li><a href="#s10">IoC &amp; DI</a></li>
+        <li><a href="#s10">Bean &amp; Scope</a></li>
+        <li><a href="#s10">AOP</a></li>
+        <li><a href="#s10">@Transactional</a></li>
+      </ol>
+    </li>
+    <li><a href="#s11"><span class="chip-num">11</span> Spring Boot</a></li>
+    <li><a href="#s12"><span class="chip-num">12</span> سوالات پرتکرار مصاحبه</a></li>
+  </ol>
+</nav>
+</div>
+
+<button class="top" id="topBtn" aria-label="بازگشت به بالا">↑</button>
+
+<script>
+(function(){
+  var toc = document.getElementById('toc');
+  var menuBtn = document.getElementById('menuBtn');
+  var scrim = document.getElementById('scrim');
+  var topBtn = document.getElementById('topBtn');
+  var bar = document.getElementById('bar');
+
+  function closeMenu(){ toc.classList.remove('open'); scrim.classList.remove('show'); }
+  menuBtn.addEventListener('click', function(){
+    toc.classList.toggle('open'); scrim.classList.toggle('show');
+  });
+  scrim.addEventListener('click', closeMenu);
+
+  // close on link click (mobile)
+  toc.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ if(window.innerWidth<=1024) closeMenu(); });
+  });
+
+  // scroll progress + back-to-top
+  function onScroll(){
+    var h = document.documentElement;
+    var scrolled = h.scrollTop;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max>0 ? (scrolled/max*100) : 0) + '%';
+    topBtn.classList.toggle('show', scrolled > 500);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+  topBtn.addEventListener('click', function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+
+  // scrollspy: highlight active top-level section
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main section'));
+  var topLinks = {};
+  toc.querySelectorAll('ol > li > a').forEach(function(a){
+    var id = a.getAttribute('href').slice(1);
+    topLinks[id] = a;
+  });
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        Object.values(topLinks).forEach(function(l){ l.classList.remove('active'); });
+        var link = topLinks[e.target.id];
+        if(link) link.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+  sections.forEach(function(s){ observer.observe(s); });
+})();
+</script>
+</body>
+</html>
