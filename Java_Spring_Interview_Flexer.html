@@ -83,23 +83,25 @@ main{flex:1;min-width:0;padding:46px 52px 120px;max-width:920px}
   }
 
   /* دکمه همبرگر */
+    /* دکمه همبرگر */
   .menu-btn {
     display: flex !important;
     position: fixed;
-    top: 16px;
-    right: 16px; /* دکمه در سمت راست بالا قرار می‌گیرد */
+    top: 10px;
+    right: 10px; /* چسبیدن کامل به گوشه سمت راست */
     left: auto;
     z-index: 70;
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
     background: var(--primary);
     color: #fff;
     border: none;
     cursor: pointer;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 22px rgba(31,122,84,.4);
+    box-shadow: 0 6px 16px rgba(31,122,84,.35);
+    transition: opacity 0.2s ease, transform 0.2s ease; /* انیمیشن برای غیب شدن */
   }
 
   /* پس‌زمینه تاریک پشت منو */
