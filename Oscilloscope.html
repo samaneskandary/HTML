@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>موج‌ساز هارمونیک</title>
+<style>
+  :root{
+    --bg:#0c1120;
+    --panel:#111a30;
+    --panel2:#0f1729;
+    --line:#1f2c4a;
+    --ink:#e8eeff;
+    --muted:#8a9ac4;
+    --target:#4aa3ff;      /* موج هدف - آبی */
+    --result:#ffcf3f;      /* برآیند تو - زرد */
+    --err:255,92,92;       /* اختلاف - قرمز */
+    --m1:#ff6fb5;
+    --m2:#5fe39b;
+    --m3:#a98bff;
+    --ok:#4ade80;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; height:100%;}
+  body{
+    background:
+      radial-gradient(120% 80% at 50% -10%, #16213f 0%, var(--bg) 55%);
+    color:var(--ink);
+    font-family:Tahoma,"Segoe UI","Vazirmatn",system-ui,sans-serif;
+    display:flex; justify-content:center;
+    /* فیت کامل ویوپورت — بدون اسکرول در هر سایز */
+    height:100vh; height:100dvh;
+    overflow:hidden;
+  }
+  .app{
+    width:100%; max-width:520px;
+    height:100vh; height:100dvh;
+    padding:8px 12px calc(8px + env(safe-area-inset-bottom));
+    display:flex; flex-direction:column; gap:8px;
+  }
+
+  /* هدر */
+  .top{display:flex; align-items:center; justify-content:space-between; gap:10px; flex:none;}
+  .title{display:flex; flex-direction:column; gap:1px; min-width:0; flex:1 1 auto;}
+  .title h1{margin:0; font-size:16px; letter-spacing:.2px; line-height:1.25;}
+  .title p{margin:0; font-size:11px; color:var(--muted); line-height:1.4;}
+  /* نوار کنترل افقی: پاسخ | سختی | مرحله | حل‌شده */
+  .stats{display:flex; flex-direction:row; align-items:stretch; gap:6px; flex:none;}
+  /* دکمه‌ی درجه‌ی سختی — کنار باکس مرحله، با رنگ مخصوص هر سطح */
+  .diffBtn{
+    border:1.5px solid var(--line); background:transparent; color:var(--ink);
+    border-radius:10px; padding:5px 9px; font-size:12.5px; font-weight:bold;
+    cursor:pointer; font-family:inherit; text-align:center; user-select:none;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+    transition:transform .05s, background .15s, border-color .15s, color .15s;
+  }
+  .diffBtn:active{transform:scale(.96);}
+  .diffBtn .cap{font-size:9.5px; color:var(--muted); font-weight:normal;}
+  .diffBtn.d-easy{color:#4ade80; border-color:#4ade80; background:rgba(74,222,128,.12);}
+  .diffBtn.d-med {color:#ffcf3f; border-color:#ffcf3f; background:rgba(255,207,63,.12);}
+  .diffBtn.d-hard{color:#ff5c5c; border-color:#ff5c5c; background:rgba(255,92,92,.12);}
+  .ansBtn{
+    border:1.5px solid #5fb1ff; background:rgba(74,163,255,.12); color:#7cc1ff;
+    border-radius:10px; padding:5px 11px; font-size:12.5px; font-weight:bold;
+    cursor:pointer; font-family:inherit; user-select:none;
+    display:flex; align-items:center; justify-content:center;
+    transition:transform .05s, background .15s;
+  }
+  .ansBtn:active{transform:scale(.96); background:rgba(74,163,255,.22);}
+  .chip{
+    background:var(--panel); border:1px solid var(--line);
+    border-radius:10px; padding:4px 9px; text-align:center; min-width:50px;
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .chip b{display:block; font-size:16px; font-variant-numeric:tabular-nums;}
+  .chip span{font-size:9.5px; color:var(--muted);}
+
+  /* صفحه‌ی نوسان‌نگار — بیشترین فضا را می‌گیرد */
+  .scope{
+    position:relative;
+    flex:1 1 auto; min-height:0;          /* اجازه می‌دهد فضای باقی‌مانده را پر کند */
+    display:flex; flex-direction:column;
+    background:linear-gradient(180deg,#0e1730,#0b1124);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:8px 12px 6px;
+    box-shadow:inset 0 0 60px rgba(40,90,180,.07), 0 8px 30px rgba(0,0,0,.35);
+  }
+  #main{flex:1 1 auto; min-height:0; width:100%; display:block;}
+  .legend{
+    display:flex; flex-wrap:wrap; gap:14px; justify-content:center;
+    padding-top:5px; font-size:11.5px; color:var(--muted); flex:none;
+  }
+  .legend i{display:inline-block; width:20px; height:0; vertical-align:middle; margin-inline-end:6px;}
+  .lg-t i{border-top:3px solid var(--target);}
+  .lg-r i{border-top:3px dashed var(--result);}
+  .lg-e i{border-top:9px solid rgba(var(--err),.32); height:9px; border-radius:2px;}
+
+  /* کنترل‌ها — سه فرکانس کنار هم در یک ردیف */
+  .modes{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:8px; flex:none;
+  }
+  .modes.cols-2{grid-template-columns:repeat(2,1fr);}
+  .mode.hidden{display:none;}
+  .mode{
+    background:var(--panel); border:1px solid var(--line);
+    border-radius:13px; padding:8px 8px 9px;
+    display:flex; flex-direction:column; gap:7px;
+  }
+  .mode-head{display:flex; align-items:center; gap:6px; min-height:30px;}
+  .dot{width:10px; height:10px; border-radius:50%; flex:none;}
+  .m1 .dot{background:var(--m1);} .m2 .dot{background:var(--m2);} .m3 .dot{background:var(--m3);}
+  .mode-head .nm{font-size:12px; font-weight:bold; line-height:1.2;}
+  .mode-head .nm .fr{
+    font-size:10px; color:var(--muted); font-weight:normal;
+    font-family:ui-monospace,Menlo,Consolas,monospace; margin-inline-start:2px;
+  }
+  .mini{width:100%; height:38px; display:block; border-radius:8px;
+        background:var(--panel2); border:1px solid var(--line);}
+  .stepper{display:flex; align-items:center; gap:5px;}
+  .stepper button{
+    flex:none; width:40px; height:40px; border-radius:11px; border:1px solid var(--line);
+    background:#16223e; color:var(--ink); font-size:23px; line-height:1; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; user-select:none;
+    transition:transform .05s, background .15s;
+  }
+  .stepper button:active{transform:scale(.92); background:#1d2c4f;}
+  .stepper button:disabled{opacity:.32; cursor:default;}
+  .stepper .val{
+    flex:1; text-align:center; font-size:21px; font-weight:bold;
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* دکمه‌های پایین — همه در یک ردیف */
+  .actions{display:flex; gap:8px; align-items:stretch; flex:none;}
+  .btn{
+    flex:1; border:1px solid var(--line); background:var(--panel);
+    color:var(--ink); border-radius:12px; padding:11px 6px; font-size:14px;
+    cursor:pointer; font-family:inherit; transition:transform .05s, background .15s;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn.primary{background:linear-gradient(180deg,#3a7bff,#2f63e6); border-color:#3a7bff; font-weight:bold;}
+  .toggle{
+    display:flex; align-items:center; gap:7px; justify-content:center;
+    flex:1; border:1px solid var(--line); background:var(--panel);
+    border-radius:12px; padding:11px 6px; font-size:12.5px; cursor:pointer; user-select:none;
+  }
+  .toggle .sw{width:32px; height:19px; border-radius:20px; background:#243456; position:relative; transition:background .2s; flex:none;}
+  .toggle .sw::after{content:""; position:absolute; top:2px; right:2px; width:15px; height:15px; border-radius:50%; background:#8aa0d6; transition:transform .2s, background .2s;}
+  .toggle.on .sw{background:#2f63e6;}
+  .toggle.on .sw::after{transform:translateX(-13px); background:#fff;}
+
+  /* اوورلی برد */
+  .overlay{
+    position:fixed; inset:0; display:none; align-items:center; justify-content:center;
+    background:rgba(6,10,20,.6); backdrop-filter:blur(6px); z-index:50; padding:20px;
+  }
+  .overlay.show{display:flex; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .card{
+    background:linear-gradient(180deg,#15213e,#101a32);
+    border:1px solid #2b3c63; border-radius:20px; padding:26px 24px;
+    text-align:center; max-width:340px; width:100%;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+  }
+  .card .big{font-size:52px; line-height:1; margin-bottom:8px;}
+  .card h2{margin:0 0 6px; font-size:22px; color:var(--ok);}
+  .card p{margin:0 0 18px; color:var(--muted); font-size:14px; line-height:1.6;}
+
+  /* فشرده‌سازی روی صفحه‌های کوتاه تا اوسیلوسکوپ همچنان بزرگ بماند */
+  @media (max-height:640px){
+    .title p{display:none;}
+    .mini{height:30px;}
+    .stepper button{height:36px; width:36px; font-size:21px;}
+    .stepper .val{font-size:19px;}
+    .mode-head{min-height:26px;}
+  }
+  @media (max-height:520px){
+    .legend{display:none;}
+    .mini{display:none;}
+  }
+  @media (prefers-reduced-motion:reduce){ *{animation:none!important; transition:none!important;} }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="top">
+    <div class="title">
+      <h1>🎸 موج‌ساز هارمونیک</h1>
+      <p>برآیندِ زرد را روی موجِ آبیِ هدف بینداز.</p>
+    </div>
+    <div class="stats">
+      <button id="ansBtn" class="ansBtn">پاسخ</button>
+      <button id="diffBtn" class="diffBtn d-easy"><span id="diffLabel">آسان</span><span class="cap">سختی</span></button>
+      <div class="chip"><b id="levelN">۱</b><span>مرحله</span></div>
+      <div class="chip"><b id="solvedN">۰</b><span>حل‌شده</span></div>
+    </div>
+  </div>
+
+  <div class="scope">
+    <canvas id="main"></canvas>
+    <div class="legend">
+      <span class="lg-t"><i></i>هدف</span>
+      <span class="lg-r"><i></i>برآیندِ تو</span>
+      <span class="lg-e"><i></i>اختلاف</span>
+    </div>
+  </div>
+
+  <div class="modes">
+    <div class="mode m1" data-mode="1">
+      <div class="mode-head"><span class="dot"></span><span class="nm">فرکانس واحد<span class="fr">f</span></span></div>
+      <canvas class="mini" id="mini1"></canvas>
+      <div class="stepper">
+        <button data-mode="1" data-dir="-1">−</button>
+        <span class="val" id="amp1">۱</span>
+        <button data-mode="1" data-dir="1">+</button>
+      </div>
+    </div>
+
+    <div class="mode m2" data-mode="2">
+      <div class="mode-head"><span class="dot"></span><span class="nm">فرکانس دو برابر<span class="fr">2f</span></span></div>
+      <canvas class="mini" id="mini2"></canvas>
+      <div class="stepper">
+        <button data-mode="2" data-dir="-1">−</button>
+        <span class="val" id="amp2">۱</span>
+        <button data-mode="2" data-dir="1">+</button>
+      </div>
+    </div>
+
+    <div class="mode m3" data-mode="3">
+      <div class="mode-head"><span class="dot"></span><span class="nm">فرکانس سه برابر<span class="fr">3f</span></span></div>
+      <canvas class="mini" id="mini3"></canvas>
+      <div class="stepper">
+        <button data-mode="3" data-dir="-1">−</button>
+        <span class="val" id="amp3">۱</span>
+        <button data-mode="3" data-dir="1">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn" id="resetBtn">بازنشانی</button>
+    <button class="btn" id="skipBtn">موج بعدی</button>
+    <div class="toggle" id="compToggle"><span class="sw"></span><span>مؤلفه‌ها</span></div>
+  </div>
+
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="card">
+    <div class="big">🎯</div>
+    <h2>منطبق شد!</h2>
+    <p id="winMsg">برآیندِ تو دقیقاً روی موجِ هدف افتاد.</p>
+    <button class="btn primary" id="nextBtn">موج بعدی</button>
+  </div>
+</div>
+
+<div class="overlay" id="answerOverlay">
+  <div class="card">
+    <div class="big">💡</div>
+    <h2 style="color:#7cc1ff">پاسخ</h2>
+    <p id="ansMsg"></p>
+    <button class="btn primary" id="ansNextBtn">مرحله بعدی</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const NUM = 3;               // تعداد فرکانس‌های موجود در رابط
+  const START   = 1;           // حالت اولیه‌ی هر فرکانس فعال (۱ تا فرق حالت‌ها واضح باشد)
+  const SAMPLES = 220;         // دقت رسم منحنی
+  const MIN_RANGE = 3;         // کفِ محور عمودیِ نمودار بالا
+
+  // درجه‌های سختی: n = تعداد ورودی‌های فعال، min..max = مقادیر مجاز (تعداد حالت = max-min+1)
+  const DIFFS = [
+    { id:"easy", cls:"d-easy", label:"آسان",  n:2, min:1, max:4 },  // ۲ ورودی × ۴ حالت (۱..۴) = ۱۶
+    { id:"med",  cls:"d-med",  label:"متوسط", n:3, min:0, max:3 },  // ۳ ورودی × ۴ حالت (۰..۳)
+    { id:"hard", cls:"d-hard", label:"سخت",   n:3, min:0, max:5 },  // ۳ ورودی × ۶ حالت (۰..۵)
+  ];
+  let diffIdx = 0;                       // پیش‌فرض: آسان (دکمه‌ی رنگی برای تغییر)
+  let activeN = DIFFS[diffIdx].n;        // تعداد ورودی‌های فعال
+  let minAmp  = DIFFS[diffIdx].min;      // کمینه‌ی ضریب هر ورودی
+  let maxAmp  = DIFFS[diffIdx].max;      // بیشینه‌ی ضریب هر ورودی
+
+  const modeColors = ["#ff6fb5", "#5fe39b", "#a98bff"];
+
+  let amps   = [START, START, START];   // ضریب موج‌های بازیکن
+  let target = [0, 0, 0];               // ضریب موج هدف
+  let level = 1, solved = 0;
+  let roundSolved = false;
+  let showComp = false;
+  let yMax = MIN_RANGE, yMaxTo = MIN_RANGE;   // محور عمودیِ نرم (لرپ)
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // --- ابزار ---
+  const fa = n => String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+  const shape = (n, x) => Math.sin(n * Math.PI * x);            // مودِ سیمِ بسته: همیشه در x=0 و x=1 صفر
+  function evalWave(c, x){ let s = 0; for (let n = 1; n <= NUM; n++) s += c[n-1] * shape(n, x); return s; }
+
+  function maxAbs(c){
+    let m = 0;
+    for (let i = 0; i <= SAMPLES; i++){ const v = Math.abs(evalWave(c, i / SAMPLES)); if (v > m) m = v; }
+    return m;
+  }
+  function recomputeScale(){
+    const m = Math.max(maxAbs(target), maxAbs(amps));
+    yMaxTo = Math.max(MIN_RANGE, Math.ceil(m + 0.4));   // گریدِ صحیح، با کمی فاصله از لبه
+    if (reduceMotion) yMax = yMaxTo;
+  }
+
+  // --- بوم‌ها با DPR ---
+  function fitCanvas(cv){
+    const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+    const w = cv.clientWidth, h = cv.clientHeight;
+    cv.width = Math.max(1, Math.round(w * dpr));
+    cv.height = Math.max(1, Math.round(h * dpr));
+    const ctx = cv.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, w, h };
+  }
+
+  const mainCv = document.getElementById("main");
+  const miniCv = [1,2,3].map(i => document.getElementById("mini" + i));
+  let M, minis;
+  function resizeAll(){
+    M = fitCanvas(mainCv);
+    minis = miniCv.map(fitCanvas);
+  }
+  window.addEventListener("resize", resizeAll);
+  window.addEventListener("orientationchange", () => setTimeout(resizeAll, 100));
+  // فیت خودکار وقتی اندازه‌ی اوسیلوسکوپ (به‌خاطر فلکس‌باکس) تغییر می‌کند
+  if (window.ResizeObserver){
+    const ro = new ResizeObserver(() => resizeAll());
+    ro.observe(mainCv);
+  }
+
+  // --- رسم نمودار اصلی ---
+  function drawMain(){
+    const { ctx, w, h } = M;
+    ctx.clearRect(0, 0, w, h);
+
+    const padX = 16, padTop = 8;
+    const left = padX, plotW = w - padX * 2;
+    const mid = h / 2, halfH = h / 2 - padTop;
+    const yscale = halfH / yMax;
+    const X = x => left + x * plotW;
+    const Y = y => mid - y * yscale;
+
+    // گرید افقی (واحدها)
+    ctx.lineWidth = 1;
+    const top = Math.floor(yMax);
+    for (let yi = -top; yi <= top; yi++){
+      ctx.strokeStyle = yi === 0 ? "rgba(150,180,230,.30)" : "rgba(120,150,210,.09)";
+      ctx.beginPath(); ctx.moveTo(left, Y(yi)); ctx.lineTo(left + plotW, Y(yi)); ctx.stroke();
+    }
+    // گرید عمودی + دیواره‌های سیم
+    ctx.strokeStyle = "rgba(120,150,210,.07)";
+    for (let i = 1; i < 4; i++){ const xx = X(i/4); ctx.beginPath(); ctx.moveTo(xx, padTop); ctx.lineTo(xx, h - padTop); ctx.stroke(); }
+    ctx.strokeStyle = "rgba(150,180,230,.22)";
+    [0,1].forEach(e => { const xx = X(e); ctx.beginPath(); ctx.moveTo(xx, padTop); ctx.lineTo(xx, h - padTop); ctx.stroke(); });
+
+    // مؤلفه‌های اختیاری (موج‌های پایه روی نمودار)
+    if (showComp){
+      for (let n = 1; n <= NUM; n++){
+        if (amps[n-1] === 0) continue;
+        ctx.strokeStyle = modeColors[n-1]; ctx.globalAlpha = .35; ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        for (let i = 0; i <= SAMPLES; i++){ const x = i/SAMPLES; const px = X(x), py = Y(amps[n-1]*shape(n,x)); i?ctx.lineTo(px,py):ctx.moveTo(px,py); }
+        ctx.stroke(); ctx.globalAlpha = 1;
+      }
+    }
+
+    // ناحیه‌ی اختلاف (سایه قرمز بین هدف و برآیند)
+    ctx.beginPath();
+    for (let i = 0; i <= SAMPLES; i++){ const x = i/SAMPLES; const px = X(x), py = Y(evalWave(target,x)); i?ctx.lineTo(px,py):ctx.moveTo(px,py); }
+    for (let i = SAMPLES; i >= 0; i--){ const x = i/SAMPLES; ctx.lineTo(X(x), Y(evalWave(amps,x))); }
+    ctx.closePath();
+    ctx.fillStyle = "rgba(255,92,92,.16)"; ctx.fill();
+
+    drawTrace(ctx, X, Y, target, getCss("--target"), false);
+    drawTrace(ctx, X, Y, amps,   getCss("--result"), true);
+
+    // گره‌های ثابت سیم
+    ctx.fillStyle = "rgba(200,220,255,.55)";
+    [0,1].forEach(e => { ctx.beginPath(); ctx.arc(X(e), Y(0), 3.5, 0, 7); ctx.fill(); });
+  }
+
+  function drawTrace(ctx, X, Y, c, col, dashed){
+    ctx.save();
+    ctx.lineWidth = dashed ? 2.6 : 3;
+    ctx.strokeStyle = col;
+    ctx.shadowColor = col; ctx.shadowBlur = 9;
+    ctx.lineJoin = "round"; ctx.lineCap = "round";
+    if (dashed) ctx.setLineDash([9, 7]);
+    ctx.beginPath();
+    for (let i = 0; i <= SAMPLES; i++){ const x = i/SAMPLES; const px = X(x), py = Y(evalWave(c, x)); i?ctx.lineTo(px,py):ctx.moveTo(px,py); }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // --- رسم فرکانس‌های کوچک (موج‌های پایه) ---
+  function drawMini(idx){
+    if (idx >= activeN || !minis[idx]) return;
+    const { ctx, w, h } = minis[idx];
+    const n = idx + 1, A = amps[idx];
+    ctx.clearRect(0, 0, w, h);
+    const padX = 8, mid = h/2, halfH = h/2 - 6;
+    const X = x => padX + x * (w - padX*2);
+    const Y = y => mid - (y / maxAmp) * halfH;     // مقیاس ثابت بر اساس بیشینه‌ی این سطح
+    // خط مبنا
+    ctx.strokeStyle = "rgba(120,150,210,.18)"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(X(0), mid); ctx.lineTo(X(1), mid); ctx.stroke();
+    // موج این فرکانس
+    ctx.strokeStyle = modeColors[idx]; ctx.lineWidth = 2.4; ctx.lineCap = "round";
+    ctx.globalAlpha = A === 0 ? .35 : 1;
+    ctx.beginPath();
+    for (let i = 0; i <= 120; i++){ const x = i/120; const px = X(x), py = Y((A||0.0001) * shape(n, x)); i?ctx.lineTo(px,py):ctx.moveTo(px,py); }
+    ctx.stroke(); ctx.globalAlpha = 1;
+  }
+
+  function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+  // --- حلقه‌ی رسم ---
+  function frame(){
+    yMax += (yMaxTo - yMax) * 0.18;
+    if (Math.abs(yMax - yMaxTo) < 0.01) yMax = yMaxTo;
+    drawMain();
+    for (let i = 0; i < NUM; i++) drawMini(i);
+    requestAnimationFrame(frame);
+  }
+
+  // --- منطق بازی ---
+  function startAmps(){ return Array.from({length:NUM}, (_, i) => i < activeN ? Math.max(START, minAmp) : 0); }
+
+  function refreshSteppers(){
+    for (let i = 1; i <= NUM; i++){
+      document.getElementById("amp" + i).textContent = fa(amps[i-1]);
+    }
+    document.querySelectorAll(".stepper button").forEach(b => {
+      const m = +b.dataset.mode, dir = +b.dataset.dir, v = amps[m-1];
+      b.disabled = (dir < 0 && v <= minAmp) || (dir > 0 && v >= maxAmp);
+    });
+  }
+  function setStats(){ document.getElementById("levelN").textContent = fa(level); document.getElementById("solvedN").textContent = fa(solved); }
+
+  function checkMatch(){
+    if (roundSolved) return;
+    for (let i = 0; i < NUM; i++) if (amps[i] !== target[i]) return;
+    roundSolved = true; solved++; setStats(); win();
+  }
+
+  function changeAmp(m, dir){
+    if (m > activeN) return;                               // ورودی غیرفعال
+    const v = Math.min(maxAmp, Math.max(minAmp, amps[m-1] + dir));
+    if (v === amps[m-1]) return;
+    amps[m-1] = v;
+    refreshSteppers(); recomputeScale(); checkMatch();
+  }
+
+  function arrEq(a, b){ return a.every((v, i) => v === b[i]); }
+
+  function newTarget(){
+    const start = startAmps();
+    do {
+      for (let i = 0; i < NUM; i++){
+        target[i] = (i < activeN) ? (minAmp + Math.floor(Math.random() * (maxAmp - minAmp + 1))) : 0;
+      }
+    }
+    // هدف نباید کاملاً صاف باشد و نباید با حالت اولیه از پیش حل‌شده باشد
+    while (target.slice(0, activeN).every(v => v === 0) || arrEq(target, start));
+
+    amps = startAmps();
+    roundSolved = false;
+    document.getElementById("overlay").classList.remove("show");
+    document.getElementById("answerOverlay").classList.remove("show");
+    refreshSteppers(); recomputeScale();
+  }
+
+  // --- درجه‌ی سختی ---
+  function applyDifficulty(startNew){
+    const d = DIFFS[diffIdx];
+    activeN = d.n; minAmp = d.min; maxAmp = d.max;
+    // برچسب و رنگ دکمه
+    const btn = document.getElementById("diffBtn");
+    btn.className = "diffBtn " + d.cls;
+    document.getElementById("diffLabel").textContent = d.label;
+    // نمایش/پنهان‌سازی کارت‌های ورودی + چیدمان گرید
+    document.querySelectorAll(".mode").forEach((el, i) => {
+      el.classList.toggle("hidden", i >= activeN);
+    });
+    document.querySelector(".modes").classList.toggle("cols-2", activeN === 2);
+    if (startNew) newTarget();
+    resizeAll();              // اندازه‌ی بوم‌ها را با چیدمان جدید هماهنگ کن
+  }
+
+  function win(){
+    const coeffs = target.slice(0, activeN).map(fa).join("، ");
+    document.getElementById("winMsg").innerHTML =
+      "ضریب‌ها: " + coeffs +
+      "<br>برآیندِ تو دقیقاً روی موجِ هدف افتاد.";
+    document.getElementById("overlay").classList.add("show");
+  }
+
+  // نمایش پاسخ: برآیند را روی هدف می‌نشاند و ضریب‌ها را نشان می‌دهد (بدون ثبت برد)
+  function revealAnswer(){
+    roundSolved = true;                       // جلوگیری از ثبت‌شدن به‌عنوان برد
+    amps = target.slice();
+    refreshSteppers(); recomputeScale();
+    const coeffs = target.slice(0, activeN).map(fa).join("، ");
+    document.getElementById("ansMsg").innerHTML =
+      "ضریب درستِ هر فرکانس: " + coeffs +
+      "<br>برآیندِ زرد دقیقاً روی موجِ آبی نشست.";
+    document.getElementById("answerOverlay").classList.add("show");
+  }
+
+  // --- اتصال رویدادها ---
+  document.querySelectorAll(".stepper button").forEach(b =>
+    b.addEventListener("click", () => changeAmp(+b.dataset.mode, +b.dataset.dir)));
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    amps = startAmps(); roundSolved = false;
+    document.getElementById("overlay").classList.remove("show");
+    document.getElementById("answerOverlay").classList.remove("show");
+    refreshSteppers(); recomputeScale();
+  });
+  document.getElementById("skipBtn").addEventListener("click", () => { newTarget(); });
+  document.getElementById("nextBtn").addEventListener("click", () => { level++; setStats(); newTarget(); });
+
+  // دکمه‌ی درجه‌ی سختی: با هر کلیک بین آسان → متوسط → سخت می‌چرخد و موج تازه می‌سازد
+  document.getElementById("diffBtn").addEventListener("click", () => {
+    diffIdx = (diffIdx + 1) % DIFFS.length;
+    applyDifficulty(true);
+  });
+
+  // دکمه‌ی پاسخ: جواب را نشان می‌دهد؛ سپس «مرحله بعدی» موج تازه می‌آورد
+  document.getElementById("ansBtn").addEventListener("click", revealAnswer);
+  document.getElementById("ansNextBtn").addEventListener("click", () => { newTarget(); });
+  // کلیک روی پس‌زمینه‌ی پاسخ هم مرحله‌ی بعدی را می‌آورد
+  document.getElementById("answerOverlay").addEventListener("click", e => {
+    if (e.target.id === "answerOverlay") newTarget();
+  });
+
+  const ct = document.getElementById("compToggle");
+  ct.addEventListener("click", () => { showComp = !showComp; ct.classList.toggle("on", showComp); });
+
+  // کیبورد: ۱/۲/۳ زیاد، Shift+۱/۲/۳ کم (فقط ورودی‌های فعال)
+  window.addEventListener("keydown", e => {
+    if (e.key >= "1" && e.key <= "3"){
+      const m = +e.key;
+      if (m <= activeN) changeAmp(m, e.shiftKey ? -1 : 1);
+    }
+  });
+
+  // --- شروع ---
+  resizeAll();
+  applyDifficulty(false);   // چیدمان سطح پیش‌فرض (آسان)
+  newTarget();
+  setStats();
+  requestAnimationFrame(frame);
+  // فیت دوباره پس از چیدمان نهایی صفحه
+  window.addEventListener("load", resizeAll);
+})();
+</script>
+</body>
+</html>
