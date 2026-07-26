@@ -1,0 +1,2046 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>تبدیل لاپلاس — از ریشه تا کاربرد</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&family=Estedad:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="katex/katex.min.css">
+<script defer src="katex/katex.min.js"></script>
+<script defer src="katex/contrib/auto-render.min.js"></script>
+<style>
+  :root{
+    --bg: #e3e4e6;            /* خاکستری خنثی روشن */
+    --paper: #fbfbfa;          /* سفید خنثی */
+    --paper-edge: #ecebe7;
+    --ink: #232a33;            /* سرمه‌ای-مشکی */
+    --ink-soft: #515862;
+    --muted: #8a8f96;
+    --accent: #2b3a55;         /* سرمه‌ای */
+    --accent-2: #6d6256;       /* طوسی گرم */
+    --accent-3: #54667a;       /* آبی-طوسی */
+    --line: #d4d6d9;
+    --math-bg: #eef1f4;        /* آبی-طوسی بسیار روشن */
+    --math-border: #c2cbd3;
+    --note-bg: #eef1f5;        /* آبی-طوسی روشن */
+    --note-border: #b8c2cd;
+    --warn-bg: #f1ece6;        /* طوسی گرم روشن */
+    --warn-border: #c9bcaa;
+    --good-bg: #eef0ec;        /* طوسی سبزه‌ی روشن */
+    --good-border: #b9c2a6;
+    --example-bg: #f3f2f0;     /* طوسی خنثی روشن */
+    --example-border: #c9c7c2;
+    --bridge-bg: #e9ecef;      /* طوسی خنثی */
+    --bridge-border: #b3b9bf;
+    --shadow: 0 1px 2px rgba(40,45,55,.06), 0 6px 24px rgba(40,45,55,.08);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Vazirmatn', 'Estedad', sans-serif;
+    font-size: 17px;
+    line-height: 2;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .paper{
+    max-width: 920px;
+    margin: 40px auto;
+    background: var(--paper);
+    padding: 56px 64px 80px;
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--paper-edge);
+  }
+  @media (max-width: 760px){
+    .paper{ margin: 0; padding: 24px 18px 60px; border-radius: 0; }
+    body{ font-size: 16px; }
+  }
+  h1,h2,h3,h4{ font-family:'Estedad','Vazirmatn',sans-serif; font-weight:700; line-height:1.5; color: var(--ink); }
+  h1{ font-size: 30px; margin: 0 0 6px; letter-spacing:-.3px; }
+  h2{
+    font-size: 24px; margin: 56px 0 14px; padding-bottom: 8px;
+    border-bottom: 2px solid var(--line); position: relative;
+  }
+  h2::before{
+    content:""; position:absolute; bottom:-2px; right:0; width:60px; height:2px;
+    background: var(--accent);
+  }
+  h2 .n{
+    display:inline-block; background: var(--accent); color:#fff;
+    width: 30px; height:30px; line-height:30px; text-align:center; border-radius:6px;
+    font-size: 16px; margin-left: 10px; vertical-align: middle;
+  }
+  h3{ font-size: 19px; margin: 32px 0 10px; color: var(--accent); }
+  h4{ font-size: 17px; margin: 22px 0 8px; color: var(--accent-3); }
+  p{ margin: 12px 0; }
+  a{ color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent); }
+  a:hover{ color: var(--accent-2); border-color: var(--accent-2); }
+  strong{ color: var(--ink); font-weight:600; }
+  em{ color: var(--accent-2); font-style: italic; }
+  ul,ol{ padding-right: 24px; }
+  li{ margin: 6px 0; }
+
+  .cover{
+    text-align:center; padding: 12px 0 24px; margin-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .cover .sub{ color: var(--ink-soft); font-size: 15px; margin-top: 6px; }
+
+  .toc{
+    background: #eef0f3;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px 22px 22px;
+    margin: 18px 0 8px;
+  }
+  .toc h2{ margin: 4px 0 12px; border:0; padding:0; font-size: 18px; }
+  .toc h2::before{ display:none; }
+  .toc ol{ columns: 2; column-gap: 28px; padding-right: 20px; margin: 0; }
+  .toc li{ margin: 4px 0; break-inside: avoid; }
+  .toc a{ border:0; color: var(--ink); }
+  .toc a:hover{ color: var(--accent); }
+  @media (max-width: 640px){ .toc ol{ columns: 1; } }
+
+  .math{
+    direction: ltr;
+    text-align: center;
+    background: var(--math-bg);
+    border: 1px solid var(--math-border);
+    border-radius: 6px;
+    padding: 16px 18px;
+    margin: 18px auto;
+    font-size: 18px;
+    color: #1f2a36;
+    overflow-x: auto;
+    max-width: 92%;
+    line-height: 1.6;
+  }
+  .math.compact{ padding: 8px 12px; display:inline-block; margin: 6px; }
+  .math .katex{ font-size: 1.15em; }
+  .math .katex-display{ margin: 0; }
+
+  .imath{
+    direction: ltr; display:inline-block;
+    background: #eef1f4; border:1px solid var(--math-border);
+    padding: 1px 6px; border-radius:4px;
+    color:#1f2a36; vertical-align: baseline;
+  }
+  .imath .katex{ font-size: 1.05em; }
+
+  .box{
+    border:1px solid var(--line); border-radius:8px; padding:14px 18px;
+    margin: 18px 0; background: #f6f6f4;
+  }
+  .box.note{ background: var(--note-bg); border-color: var(--note-border); }
+  .box.warn{ background: var(--warn-bg); border-color: var(--warn-border); }
+  .box.example{ background: var(--example-bg); border-color: var(--example-border); }
+  .box.bridge{
+    background: var(--bridge-bg); border-color: var(--bridge-border); border-style: dashed;
+  }
+  .box.bridge .label{ background: var(--accent-3); }
+  .box .label{
+    display:inline-block; font-size:12px; font-weight:700;
+    color: #fff; background: var(--accent); padding: 1px 10px;
+    border-radius: 10px; margin-left: 8px; vertical-align: middle;
+  }
+  .box.note .label{ background: var(--accent); }
+  .box.warn .label{ background: var(--accent-2); }
+  .box.example .label{ background: var(--accent-3); }
+
+  .flow{
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+    gap: 6px; margin: 18px 0; direction: rtl;
+  }
+  .flow .step{
+    background: #eef0f3; border:1px solid var(--line);
+    padding: 6px 12px; border-radius: 6px; font-size: 14px;
+  }
+  .flow .arrow{ color: var(--accent); font-size: 18px; }
+
+  table{
+    width:100%; border-collapse: collapse; margin: 18px 0; font-size: 15px;
+    background: #fbfbfa;
+  }
+  caption{
+    caption-side: top; text-align:right; color: var(--ink-soft);
+    font-size: 13px; padding: 4px 0 8px;
+  }
+  th,td{
+    border:1px solid var(--line); padding: 8px 10px; text-align:right; vertical-align: top;
+  }
+  th{ background: #eef0f3; color: var(--ink); font-weight:600; }
+  td .imath, td .math{ margin: 0; }
+  tr:nth-child(even) td{ background: #f4f5f6; }
+
+  figure{ margin: 22px auto; text-align:center; direction: ltr; display:block; }
+  figure svg{ max-width: 100%; height: auto; display: block; margin: 0 auto; }
+  figcaption{
+    color: var(--ink-soft); font-size: 13px; margin-top: 6px;
+    padding: 4px 10px; border-top: 1px solid var(--line); display:inline-block;
+  }
+
+  hr{ border:0; border-top:1px dashed var(--line); margin: 30px 0; }
+
+  .totop{
+    position: fixed; left: 20px; bottom: 20px;
+    background: var(--accent); color: #fff; padding: 8px 14px;
+    border-radius: 20px; font-size: 13px; cursor: pointer;
+    box-shadow: var(--shadow); display: none;
+  }
+  .totop.show{ display: block; }
+
+  .footer{
+    margin-top: 50px; padding-top: 18px; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: 13px; text-align:center;
+  }
+
+  .problem{
+    border-right: 4px solid var(--accent);
+    background: #f1f2f4;
+    padding: 14px 18px; margin: 16px 0; border-radius: 6px;
+  }
+  .problem .num{ font-weight:700; color: var(--accent); margin-left:6px; }
+</style>
+</head>
+<body>
+
+<div class="paper">
+
+  <div class="cover">
+    <h1>تبدیل لاپلاس</h1>
+    <div class="sub">از مفهومِ نرخ تغییر در یک لحظه، تا روشی جبری برای حل معادلات دیفرانسیل</div>
+  </div>
+
+  <div class="toc">
+    <h2>فهرست مطالب</h2>
+    <ol>
+      <li><a href="#ch-need">چرا اصلاً به چیزی به نام «حساب» نیاز داریم؟</a></li>
+      <li><a href="#ch-func">تابع، متغیر، و نمودار آن</a></li>
+      <li><a href="#ch-limit">حد: آجرِ پایه‌ای همه‌چیز</a></li>
+      <li><a href="#ch-cont">پیوستگی: بدون پرش</a></li>
+      <li><a href="#ch-deriv">مشتق: نرخ تغییر در یک لحظه</a></li>
+      <li><a href="#ch-integral">انتگرال: جمع بی‌نهایت قطعهٔ ریز</a></li>
+      <li><a href="#ch-ode">معادلهٔ دیفرانسیل: تابع مجهول به‌همراه مشتق‌هایش</a></li>
+      <li><a href="#ch-famous">معادلات دیفرانسیل معروف در فیزیک</a></li>
+      <li><a href="#ch-hard">چرا حل ODE سخت است و چه چیز کم است</a></li>
+      <li><a href="#ch-transform">یک «تبدیل» یعنی چه؟</a></li>
+      <li><a href="#ch-complex">اعداد مختلط: قبل از لاپلاس باید بشناسیمشان</a></li>
+      <li><a href="#ch-linalg">خطی‌بودن: ویژگی کلیدی همهٔ ابزارهای ما</a></li>
+      <li><a href="#ch-symbol">نمادهای تبدیل لاپلاس</a></li>
+      <li><a href="#ch-intuition">شهود: وزن‌دهی به زمان</a></li>
+      <li><a href="#ch-def">تعریف رسمی تبدیل لاپلاس</a></li>
+      <li><a href="#ch-stos">از t به s و برگشت: مسیر کامل رفت‌وبرگشت</a></li>
+      <li><a href="#ch-existence">چه توابعی لاپلاس‌پذیرند؟</a></li>
+      <li><a href="#ch-standard">توابع معروف و اثبات‌ها</a></li>
+      <li><a href="#ch-table">جدول تبدیل‌های پایه</a></li>
+      <li><a href="#ch-props">خصوصیات جبری تبدیل لاپلاس</a></li>
+      <li><a href="#ch-examples">مثال‌های گام‌به‌گام (ساده تا سخت)</a></li>
+      <li><a href="#ch-cex">مثال‌ها در فضای مختلط با اویلر</a></li>
+      <li><a href="#ch-odesolve">مسیر کامل حل ODE با لاپلاس</a></li>
+      <li><a href="#ch-euler">ارتباط با اویلر، تیلور، نیوتن</a></li>
+      <li><a href="#ch-mixed">مثال‌های ترکیبی</a></li>
+      <li><a href="#ch-vec">جبر خطی، ماتریس، و عملگرهای برداری</a></li>
+      <li><a href="#ch-challenge">۱۰ مسئلهٔ چالشی</a></li>
+    </ol>
+  </div>
+
+  <!-- ===================== ۱. چرا حساب ===================== -->
+  <h2 id="ch-need"><span class="n">۱</span>چرا اصلاً به چیزی به نام «حساب» نیاز داریم؟</h2>
+
+  <p>تصور کن یک ماشین در حال حرکت است. در لحظهٔ <span class="imath">t = 0</span> از خانه حرکت می‌کند و در لحظهٔ <span class="imath">t = 10</span> دقیقه به مقصد می‌رسد. اگر بپرسیم «سرعتش چقدر بود؟»، یک جواب ساده می‌توانیم بدهیم: کل مسافت تقسیم بر کل زمان، یعنی میانگین سرعت. ولی این سؤال پیش می‌آید: <strong>در لحظهٔ دقیقاً ۳ دقیقه، سرعت ماشین چقدر بود؟</strong></p>
+
+  <p>این سؤال با جبر معمولی جواب ندارد. جبر معمولی برای وضعیت‌های ایستا است: <span class="imath">x + 3 = 7</span> را حل می‌کنی، <span class="imath">x = 4</span> پیدا می‌کنی. ولی الان سرعت در حال تغییر است، یعنی خود سؤال چیزی است که <em>در حال شدن</em> است. ما ابزاری می‌خواهیم که با <strong>نرخ تغییر</strong> کار کند، نه فقط با مقادیر ثابت.</p>
+
+  <p>«حساب» (به انگلیسی Calculus) دقیقاً همین ابزار است: زبانی برای توصیف و کار با <em>نرخ تغییر</em> و <em>تجمع</em>. سه مفهوم پایه دارد که یکی از سر دیگری درست می‌شود:</p>
+
+  <ul>
+    <li><strong>حد</strong>: می‌گویم چه‌طور یک چیز به یک چیز دیگر <em>نزدیک می‌شود</em>، بدون اینکه لزوماً به آن برسد.</li>
+    <li><strong>مشتق</strong>: از حد ساخته می‌شود؛ می‌گوید نرخ تغییر در یک لحظه چقدر است.</li>
+    <li><strong>انتگرال</strong>: از حد ساخته می‌شود؛ می‌گوید تجمع یک نرخ در طول زمان چه مقدار می‌شود.</li>
+  </ul>
+
+  <p>تبدیل لاپلاس چیزی نیست جز یک <em>ابزار</em> که روی توابعی ساخته شده از این مفاهیم کار می‌کند. پس قبل از هر چیز باید این سه مفهوم را از ریشه درست بشناسیم.</p>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    برای آنکه بفهمیم «نرخ تغییر» یعنی چه، باید بدانیم چه چیزی در حال تغییر است: یک <strong>تابع</strong>. پس اول تابع را مرور می‌کنیم.
+  </div>
+
+  <!-- ===================== ۲. تابع ===================== -->
+  <h2 id="ch-func"><span class="n">۲</span>تابع، متغیر، و نمودار آن</h2>
+
+  <p><strong>تابع</strong> یک ماشین است: یک ورودی می‌گیرد و یک خروجی می‌دهد. اگر ورودی <span class="imath">t</span> (مثلاً زمان) باشد، خروجی <span class="imath">f(t)</span> است. نوشتهٔ <span class="imath">f(t)</span> یعنی «مقدار تابع f در ورودی t». این پرانتز ضرب نیست؛ نشانهٔ «اِعمال f روی t» است.</p>
+
+  <p>مثلاً تابع <span class="imath">f(t) = 2t + 1</span> یعنی: هر عددی بدهی، دو برابرش کن و یک بیفزا. در <span class="imath">t = 3</span> مقدارش <span class="imath">7</span> است.</p>
+
+  <p><strong>متغیر مستقل</strong> چیزی است که ما انتخاب می‌کنیم (اینجا <span class="imath">t</span>) و <strong>متغیر وابسته</strong> چیزی است که از تابع می‌آید (<span class="imath">f(t)</span>). نمودار تابع، مجموعهٔ نقاط <span class="imath">(t, f(t))</span> در یک دستگاه مختصات است: محور افقی <span class="imath">t</span>، محور عمودی مقدار تابع.</p>
+
+  <figure>
+    <svg viewBox="0 0 280 200" width="280" height="200" xmlns="http://www.w3.org/2000/svg">
+      <line x1="30" y1="170" x2="260" y2="170" stroke="#5a564e" stroke-width="1.2"/>
+      <line x1="40" y1="180" x2="40" y2="20" stroke="#5a564e" stroke-width="1.2"/>
+      <text x="262" y="174" font-size="11" fill="#5a564e">t</text>
+      <text x="32" y="22" font-size="11" fill="#5a564e">f(t)</text>
+      <path d="M40,170 L240,30" fill="none" stroke="#5b7c8d" stroke-width="2"/>
+      <circle cx="140" cy="100" r="3.5" fill="#b08968"/>
+      <line x1="140" y1="100" x2="140" y2="170" stroke="#b08968" stroke-dasharray="3 3"/>
+      <line x1="140" y1="100" x2="40" y2="100" stroke="#b08968" stroke-dasharray="3 3"/>
+      <text x="144" y="185" font-size="11" fill="#b08968">t&#8320;</text>
+      <text x="18" y="104" font-size="11" fill="#b08968">f(t&#8320;)</text>
+    </svg>
+    <figcaption>نمودار تابع: هر نقطه یک جفت (ورودی، خروجی)</figcaption>
+  </figure>
+
+  <p>در سرتاسر این متن، <span class="imath">t</span> نقش زمان را بازی می‌کند (یک عدد حقیقی، معمولاً <span class="imath">t &#8805; 0</span>) و <span class="imath">f(t)</span> مقدار کمیت دیگری است که با زمان تغییر می‌کند: دما، سرعت، ولتاژ، تعداد افراد، و غیره.</p>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    حالا که می‌دانیم چه چیزی در حال تغییر است، می‌خواهیم بگوییم «نرخ تغییر در یک لحظه». ولی در یک لحظه، هیچ فاصله‌ای برای محاسبهٔ سرعت وجود ندارد. اینجاست که به اولین آجر حساب می‌رسیم: <strong>حد</strong>.
+  </div>
+
+  <!-- ===================== ۳. حد ===================== -->
+  <h2 id="ch-limit"><span class="n">۳</span>حد: آجرِ پایه‌ای همه‌چیز</h2>
+
+  <p>برگردیم به سؤال سرعت در یک لحظه. میانگین سرعت در بازهٔ <span class="imath">[t&#8320;, t&#8320;+h]</span> این است:</p>
+
+  <div class="math">
+    average speed = <span class="frac"><span class="num">f(t&#8320; + h) &#8722; f(t&#8320;)</span><span class="den">h</span></span>
+  </div>
+
+  <p>اگر <span class="imath">h = 0</span> بگذاریم، تقسیم بر صفر می‌کنیم و کور می‌زنیم. ولی شهود می‌گوید: اگر <span class="imath">h</span> را خیلی خیلی کوچک بگیریم، این میانگین به یک عدد مشخص نزدیک می‌شود. آن عدد همان «سرعت در لحظهٔ <span class="imath">t&#8320;</span>» است.</p>
+
+  <p>اینجا به مفهوم <strong>حد</strong> می‌رسیم. حد یعنی: «نگاه کن چه اتفاقی می‌افتد وقتی یک چیز به یک مقدار نزدیک می‌شود، بدون اینکه لزوماً به آن برسد.»</p>
+
+  <h3>۳.۱ حد یک دنباله</h3>
+  <p>دنباله یک لیست از اعداد است که با اندیس <span class="imath">n = 1, 2, 3, &#8230;</span> جلو می‌رود. مثلاً <span class="imath">a&#8345; = 1/n</span> یعنی <span class="imath">1, 1/2, 1/3, &#8230;</span>. می‌بینیم که این اعداد به ۰ نزدیک می‌شوند. می‌گوییم «حد دنباله برابر ۰ است» و می‌نویسیم:</p>
+
+  <div class="math">
+    lim<sub>n &#8594; &#8734;</sub> a&#8345; = 0
+  </div>
+
+  <p>تعریف دقیق این است: برای هر فاصلهٔ دلخواه <span class="imath">&#949; &gt; 0</span> (هرچقدر هم کوچک)، می‌توان یک اندیس <span class="imath">N</span> پیدا کرد به‌طوری‌که برای همهٔ <span class="imath">n &gt; N</span> فاصلهٔ <span class="imath">a&#8345;</span> تا ۰ از <span class="imath">&#949;</span> کمتر باشد. نماد <span class="imath">&#949;</span> (اپسیلون) و <span class="imath">&#948;</span> (دلتا) حرف یونانی هستند؛ در این متن فقط به‌معنای «یک عدد مثبت دلخواه کوچک» به‌کار می‌روند.</p>
+
+  <div class="math">
+    &#8704; &#949; &gt; 0,&nbsp; &#8707; N &#8712; &#8469; :&nbsp; &#8704; n &gt; N &#8658; | a&#8345; &#8722; L | &lt; &#949;
+  </div>
+
+  <p>نشانه‌های <span class="imath">&#8704;</span> (برای همه) و <span class="imath">&#8707;</span> (وجود دارد) از منطق ریاضی می‌آیند. <span class="imath">&#8469;</span> نماد مجموعهٔ اعداد طبیعی است.</p>
+
+  <div class="box example">
+    <span class="label">مثال ۳.۱</span>
+    <p>دنبالهٔ <span class="imath">a&#8345; = (2n+1)/n</span>. برای <span class="imath">n = 10</span> داریم <span class="imath">21/10 = 2.1</span>؛ برای <span class="imath">n = 100</span> داریم <span class="imath">201/100 = 2.01</span>؛ برای <span class="imath">n = 10000</span> داریم <span class="imath">2.0001</span>. می‌بینیم که اعداد به ۲ نزدیک می‌شوند. پس <span class="imath">lim a&#8345; = 2</span>.</p>
+  </div>
+
+  <h3>۳.۲ حد یک تابع</h3>
+  <p>برای تابع <span class="imath">f(t)</span>، وقتی <span class="imath">t</span> به <span class="imath">t&#8320;</span> نزدیک می‌شود، اگر <span class="imath">f(t)</span> به عدد <span class="imath">L</span> نزدیک شود، می‌نویسیم:</p>
+
+  <div class="math">
+    lim<sub>t &#8594; t&#8320;</sub> f(t) = L
+  </div>
+
+  <p>تعریف دقیق: برای هر <span class="imath">&#949; &gt; 0</span> یک <span class="imath">&#948; &gt; 0</span> هست به‌طوری‌که اگر <span class="imath">0 &lt; |t &#8722; t&#8320;| &lt; &#948;</span> آن‌گاه <span class="imath">|f(t) &#8722; L| &lt; &#949;</span>.</p>
+
+  <div class="box example">
+    <span class="label">مثال ۳.۲</span>
+    <p><span class="imath">lim<sub>t&#8594;2</sub> (3t + 1) = 7</span>. وقتی <span class="imath">t</span> به ۲ نزدیک می‌شود، <span class="imath">3t + 1</span> به ۷ نزدیک می‌شود. این حد را می‌توان مستقیماً با جایگذاری هم دید چون تابع خطی پیوسته است.</p>
+  </div>
+
+  <div class="box example">
+    <span class="label">مثال ۳.۳</span>
+    <p><span class="imath">lim<sub>t&#8594;0</sub> (sin t)/t = 1</span>. این جالب است چون در <span class="imath">t = 0</span> صورت و مخرج هر دو صفر می‌شوند و جایگذاری مستقیم نمی‌شود. ولی وقتی <span class="imath">t</span> از دو طرف به ۰ نزدیک می‌شود، این نسبت به ۱ میل می‌کند. این حد، پایهٔ اثبات مشتق سینوس است.</p>
+  </div>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    حد را شناختیم. حالا می‌توانیم بپرسیم: «اگر حد تابع در یک نقطه برابر مقدار خود تابع در آن نقطه باشد، چه می‌شود؟» این تعریف <strong>پیوستگی</strong> است؛ شرطی که لازم داریم تا بتوانیم از تابع با اطمینان مشتق بگیریم.
+  </div>
+
+  <!-- ===================== ۴. پیوستگی ===================== -->
+  <h2 id="ch-cont"><span class="n">۴</span>پیوستگی: بدون پرش</h2>
+
+  <p>تابع <span class="imath">f</span> در نقطهٔ <span class="imath">t&#8320;</span> <strong>پیوسته</strong> است اگر:</p>
+
+  <div class="math">
+    lim<sub>t &#8594; t&#8320;</sub> f(t) = f(t&#8320;)
+  </div>
+
+  <p>به زبان ساده: وقتی به <span class="imath">t&#8320;</span> نزدیک می‌شوی، مقدار تابع به چیزی نزدیک می‌شود که خود تابع در <span class="imath">t&#8320;</span> دارد. یعنی در <span class="imath">t&#8320;</span> پرش یا شکستگی وجود ندارد. هندسی: می‌توانی بدون برداشتن قلم از روی نمودار از <span class="imath">t&#8320;</span> عبور کنی.</p>
+
+  <div class="box warn">
+    <span class="label">نکته</span>
+    تابع <span class="imath">f(t) = |t|</span> (قدر مطلق) در <span class="imath">t = 0</span> پیوسته است؛ ولی شیب نمودار از سمت چپ <span class="imath">&#8722;1</span> و از سمت راست <span class="imath">+1</span> است. پس پیوسته بودن، <em>مشتق‌پذیر بودن</em> را تضمین نمی‌کند. این تمایز مهم است.
+  </div>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    پیوستگی شرط لازم است. حالا اگر تابع علاوه بر پیوستگی «نرم» هم باشد (یعنی در اطراف هر نقطه خط‌قاطعش به خطِ مماس میل کند)، می‌توانیم <strong>مشتق</strong> بگیریم: همان نرخ تغییر در یک لحظه که در فصل ۱ به آن نیاز داشتیم.
+  </div>
+
+  <!-- ===================== ۵. مشتق ===================== -->
+  <h2 id="ch-deriv"><span class="n">۵</span>مشتق: نرخ تغییر در یک لحظه</h2>
+
+  <p>حالا می‌توانیم سؤال فصل ۱ را دقیق جواب دهیم. سرعت در لحظهٔ <span class="imath">t&#8320;</span> را این‌گونه تعریف می‌کنیم:</p>
+
+  <div class="math">
+    f&#8242;(t&#8320;) = lim<sub>h &#8594; 0</sub>
+    <span class="frac"><span class="num">f(t&#8320; + h) &#8722; f(t&#8320;)</span><span class="den">h</span></span>
+  </div>
+
+  <p>یعنی میانگین سرعت در بازهٔ کوچک <span class="imath">h</span> را حساب می‌کنیم، بعد <span class="imath">h</span> را به ۰ میل می‌دهیم. اگر این حد موجود باشد، می‌گوییم <span class="imath">f</span> در <span class="imath">t&#8320;</span> <strong>مشتق‌پذیر</strong> است و مقدارش را <span class="imath">f&#8242;(t&#8320;)</span> می‌نویسیم (می‌خوانیم «اِف پریم از تِ صفر»). نماد دیگر <span class="imath">df/dt</span> است.</p>
+
+  <p>پس می‌بینیم که <strong>مشتق از حد ساخته شد</strong>. این اولین پل است.</p>
+
+  <h3>۵.۱ معنای هندسی</h3>
+  <p>برای آنکه مفهوم را تمیز ببینیم، یک مثال ساده می‌زنیم. تابع <span class="imath">f(t) = 9 &#8722; t&#178;</span> یک سهمی است که در <span class="imath">t = 0</span> به اوج می‌رسد. در اوج، شیب نمودار <strong>صفر</strong> است (نمودار صاف است). حالا خطی از اوج به یک نقطهٔ کمی سمت راست و پایین‌تر روی نمودار می‌کشیم؛ این خطِ قاطع است. وقتی آن نقطهٔ دوم به اوج نزدیک می‌شود، خط قاطع به خط مماس (افقی) نزدیک می‌شود و شیبش به صفر میل می‌کند.</p>
+
+  <figure>
+    <svg viewBox="0 0 320 200" width="320" height="200" xmlns="http://www.w3.org/2000/svg">
+      <line x1="30" y1="170" x2="300" y2="170" stroke="#5a564e" stroke-width="1.2"/>
+      <line x1="40" y1="180" x2="40" y2="20" stroke="#5a564e" stroke-width="1.2"/>
+      <text x="304" y="174" font-size="11" fill="#5a564e">t</text>
+      <text x="32" y="20" font-size="11" fill="#5a564e">f</text>
+      <!-- parabola f = 9 - t^2, peak (160,50), endpoints (40,140) and (280,140) -->
+      <path d="M40,140 Q160,-40 280,140" fill="none" stroke="#5b7c8d" stroke-width="2"/>
+      <!-- peak point at t=0 -->
+      <circle cx="160" cy="50" r="3.5" fill="#b08968"/>
+      <line x1="160" y1="50" x2="160" y2="170" stroke="#b08968" stroke-dasharray="3 3"/>
+      <text x="150" y="185" font-size="11" fill="#b08968">t&#8320; = 0</text>
+      <!-- second point on curve at t=3: (220, 72.5) -->
+      <circle cx="220" cy="72.5" r="3.5" fill="#7d9b6a"/>
+      <!-- tangent: horizontal at peak (slope 0) -->
+      <line x1="100" y1="50" x2="240" y2="50" stroke="#b08968" stroke-width="1.8"/>
+      <text x="244" y="46" font-size="11" fill="#b08968">tangent (slope = 0)</text>
+      <!-- secant from peak (160,50) to second point (220, 72.5) -->
+      <line x1="160" y1="50" x2="220" y2="72.5" stroke="#7d9b6a" stroke-width="1.6" stroke-dasharray="5 3"/>
+      <text x="224" y="76" font-size="11" fill="#7d9b6a">secant</text>
+    </svg>
+    <figcaption>در اوج سهمی <span class="imath">f = 9 &#8722; t&#178;</span>، خط مماس افقی است (شیب صفر). خط قاطع از اوج به نقطه‌ای سمت راست‌وپایین می‌رود و با نزدیک شدن آن نقطه، شیبش به صفر میل می‌کند.</figcaption>
+  </figure>
+
+  <div class="box example">
+    <span class="label">مثال ۵.۱ — محاسبه از تعریف</span>
+    <p>برای <span class="imath">f(t) = t&#178;</span> در <span class="imath">t&#8320; = 3</span>:</p>
+    <div class="math">
+      f&#8242;(3) = lim<sub>h&#8594;0</sub> [(3+h)&#178; &#8722; 9] / h = lim [6h + h&#178;]/h = lim (6 + h) = 6
+    </div>
+    <p>پس در <span class="imath">t = 3</span>، نرخ تغییر <span class="imath">t&#178;</span> برابر ۶ است.</p>
+  </div>
+
+  <h3>۵.۲ قواعد مشتق‌گیری</h3>
+  <p>این قواعل از همان تعریف حد به‌دست می‌آیند؛ ما در اینجا فقط مرجعشان را کنار هم می‌گذاریم و بعد سراغ اثبات یکی ازشان می‌رویم.</p>
+
+  <table>
+    <caption>قواعد پایهٔ مشتق</caption>
+    <thead><tr><th>تابع</th><th>مشتق</th><th>یادآوری</th></tr></thead>
+    <tbody>
+      <tr><td><span class="imath">constant</span></td><td><span class="imath">0</span></td><td>ثابت تغییری ندارد</td></tr>
+      <tr><td><span class="imath">t<sup>n</sup></span></td><td><span class="imath">n&#183;t<sup>n&#8722;1</sup></span></td><td>قاعدهٔ توان (نیوتن)</td></tr>
+      <tr><td><span class="imath">e<sup>at</sup></span></td><td><span class="imath">a&#183;e<sup>at</sup></span></td><td>نمایی تقریباً خودش</td></tr>
+      <tr><td><span class="imath">sin(&#969;t)</span></td><td><span class="imath">&#969;&#183;cos(&#969;t)</span></td><td>—</td></tr>
+      <tr><td><span class="imath">cos(&#969;t)</span></td><td><span class="imath">&#8722;&#969;&#183;sin(&#969;t)</span></td><td>علامت منفی مهم</td></tr>
+    </tbody>
+  </table>
+
+  <h4>قاعدهٔ ضرب</h4>
+  <p>اگر <span class="imath">f(t) = u(t) &#183; v(t)</span>، آن‌گاه:</p>
+  <div class="math">
+    (u &#183; v)&#8242; = u&#8242; &#183; v + u &#183; v&#8242;
+  </div>
+  <p>اثبات از تعریف حد. از تعریف مشتق شروع می‌کنیم و یک «صفر هوشمندانه» (جمع و تفریق یک عبارت واسط) اضافه می‌کنیم تا دو حد جدا از هم بیرون بیایند:</p>
+  <div class="math">
+    (u&#183;v)&#8242;(t) = lim<sub>h&#8594;0</sub> [ u(t+h) v(t+h) &#8722; u(t) v(t) ] / h
+  </div>
+  <div class="math">
+    = lim<sub>h&#8594;0</sub> [ u(t+h) v(t+h) &#8722; u(t+h) v(t) + u(t+h) v(t) &#8722; u(t) v(t) ] / h
+  </div>
+  <div class="math">
+    = lim<sub>h&#8594;0</sub> u(t+h) &#183; [ v(t+h) &#8722; v(t) ] / h&nbsp;&nbsp;+&nbsp;&nbsp;lim<sub>h&#8594;0</sub> v(t) &#183; [ u(t+h) &#8722; u(t) ] / h
+  </div>
+  <div class="math">
+    = u(t) &#183; v&#8242;(t) + v(t) &#183; u&#8242;(t)
+  </div>
+  <p>در گام آخر، <span class="imath">u(t+h) &#8594; u(t)</span> چون <span class="imath">u</span> پیوسته است (مشتق‌پذیر بودن پیوستگی را می‌آورد)، و <span class="imath">v(t)</span> از <span class="imath">h</span> مستقل است.</p>
+
+  <h4>قاعدهٔ زنجیره‌ای</h4>
+  <p>اگر <span class="imath">f(t) = g(u(t))</span> یعنی یک تابع درون تابع دیگر باشد:</p>
+  <div class="math">
+    f&#8242;(t) = g&#8242;(u(t)) &#183; u&#8242;(t)
+  </div>
+  <p>یعنی «مشتق بیرونی در مشتق درونی».</p>
+
+  <h4>قاعدهٔ تقسیم</h4>
+  <div class="math">
+    (u / v)&#8242; = (u&#8242;v &#8722; uv&#8242;) / v&#178;
+  </div>
+
+  <div class="box example">
+    <span class="label">مثال ۵.۲ — قاعدهٔ ضرب</span>
+    <p><span class="imath">f(t) = t&#178; &#183; e<sup>3t</sup></span>. می‌شناسیم: <span class="imath">u = t&#178;</span> و <span class="imath">v = e<sup>3t</sup></span>. مشتق‌ها:</p>
+    <div class="math">
+      u&#8242; = 2t,&nbsp;&nbsp; v&#8242; = 3 e<sup>3t</sup>
+    </div>
+    <p>اعمال قاعدهٔ ضرب:</p>
+    <div class="math">
+      f&#8242; = u&#8242; v + u v&#8242; = (2t) e<sup>3t</sup> + t&#178; (3 e<sup>3t</sup>)
+    </div>
+    <p>با فاکتورگیری <span class="imath">e<sup>3t</sup></span>:</p>
+    <div class="math">
+      f&#8242; = e<sup>3t</sup> ( 2t + 3t&#178; )
+    </div>
+  </div>
+
+  <div class="box example">
+    <span class="label">مثال ۵.۳ — قاعدهٔ زنجیره‌ای</span>
+    <p><span class="imath">f(t) = sin(t&#178;)</span>. تابع بیرونی <span class="imath">g(&#183;) = sin(&#183;)</span>، تابع درونی <span class="imath">u(t) = t&#178;</span>. مشتق‌ها:</p>
+    <div class="math">
+      g&#8242;(u) = cos(u),&nbsp;&nbsp; u&#8242;(t) = 2t
+    </div>
+    <p>اعمال قاعدهٔ زنجیره‌ای:</p>
+    <div class="math">
+      f&#8242;(t) = g&#8242;(u(t)) &#183; u&#8242;(t) = cos(t&#178;) &#183; 2t = 2t cos(t&#178;)
+    </div>
+  </div>
+
+  <div class="box example">
+    <span class="label">مثال ۵.۴ — تابع نمایی</span>
+    <p>برای <span class="imath">f(t) = e<sup>t</sup></span> از تعریف مشتق:</p>
+    <div class="math">
+      f&#8242;(t) = lim<sub>h&#8594;0</sub> [ e<sup>t+h</sup> &#8722; e<sup>t</sup> ] / h
+    </div>
+    <div class="math">
+      = lim<sub>h&#8594;0</sub> e<sup>t</sup> &#183; [ e<sup>h</sup> &#8722; 1 ] / h
+    </div>
+    <div class="math">
+      = e<sup>t</sup> &#183; lim<sub>h&#8594;0</sub> [ e<sup>h</sup> &#8722; 1 ] / h
+    </div>
+    <p>حد <span class="imath">lim<sub>h&#8594;0</sub> (e<sup>h</sup> &#8722; 1)/h = 1</span> یک حد پایه است (از بسط تیلور <span class="imath">e<sup>h</sup> = 1 + h + &#8230;</span> دیده می‌شود). پس:</p>
+    <div class="math">
+      f&#8242;(t) = e<sup>t</sup>
+    </div>
+    <p><strong>این ویژگی منحصر به فرد نمایی است:</strong> مشتقش برابر خودش است. به همین خاطر در حل معادلات دیفرانسیل اساسی است؛ معادلهٔ <span class="imath">y&#8242; = k y</span> دقیقاً به‌خاطر همین ویژگی، جواب <span class="imath">y = C e<sup>kt</sup></span> دارد.</p>
+  </div>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    مشتق به ما نرخ تغییر در یک لحظه را می‌دهد. حالا اگر این نرخ تغییر را در طول زمان <em>جمع</em> کنیم، باید به خود کمیت اصلی برگردیم. این جمعِ بی‌نهایت قطعهٔ ریز، <strong>انتگرال</strong> است؛ و به‌لطف قضیه‌ای خاص، عکسِ مشتق از آب در می‌آید.
+  </div>
+
+  <!-- ===================== ۶. انتگرال ===================== -->
+  <h2 id="ch-integral"><span class="n">۶</span>انتگرال: جمع بی‌نهایت قطعهٔ ریز</h2>
+
+  <p>حالا تصور کن می‌دانیم سرعت لحظه‌ای در هر زمان است (یعنی تابع <span class="imath">v(t) = f&#8242;(t)</span>) و می‌خواهیم بفهمیم در طول بازهٔ <span class="imath">[a, b]</span> چه مسافتی طی شده است. ایده: بازه را به قطعه‌های کوچک تقسیم می‌کنیم، در هر قطعه سرعت را تقریباً ثابت فرض می‌کنیم، مسافت قطعه را <span class="imath">v(t&#7522;) &#183; &#916;t</span> حساب می‌کنیم، و همه را جمع می‌کنیم.</p>
+
+  <div class="math">
+    &#8747;<sub>a</sub><sup>b</sup> f(t) dt
+    &nbsp;=&nbsp;
+    <span class="bigop">
+      <span class="lim-top">n&#8594;&#8734;</span>
+      <span class="sym">&#8721;</span>
+      <span class="lim-bot">i=1</span>
+    </span>
+    &nbsp;f(t&#7522;) &#183; &#916;t
+  </div>
+
+  <p>نشانهٔ <span class="imath">&#8747;</span> (انتگرال) در اصل یک S کشیده است؛ یعنی «مجموع». <span class="imath">&#8721;</span> (سیگمای بزرگ) هم مجموع است ولی برای جمع شمارا. وقتی تعداد قطعه‌ها به بی‌نهایت میل می‌کند، این مجموع به یک عدد میل می‌کند که آن را <strong>انتگرال</strong> می‌نامیم.</p>
+
+  <p>پس می‌بینیم که <strong>انتگرال هم از حد ساخته شد</strong>، مثل مشتق. هر دو روی هم آجرِ «حد» را دارند.</p>
+
+  <figure>
+    <svg viewBox="0 0 320 200" width="320" height="200" xmlns="http://www.w3.org/2000/svg">
+      <line x1="30" y1="170" x2="300" y2="170" stroke="#5a564e" stroke-width="1.2"/>
+      <line x1="40" y1="180" x2="40" y2="30" stroke="#5a564e" stroke-width="1.2"/>
+      <text x="304" y="174" font-size="11" fill="#5a564e">t</text>
+      <text x="32" y="30" font-size="11" fill="#5a564e">f</text>
+      <!-- rectangles: f(t)=10+t^2/4, t in [0,10], 10 bars width 24, left-endpoint heights -->
+      <g fill="#f3eee0" stroke="#b08968" stroke-width="1">
+        <rect x="40"  y="150" width="24" height="20"/>
+        <rect x="64"  y="149" width="24" height="21"/>
+        <rect x="88"  y="146" width="24" height="24"/>
+        <rect x="112" y="141" width="24" height="29"/>
+        <rect x="136" y="134" width="24" height="36"/>
+        <rect x="160" y="125" width="24" height="45"/>
+        <rect x="184" y="114" width="24" height="56"/>
+        <rect x="208" y="101" width="24" height="69"/>
+        <rect x="232" y="86"  width="24" height="84"/>
+        <rect x="256" y="69"  width="24" height="101"/>
+      </g>
+      <!-- curve f = 10 + t^2/4, mapped: y = 150 - t^2, x = 40 + 24t -->
+      <path d="M40,150 Q160,150 280,50" fill="none" stroke="#5b7c8d" stroke-width="2.5"/>
+      <text x="44" y="185" font-size="10" fill="#5a564e">a</text>
+      <text x="268" y="185" font-size="10" fill="#5a564e">b</text>
+    </svg>
+    <figcaption>مجموع ریمان برای <span class="imath">f(t) = 10 + t&#178;/4</span> (تابع صعودی): مستطیل‌ها با ارتفاع در انتهای چپ هر قطعه، زیر منحنی می‌مانند و با کوچک شدن &#916;t به مساحت زیر منحنی میل می‌کنند.</figcaption>
+  </figure>
+
+  <h3>۶.۱ قضیهٔ اساسی حساب</h3>
+  <p>این قضیه، پل بین مشتق و انتگرال است:</p>
+  <div class="math">
+    if&nbsp;&nbsp;&nbsp; F&#8242;(t) = f(t)&nbsp;&nbsp;&nbsp; then&nbsp;&nbsp;&nbsp; &#8747;<sub>a</sub><sup>b</sup> f(t) dt = F(b) &#8722; F(a)
+  </div>
+  <p>یعنی انتگرال از یک تابع، <em>خلافِ مشتقِ</em> آن است. پس مشتق و انتگرال دو روی یک سکه‌اند: حد به مشتق می‌رسد، حد به انتگرال می‌رسد، و این قضیه، مشتق را به انتگرال وصل می‌کند.</p>
+
+  <div class="box example">
+    <span class="label">مثال ۶.۱</span>
+    <p>مسافت طی‌شده وقتی سرعت <span class="imath">v(t) = 3t&#178;</span> است، در بازهٔ <span class="imath">[0, 2]</span>:</p>
+    <div class="math">
+      &#8747;<sub>0</sub><sup>2</sup> 3t&#178; dt = [t&#179;]<sub>0</sub><sup>2</sup> = 8 &#8722; 0 = 8
+    </div>
+    <p>چون مشتق <span class="imath">t&#179;</span> برابر <span class="imath">3t&#178;</span> است.</p>
+  </div>
+
+  <h3>۶.۲ انتگرال ناسره</h3>
+  <p>گاهی حد بالای انتگرال بی‌نهایت است. این انتگرال را «ناسره» می‌نامیم و با حد تعریف می‌کنیم:</p>
+  <div class="math">
+    &#8747;<sub>0</sub><sup>&#8734;</sup> f(t) dt
+    &nbsp;=&nbsp;
+    lim<sub>b &#8594; &#8734;</sub>
+    &#8747;<sub>0</sub><sup>b</sup> f(t) dt
+  </div>
+
+  <p>این مفهوم زیربنای تعریف لاپلاس است؛ چون در لاپلاس یک انتگرال از ۰ تا بی‌نهایت داریم.</p>
+
+  <div class="box example">
+    <span class="label">مثال ۶.۲</span>
+    <p><span class="imath">&#8747;<sub>0</sub><sup>&#8734;</sup> e<sup>&#8722;t</sup> dt = lim<sub>b&#8594;&#8734;</sub> (&#8722;e<sup>&#8722;t</sup>)<sub>0</sub><sup>b</sup> = 1 &#8722; 0 = 1</span>. همگراست چون <span class="imath">e<sup>&#8722;t</sup></span> به‌اندازهٔ کافی سریع به ۰ می‌رود.</p>
+  </div>
+
+  <div class="box example">
+    <span class="label">مثال ۶.۳</span>
+    <p><span class="imath">&#8747;<sub>1</sub><sup>&#8734;</sup> (1/t) dt = lim<sub>b&#8594;&#8734;</sub> ln(b) = &#8734;</span>. واگراست. پس <span class="imath">1/t</span> در این بازه انتگرال‌پذیر نیست.</p>
+  </div>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    حالا مشتق و انتگرال را داریم. می‌توانیم توصیف کنیم که یک کمیت چطور در زمان تغییر می‌کند. ولی در بسیاری از پدیده‌ها، <em>روابط بین تابع و نرخ تغییرش</em> خودشان معادله می‌سازند. این معادله‌ها، یعنی <strong>معادلات دیفرانسیل</strong>، موضوع فصل بعد هستند.
+  </div>
+
+  <!-- ===================== ۷. معادلات دیفرانسیل ===================== -->
+  <h2 id="ch-ode"><span class="n">۷</span>معادلهٔ دیفرانسیل: تابع مجهول به‌همراه مشتق‌هایش</h2>
+
+  <p>تا اینجا دو ابزار داشتیم: مشتق (نرخ تغییر) و انتگرال (تجمع). حالا یک وضعیت جدید پیش می‌آید. در بسیاری از پدیده‌های طبیعی، ما <em>مقدار</em> کمیت را نمی‌دانیم، ولی <em>رابطهٔ بین مقدار و نرخ تغییرش</em> را می‌دانیم. مثلاً:</p>
+
+  <ul>
+    <li>«سرعت سرد شدن یک لیوان قهوه متناسب است با اختلاف دمای آن و دمای محیط.»</li>
+    <li>«سرعت رشد یک جمعیت متناسب است با خود جمعیت.»</li>
+    <li>«شتاب یک فنر متناسب است با جابجایی آن (با علامت منفی).»</li>
+  </ul>
+
+  <p>هر کدام از این‌ها یک رابطه می‌سازد که در آن هم تابع مجهول (مثلاً <span class="imath">y(t)</span>) و هم مشتقش (<span class="imath">y&#8242;(t)</span> یا <span class="imath">y&#8243;(t)</span>) ظاهر می‌شوند. به چنین رابطه‌ای <strong>معادلهٔ دیفرانسیل</strong> می‌گویند. کلمهٔ «دیفرانسیل» از آن جهت است که مشتق (که گاهی «دیفرانسیل» نامیده می‌شود) در آن ظاهر است.</p>
+
+  <p>یک معادلهٔ آشنا: <span class="imath">x + 3 = 7</span>. مجهول <span class="imath">x</span> یک عدد است. ولی در یک معادلهٔ دیفرانسیل، مجهول یک <em>تابع</em> است.</p>
+
+  <h3>۷.۱ مثال شهودی با اعداد: سرد شدن قهوه</h3>
+
+  <p>فرض کنیم یک لیوان قهوه با دمای اولیهٔ <span class="imath">90°C</span> در یک اتاق با دمای <span class="imath">20°C</span> قرار دارد. می‌خواهیم بدانیم دمای قهوه در زمان چطور تغییر می‌کند. قانون نیوتن برای سرد شدن می‌گوید: <em>سرعت سرد شدن</em> (یعنی مشتق دما نسبت به زمان) متناسب است با اختلاف دمای قهوه و محیط.</p>
+
+  <p>اگر <span class="imath">T(t)</span> دمای قهوه در زمان <span class="imath">t</span> و <span class="imath">T<sub>a</sub> = 20</span> دمای محیط و <span class="imath">k</span> ثابت تناسب باشد (مثلاً <span class="imath">k = 0.1</span>):</p>
+
+  <div class="math">
+    dT/dt = &#8722;k &#183; (T &#8722; T<sub>a</sub>),&nbsp;&nbsp; T(0) = 90
+  </div>
+
+  <p>علامت منفی چون دما در حال کاهش است وقتی <span class="imath">T &gt; T<sub>a</sub></span>. این یک معادلهٔ دیفرانسیل مرتبهٔ اول با شرط اولیه است.</p>
+
+  <p>شهوداً می‌دانیم دما هرگز از <span class="imath">T<sub>a</sub></span> پایین‌تر نمی‌رود و به آن نزدیک می‌شود. حل این معادله (که بعداً با لاپلاس هم حل می‌کنیم) این است:</p>
+
+  <div class="math">
+    T(t) = T<sub>a</sub> + (T(0) &#8722; T<sub>a</sub>) &#183; e<sup>&#8722;kt</sup> = 20 + 70 &#183; e<sup>&#8722;0.1t</sup>
+  </div>
+
+  <p>بررسی عددی: در <span class="imath">t = 0</span> داریم <span class="imath">20 + 70 = 90</span> ✓. در <span class="imath">t = 10</span> (یک دقیقه بعد اگر واحدهای t ثانیه باشد): <span class="imath">20 + 70 &#183; e<sup>&#8722;1</sup> &#8776; 20 + 70 &#183; 0.368 &#8776; 45.8°C</span>. در <span class="imath">t = 30</span>: <span class="imath">20 + 70 &#183; e<sup>&#8722;3</sup> &#8776; 20 + 3.5 &#8776; 23.5°C</span>. می‌بینیم دما به ۲۰ نزدیک می‌شود.</p>
+
+  <h3>۷.۲ مثال با اعداد: رشد جمعیت</h3>
+
+  <p>حالا یک مثال دیگر. فرض کنیم یک جمعیت از جانداران داریم که در زمان <span class="imath">t = 0</span> شامل <span class="imath">1000</span> فرد است. فرض سادهٔ مدل این است: <em>سرعت رشد جمعیت در هر لحظه متناسب است با خود جمعیت در همان لحظه</em>. یعنی هرچه جمعیت بیشتر باشد، به‌ همان نسبت بیشتر زاده می‌شود.</p>
+
+  <p>با <span class="imath">y(t)</span> تعداد افراد جمعیت در زمان <span class="imath">t</span> (متغیر وابسته)، <span class="imath">k = 0.05</span> ثابت رشد سالانه (نرخ زایش خالص)، و فرض اینکه در <span class="imath">t = 0</span> جمعیت <span class="imath">1000</span> است:</p>
+
+  <div class="math">
+    dy/dt = k &#183; y(t),&nbsp;&nbsp; y(0) = 1000,&nbsp; k = 0.05
+  </div>
+
+  <p>یعنی <span class="imath">y(t)</span> مجهول است؛ یک تابع از زمان که می‌خواهیم پیدا کنیم. <span class="imath">k</span> را می‌دانیم (یک عدد ثابت). <span class="imath">y(0)</span> را هم می‌دانیم (شرط اولیه). این یک معادلهٔ دیفرانسیل مرتبهٔ اول است.</p>
+
+  <p>چرا جواب این معادله یک نمایی است؟ به‌خاطر ویژگی خاص نمایی که در مثال ۵.۴ دیدیم: <strong>مشتق <span class="imath">e<sup>t</sup></span> برابر خودش است</strong>. اگر <span class="imath">y = C&#183;e<sup>kt</sup></span>، آن‌گاه با قاعدهٔ زنجیره‌ای:</p>
+  <div class="math">
+    y&#8242; = C &#183; k &#183; e<sup>kt</sup> = k &#183; (C e<sup>kt</sup>) = k &#183; y
+  </div>
+  <p>یعنی هر تابع از فرم <span class="imath">C&#183;e<sup>kt</sup></span> در معادلهٔ <span class="imath">y&#8242; = k&#183;y</span> صدق می‌کند. با شرط <span class="imath">y(0) = 1000</span> داریم <span class="imath">C e<sup>0</sup> = C = 1000</span> و:</p>
+
+  <div class="math">
+    y(t) = 1000 &#183; e<sup>0.05t</sup>
+  </div>
+
+  <p>بررسی عددی: در <span class="imath">t = 10</span> سال: <span class="imath">1000 &#183; e<sup>0.5</sup> &#8776; 1649</span>. در <span class="imath">t = 20</span>: <span class="imath">1000 &#183; e<sup>1</sup> &#8776; 2718</span>. رشد نمایی.</p>
+
+  <h3>۷.۳ مفاهیم پایه</h3>
+  <ul>
+    <li><strong>مرتبه:</strong> بالاترین مرتبهٔ مشتق ظاهرشده. <span class="imath">y&#8242; + y = 0</span> مرتبهٔ ۱، <span class="imath">y&#8243; + y&#8242; + y = 0</span> مرتبهٔ ۲.</li>
+    <li><strong>خطی/غیرخطی:</strong> اگر تابع مجهول و مشتق‌هایش فقط با ترکیب خطی بیایند، خطی است. <span class="imath">y&#8243; + sin(y) = 0</span> غیرخطی.</li>
+    <li><strong>با ضرایب ثابت یا متغیر:</strong> اگر <span class="imath">a, b, c</span> ثابت باشند، کار با لاپلاس تمیزتر است.</li>
+    <li><strong>شرط اولیه:</strong> برای آنکه جواب یکتا شود، باید مقدار تابع (و مشتق‌هایش تا مرتبهٔ <span class="imath">n&#8722;1</span>) را در <span class="imath">t = 0</span> بدانیم.</li>
+  </ul>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    قبل از آنکه سراغ «چطور حل کنیم» برویم، بد نیست بدانیم معادلات دیفرانسیل در فیزیک چه شکلی دارند؛ این به ما حس می‌دهد که چرا این موضوع اهمیت دارد و چه وسعتی دارد.
+  </div>
+
+  <!-- ===================== ۸. معادلات معروف فیزیک ===================== -->
+  <h2 id="ch-famous"><span class="n">۸</span>معادلات دیفرانسیل معروف در فیزیک</h2>
+
+  <p>معادلات دیفرانسیل فقط سرد شدن قهوه و رشد جمعیت نیستند؛ قوانین بنیادی فیزیک همه با معادلات دیفرانسیل نوشته می‌شوند. در اینجا چندتایی را به‌طور ساده معرفی می‌کنیم — فقط برای آنکه ببینیم این زبان چه وسعتی دارد. هدف این نیست که فیزیک آن‌ها را عمیق بفهمیم، بلکه آنکه ساختار ریاضی‌شان را بشناسیم.</p>
+
+  <h3>۸.۱ معادلهٔ انتقال حرارت (Heat Equation)</h3>
+  <p>این معادله می‌گوید دما در یک ماده چطور در زمان و مکان تغییر می‌کند. اگر <span class="imath">T(x, t)</span> دما در موقعیت <span class="imath">x</span> و زمان <span class="imath">t</span> باشد:</p>
+  <div class="math">
+    &#8706;T/&#8706;t = &#945; &#183; &#8706;&#178;T/&#8706;x&#178;
+  </div>
+  <p><span class="imath">&#945;</span> (آلفا) «پخش‌شدگی حرارتی» است؛ یک ثابت که ماده را توصیف می‌کند. این یک <em>PDE</em> است (معادلهٔ با مشتق‌های پاره‌ای) چون هم مشتق زمانی و هم مشتق مکانی دارد.</p>
+
+  <h3>۸.۲ معادلهٔ موج (Wave Equation)</h3>
+  <p>توصیف ارتعاش یک تار یا انتشار صدا:</p>
+  <div class="math">
+    &#8706;&#178;u/&#8706;t&#178; = c&#178; &#183; &#8706;&#178;u/&#8706;x&#178;
+  </div>
+  <p><span class="imath">c</span> سرعت موج است. این معادله مرتبهٔ دوم در زمان است.</p>
+
+  <h3>۸.۳ معادلهٔ لاپلاس (Laplace Equation)</h3>
+  <p>وقتی سیستم به حالت پایدار رسیده (تغییرات زمانی صفر است):</p>
+  <div class="math">
+    &#8711;&#178;&#981; = 0
+  </div>
+  <p><span class="imath">&#8711;&#178;</span> (نابلا مربع، یا «لاپلاسین») عملگری است که جمع مشتق‌های دوم نسبت به همهٔ متغیرهای مکانی است. در دو بعد: <span class="imath">&#8711;&#178;&#981; = &#8706;&#178;&#981;/&#8706;x&#178; + &#8706;&#178;&#981;/&#8706;y&#178;</span>. این عملگر در ادامهٔ متن (فصل ۲۶) بیشتر توضیح داده می‌شود.</p>
+
+  <div class="box warn">
+    <span class="label">تمایز مهم</span>
+    «تبدیل لاپلاس» و «عملگر لاپلاسین <span class="imath">&#8711;&#178;</span>» دو چیز متفاوت‌اند که فقط به‌خاطر نام یک شخص (پیر سیمون لاپلاس) هم‌نام شده‌اند. تبدیل لاپلاس روی توابع زمانی عمل می‌کند و مشتق را به ضرب در <span class="imath">s</span> تبدیل می‌کند. لاپلاسین روی توابع مکانی عمل می‌کند و در PDEها ظاهر می‌شود. ولی در حل PDEها گاهی از تبدیل لاپلاس در متغیر زمان استفاده می‌کنند تا PDE را به ODE در فضای مکان تبدیل کنند — اینجا این دو به هم وصل می‌شوند.
+  </div>
+
+  <h3>۸.۴ معادلات ناویر-استوکس (Navier–Stokes) — ساده‌شده</h3>
+  <p>این معادله جریان سیال (آب، هوا) را توصیف می‌کند. شکل سادهٔ آن برای یک سیال تراکم‌ناپذیر:</p>
+  <div class="math">
+    &#961; (&#8706;v/&#8706;t + v&#183;&#8711;v) = &#8722;&#8711;p + &#956;&#8711;&#178;v
+  </div>
+  <p><span class="imath">v</span> میدان سرعت، <span class="imath">p</span> فشار، <span class="imath">&#961;</span> چگالی، <span class="imath">&#956;</span> گرانروی. این معادله غیرخطی است (چون <span class="imath">v&#183;&#8711;v</span> ضرب <span class="imath">v</span> در مشتقش است) و به همین خاطر حلش خیلی سخت است.</p>
+
+  <h3>۸.۵ معادلات ماکسول — ساده‌شده</h3>
+  <p>این معادلات الکترومغناطیس را توصیف می‌کنند. یکی از چهار معادله:</p>
+  <div class="math">
+    &#8711;&#215;E = &#8722; &#8706;B/&#8706;t
+  </div>
+  <p><span class="imath">E</span> میدان الکتریکی، <span class="imath">B</span> میدان مغناطیسی، <span class="imath">&#8711;&#215;</span> عملگر «کرل» (چرخش) است. این معادله می‌گوید تغییر میدان مغناطیسی در زمان، میدان الکتریکی چرخان می‌سازد.</p>
+
+  <div class="box note">
+    <span class="label">مشترک همه</span>
+    در همهٔ این معادلات، یک تابع مجهول با مشتق‌هایش در رابطه است. حل آن‌ها یعنی پیدا کردن تابعی که در این رابطه صدق می‌کند. روش‌های زیادی وجود دارد؛ یکی از قدرتمندترینشان برای معادلات با ضرایب ثابت، <strong>تبدیل لاپلاس</strong> است که اکنون به آن می‌رسیم.
+  </div>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    حالا باید ببینیم دقیقاً چه چیزی در حل ODE سخت است و چه ابزاری می‌تواند آن سختی را بشکند. این تحلیل، انگیزهٔ پیدایش <strong>تبدیل لاپلاس</strong> است.
+  </div>
+
+  <!-- ===================== ۹. چرا سخت است ===================== -->
+  <h2 id="ch-hard"><span class="n">۹</span>چرا حل ODE سخت است و چه چیز کم است</h2>
+
+  <p>بگذار مسأله را تحلیل کنم. در معادلهٔ <span class="imath">y&#8243; + 4y&#8242; + 3y = 0</span> سه عملگر روی تابع مجهول <span class="imath">y</span> اعمال شده:</p>
+  <ul>
+    <li>دو بار مشتق گرفتن: <span class="imath">y&#8243;</span></li>
+    <li>یک بار مشتق گرفتن: <span class="imath">y&#8242;</span></li>
+    <li>هیچ: <span class="imath">y</span> خودش</li>
+  </ul>
+
+  <p>و بعد اینها با ضرایب ثابت جمع شده‌اند. مشکل اینجاست که <strong>عملگر مشتق، جبری نیست</strong>. اگر <span class="imath">y = e<sup>at</sup></span> باشد، <span class="imath">y&#8242; = a&#183;y</span>؛ یعنی مشتق به ضرب در یک ثابت ترجمه می‌شود. ولی این فقط برای نمایی‌ها درست است. برای توابع دلخواه، مشتق ضرب ساده در چیزی نیست.</p>
+
+  <p>پس اگر یک <em>نگاشت</em> داشتیم که «مشتق گرفتن» را به «ضرب در یک متغیر جدید» ترجمه می‌کرد، کل معادلهٔ دیفرانسیل به یک معادلهٔ جبری ساده تبدیل می‌شد. این دقیقاً همان چیزی است که <strong>تبدیل لاپلاس</strong> انجام می‌دهد:</p>
+
+  <div class="math">
+    <span class="lop">&#8466;</span>{ y&#8242;(t) } = s &#183; Y(s) &#8722; y(0)
+  </div>
+
+  <p>در این فرمول <span class="imath">&#8466;</span> نماد عملگر لاپلاس است (در فصل ۱۳ دقیق معرفی می‌شود)، <span class="imath">s</span> یک متغیر جدید است (در فصل ۱۱ معرفی می‌شود)، و <span class="imath">Y(s)</span> تصویر تابع <span class="imath">y(t)</span> در فضای جدید است. فعلاً فقط این را ببینید: «مشتق در زمان» به «ضرب در <span class="imath">s</span>» ترجمه شده، به‌علاوهٔ یک ثابت از شرط اولیه. اگر این ترجمه را داشته باشیم، معادلهٔ <span class="imath">y&#8243; + 4y&#8242; + 3y = 0</span> می‌شود:</p>
+
+  <div class="math">
+    [s&#178;&#183;Y &#8722; s&#183;y(0) &#8722; y&#8242;(0)] + 4[s&#183;Y &#8722; y(0)] + 3Y = 0
+  </div>
+
+  <p>یعنی یک معادلهٔ جبری خطی روی <span class="imath">Y(s)</span> که با دست حل می‌شود. حالا فقط باید بدانیم این ترجمه چطور تعریف می‌شود.</p>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    ایدهٔ «ترجمه کردن یک مسأله از یک فضای سخت به فضای آسان» در ریاضیات جدید نیست. قبل از آنکه به لاپلاس برسیم، بگذار ایدهٔ «تبدیل» را در یک مثال ساده ببینیم تا شهودمان آماده شود.
+  </div>
+
+  <!-- ===================== ۱۰. تبدیل چیست ===================== -->
+  <h2 id="ch-transform"><span class="n">۱۰</span>یک «تبدیل» یعنی چه؟</h2>
+
+  <p>یک مثال ساده از جبر مدرسه: حل کردن <span class="imath">x&#178; + 6x + 2 = 0</span>. فرمولِ کلی کار می‌کند، ولی یک راه‌حلِ دستی هم داریم که دردسر کمتری است: <strong>کامل کردن مربع</strong>.</p>
+
+  <p>ایده این است که معادله را به یک شکلِ آوریم که در آن شکل، حلش بدیهی باشد. اگر به <span class="imath">$x$</span> بگوییم <span class="imath">$u = x + 3$</span>، آن‌گاه <span class="imath">$x^2 + 6x = u^2 - 9$</span> و معادلهٔ اصلی تبدیل می‌شود به:</p>
+
+  <div class="math">$$u^2 - 7 = 0$$</div>
+
+  <p>این در فضایِ جدیدِ <span class="imath">$u$</span> یک معادلهٔ بدیهی است: <span class="imath">$u = \pm\sqrt{7}$</span>. حالا که در این فضا حل شد، برمی‌گردیم به <span class="imath">$x$</span>:</p>
+
+  <div class="math">$$x = u - 3 = -3 \pm \sqrt{7}$$</div>
+
+  <p>همین الگو، الگوی همهٔ «تبدیل‌ها»ست: مسأله را از فضایی که درش سخت است به فضایی می‌بریم که درش آسان است، آنجا حل می‌کنیم، و جواب را برمی‌گردانیم به فضای اصلی. چون متن فارسی را از راست به چپ می‌خوانیم، در نمودار زیر گامِ اوّل سمتِ راست است و گامِ بازگشت سمتِ چپ:</p>
+
+  <div class="flow">
+    <span class="step">مسأله در فضای سخت</span>
+    <span class="arrow">&#8592;</span>
+    <span class="step">اعمال تبدیل</span>
+    <span class="arrow">&#8592;</span>
+    <span class="step">مسأله در فضای آسان</span>
+    <span class="arrow">&#8592;</span>
+    <span class="step">حل</span>
+    <span class="arrow">&#8592;</span>
+    <span class="step">بازگشت به فضای اول</span>
+  </div>
+
+  <p>در مثالِ بالا، تبدیلِ <span class="imath">$u = x + 3$</span> یک معادلهٔ درجهٔ دوم با ضریبِ خطیِ مزاحم را به یک معادلهٔ مربعِ خالص تبدیل کرد. <strong>تبدیل لاپلاس</strong> همین نقش را برای معادلات دیفرانسیل بازی می‌کند: مشتق‌گیری را به ضرب در یک متغیر (که در فصل بعد می‌رسیم) تبدیل می‌کند و معادلهٔ دیفرانسیل را به معادلهٔ جبری می‌برد.</p>
+
+  <p>یک «تبدیل» در زبان ریاضی، تابعی است که ورودی‌اش خودش یک تابع است و خروجی‌اش هم یک تابع. به آن <strong>عملگر</strong> هم می‌گویند. وقتی می‌نویسیم <span class="imath">$\mathcal{L}\{f(t)\}$</span> یعنی عملگر <span class="imath">$\mathcal{L}$</span> را روی تابع <span class="imath">$f$</span> اعمال کرده‌ایم و جواب یک تابعِ جدید است.</p>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    در تبدیل لاپلاس، فضایِ جدیدی که مسأله بهش منتقل می‌شود، فضایِ متغیر <span class="imath">$s$</span> است و <span class="imath">$s$</span> یک عدد <em>مختلط</em> است. پس قبل از تعریف لاپلاس، باید اعداد مختلط را بشناسیم.
+  </div>
+
+  <!-- ===================== ۱۱. اعداد مختلط ===================== -->
+  <h2 id="ch-complex"><span class="n">۱۱</span>اعداد مختلط: قبل از لاپلاس باید بشناسیمشان</h2>
+
+  <p>اعداد حقیقی روی یک خط راست قرار دارند از <span class="imath">&#8722;&#8734;</span> تا <span class="imath">+&#8734;</span>. ولی معادلهٔ <span class="imath">x&#178; = &#8722;1</span> روی این خط جواب ندارد (هیچ عدد واقعی‌ای که توان دومش منفی شود وجود ندارد). برای حل این مشکل، یک محور عمودی جدید به خط اعداد اضافه می‌کنیم و می‌گوییم روی این محور، واحد اندازه‌گیری <span class="imath">i</span> است که تعریفش این است:</p>
+
+  <div class="math">
+    i = &#8730;(&#8722;1),&nbsp;&nbsp; i&#178; = &#8722;1
+  </div>
+
+  <p>حالا هر نقطهٔ این صفحهٔ دوبعدی یک عدد مختلط است که دو بخش دارد: یک بخش روی محور افقی (بخش حقیقی) و یک بخش روی محور عمودی (بخش موهومی). نوشته:</p>
+
+  <div class="math">
+    s = &#963; + i &#969;
+  </div>
+
+  <p><span class="imath">&#963;</span> (سیگما) بخش حقیقی و <span class="imath">&#969;</span> (اُمگا) بخش موهومی است. کلمهٔ «موهومی» فقط یک اسم تاریخی است؛ این اعداد واقعی‌اند و قابل استفاده.</p>
+
+  <figure>
+    <svg viewBox="0 0 260 220" width="260" height="220" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="110" x2="240" y2="110" stroke="#5a564e" stroke-width="1.2"/>
+      <line x1="120" y1="200" x2="120" y2="20" stroke="#5a564e" stroke-width="1.2"/>
+      <text x="244" y="114" font-size="11" fill="#5a564e">Re</text>
+      <text x="124" y="22" font-size="11" fill="#5a564e">Im</text>
+      <circle cx="180" cy="60" r="3.5" fill="#b08968"/>
+      <line x1="120" y1="110" x2="180" y2="60" stroke="#b08968" stroke-width="2"/>
+      <line x1="120" y1="110" x2="180" y2="110" stroke="#7d9b6a" stroke-dasharray="3 3"/>
+      <line x1="180" y1="110" x2="180" y2="60" stroke="#7d9b6a" stroke-dasharray="3 3"/>
+      <text x="150" y="124" font-size="11" fill="#7d9b6a">&#963;</text>
+      <text x="186" y="86" font-size="11" fill="#7d9b6a">&#969;</text>
+      <text x="150" y="92" font-size="11" fill="#b08968">s = &#963; + i&#969;</text>
+      <path d="M140,110 A20,20 0 0,0 134,96" fill="none" stroke="#5b7c8d" stroke-width="1.2"/>
+      <text x="138" y="100" font-size="10" fill="#5b7c8d">&#952;</text>
+    </svg>
+    <figcaption>نمایش عدد مختلط در صفحهٔ آرگاند</figcaption>
+  </figure>
+
+  <h3>۱۱.۱ ضرب در i یعنی چرخش ۹۰ درجه</h3>
+  <p>اگر <span class="imath">s = 1</span> باشد (روی محور افقی)، بعد از ضرب در <span class="imath">i</span> می‌شود <span class="imath">i</span> (روی محور عمودی). یعنی ضرب در <span class="imath">i</span> یک چرخش ۹۰ درجه‌ای است. این شهود کلید همهٔ چیزی است که در ادامه می‌آید.</p>
+
+  <h3>۱۱.۲ فرمول اویلر</h3>
+  <p>رابطهٔ شگفت‌انگیز و بسیار مهم:</p>
+  <div class="math">
+    e<sup>i&#952;</sup> = cos &#952; + i &#183; sin &#952;
+  </div>
+
+  <p>این رابطه می‌گوید نمایی مختلط، یک چرخش با زاویهٔ <span class="imath">&#952;</span> در صفحه است. به‌طور خاص، <span class="imath">e<sup>i&#960;</sup> = &#8722;1</span>.</p>
+
+  <p>پس برای <span class="imath">s = &#963; + i&#969;</span> داریم:</p>
+  <div class="math">
+    e<sup>s</sup> = e<sup>&#963;</sup> &#183; e<sup>i&#969;</sup> = e<sup>&#963;</sup> (cos &#969; + i sin &#969;)
+  </div>
+
+  <p>یعنی ضرب در <span class="imath">e<sup>s</sup></span> دو کار هم‌زمان می‌کند: <span class="imath">e<sup>&#963;</sup></span> یک فشردگی/کشیدگی است و <span class="imath">e<sup>i&#969;</sup></span> یک چرخش.</p>
+
+  <div class="box note">
+    <span class="label">چرا برای لاپلاس مهم است</span>
+    در تعریف لاپلاس، ضریب <span class="imath">e<sup>&#8722;st</sup></span> ظاهر می‌شود. وقتی <span class="imath">s = &#963; + i&#969;</span>، این ضریب می‌شود <span class="imath">e<sup>&#8722;&#963;t</sup>&#183;e<sup>&#8722;i&#969;t</sup></span>؛ یعنی یک فاکتور زوال <span class="imath">e<sup>&#8722;&#963;t</sup></span> ضرب در یک چرخش <span class="imath">e<sup>&#8722;i&#969;t</sup></span>. زوال باعث همگرایی انتگرال می‌شود و چرخش، بسامد را وارد می‌کند.
+  </div>
+
+  <div class="box example">
+    <span class="label">مثال ۱۱.۱</span>
+    <p>محاسبهٔ <span class="imath">e<sup>i&#960;/2</sup></span>. طبق اویلر: <span class="imath">cos(&#960;/2) + i sin(&#960;/2) = 0 + i&#183;1 = i</span>. یعنی <span class="imath">e<sup>i&#960;/2</sup> = i</span>. این یک چرخش ۹۰ درجه است.</p>
+  </div>
+
+  <div class="box example">
+    <span class="label">مثال ۱۱.۲</span>
+    <p>محاسبهٔ <span class="imath">(2 + i)(1 + 3i)</span>. با توزیع‌پذیری ضرب:</p>
+    <div class="math">
+      (2 + i)(1 + 3i) = 2&#183;1 + 2&#183;3i + i&#183;1 + i&#183;3i
+    </div>
+    <div class="math">
+      = 2 + 6i + i + 3i&#178;
+    </div>
+    <p>با <span class="imath">i&#178; = &#8722;1</span>:</p>
+    <div class="math">
+      = 2 + 7i &#8722; 3 = &#8722;1 + 7i
+    </div>
+  </div>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    اعداد مختلط را شناختیم. یک مفهوم دیگر هم هست که باید ببینیم: <strong>خطی‌بودن</strong>. این ویژگی است که تبدیل لاپلاس، مشتق، و انتگرال را به ابزارهای قدرتمند تبدیل می‌کند. ماتریس‌ها و عملگرهای برداری را در فصل پایانی با جزئیات می‌بینیم؛ فعلاً فقط ایدهٔ خطی‌بودن کافی است.
+  </div>
+
+  <!-- ===================== ۱۲. خطی‌بودن ===================== -->
+  <h2 id="ch-linalg"><span class="n">۱۲</span>خطی‌بودن: ویژگی کلیدی همهٔ ابزارهای ما</h2>
+
+  <p>یک تابع <span class="imath">T</span> را <strong>خطی</strong> می‌نامیم اگر با جمع و ضرب در ثابت این‌طور رفتار کند:</p>
+
+  <div class="math">
+    T( &#945;&#183;f + &#946;&#183;g ) = &#945;&#183;T(f) + &#946;&#183;T(g)
+  </div>
+
+  <p>یعنی: تبدیلِ جمع، برابر است با جمعِ تبدیل‌ها. و تبدیلِ ضرب در ثابت، برابر است با ضرب در همان ثابت. این ویژگی <em>ساختار خطی</em> نام دارد.</p>
+
+  <p>یک مثال ساده از عملگر خطی: ضرب در یک ثابت. <span class="imath">T(f) = 5&#183;f</span> خطی است چون <span class="imath">5&#183;(&#945;f + &#946;g) = &#945;&#183;5f + &#946;&#183;5g</span>.</p>
+
+  <p>اکنون یک نکتهٔ کلیدی: <strong>مشتق گرفتن هم یک عملگر خطی است</strong>. چون:</p>
+  <div class="math">
+    (&#945;&#183;f + &#946;&#183;g)&#8242; = &#945;&#183;f&#8242; + &#946;&#183;g&#8242;
+  </div>
+
+  <p>و <strong>انتگرال‌گیری هم خطی است</strong>، و <strong>تبدیل لاپلاس هم خطی است</strong>. این خطی‌بودن است که اجازه می‌دهد مسأله را تکه‌تکه کنیم: هر تابع ترکیب خطی از چند تابع پایه است و تبدیلش هم همان ترکیب خطی از تبدیل‌هایشان.</p>
+
+  <div class="box note">
+    <span class="label">پیش‌نگری</span>
+    ما ماتریس‌ها و عملگرهای برداری (نابلا، گرادیان، دیورژانس، کرل) را در فصل ۲۶ با جزئیات می‌بینیم. آن‌جا نشان می‌دهیم که ماتریس‌ها، مشتق، و تبدیل لاپلاس هر سه یک کار انجام می‌دهند: <em>نگاشت خطی بین فضاهای برداری</em>. فعلاً همین مقدار از ایدهٔ خطی‌بودن کافی است تا تعریف لاپلاس را ببینیم.
+  </div>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    حالا همهٔ آجرها را داریم: حد، مشتق، انتگرال، معادلهٔ دیفرانسیل، ایدهٔ تبدیل، اعداد مختلط، خطی‌بودن. می‌توانیم تعریف لاپلاس را با خیال راحت بنویسیم؛ و قبل از فرمول، اول نمادها را معرفی می‌کنیم تا هیچ چیز ناشناخته باقی نماند.
+  </div>
+
+  <!-- ===================== ۱۳. نمادها ===================== -->
+  <h2 id="ch-symbol"><span class="n">۱۳</span>نمادهای تبدیل لاپلاس</h2>
+
+  <p>قبل از نوشتن تعریف، هر نمادی که در فرمول ظاهر می‌شود را معرفی می‌کنیم.</p>
+
+  <table>
+    <caption>نمادهای تعریف لاپلاس</caption>
+    <thead><tr><th>نماد</th><th>معنا</th></tr></thead>
+    <tbody>
+      <tr><td><span class="imath"><span class="lop">&#8466;</span></span></td><td>نام عملگر لاپلاس. فقط یک حرف است که می‌گوید «این تبدیل را انجام بده». مثل اینکه به تابع بگوییم f یا g. تلفظ: «الِ بزرگ».</td></tr>
+      <tr><td><span class="imath">f(t)</span></td><td>تابع ورودی روی متغیر زمان t.</td></tr>
+      <tr><td><span class="imath">F(s)</span></td><td>تابع خروجی در فضای جدید. سنت: حرف بزرگ برای خروجی، حرف کوچک برای ورودی.</td></tr>
+      <tr><td><span class="imath">t</span></td><td>متغیر زمان؛ یک عدد حقیقی <span class="imath">t &#8805; 0</span>.</td></tr>
+      <tr><td><span class="imath">s</span></td><td>متغیر جدید در فضای لاپلاس؛ یک عدد مختلط <span class="imath">s = &#963; + i&#969;</span>.</td></tr>
+      <tr><td><span class="imath">e<sup>&#8722;st</sup></span></td><td>تابع نمایی با توان <span class="imath">&#8722;st</span>؛ همان وزن‌دهی است که در فصل بعد شهودی‌اش را می‌بینیم.</td></tr>
+      <tr><td><span class="imath"><span class="bigop int"><span class="lim-top">&#8734;</span><span class="sym">&#8747;</span><span class="lim-bot">0</span></span></span></td><td>انتگرال ناسره از 0 تا بی‌نهایت؛ جمع بی‌نهایت قطعه.</td></tr>
+      <tr><td><span class="imath">dt</span></td><td>«دِلتای زمان»؛ عرض هر قطعه در مجموع ریمان.</td></tr>
+    </tbody>
+  </table>
+
+  <p>نماد <span class="imath"><span class="lop">&#8466;</span>{f(t)}</span> را می‌خوانیم «الِ تابع اِف از تِ»؛ یعنی عملگر <span class="imath"><span class="lop">&#8466;</span></span> اعمال شده روی <span class="imath">f(t)</span>. نتیجه‌اش <span class="imath">F(s)</span> است؛ یک تابع جدید از <span class="imath">s</span>.</p>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    حالا که همهٔ نمادها را شناختیم، تعریف را می‌نویسیم. ولی قبل از فرمول خشک، یک شهود مهم پیدا می‌کنیم: این انتگرال چه‌کار می‌کند؟ چرا وزن <span class="imath">e<sup>&#8722;st</sup></span>؟
+  </div>
+
+  <!-- ===================== ۱۴. شهود ===================== -->
+  <h2 id="ch-intuition"><span class="n">۱۴</span>شهود: وزن‌دهی به زمان</h2>
+
+  <p>تعریف لاپلاس این است (هنوز درست ننوشته‌ام، ولی برای شهود می‌نویسم):</p>
+
+  <div class="math">
+    F(s) =
+    <span class="bigop int">
+      <span class="lim-top">&#8734;</span>
+      <span class="sym">&#8747;</span>
+      <span class="lim-bot">0</span>
+    </span>
+    f(t) &#183; e<sup>&#8722;st</sup> dt
+  </div>
+
+  <p>این را این‌گونه بخوانیم: <strong>در هر لحظهٔ <span class="imath">t</span>، مقدار <span class="imath">f(t)</span> را در یک وزن به نام <span class="imath">e<sup>&#8722;st</sup></span> ضرب می‌کنم و همه را در طول زمان جمع می‌کنم.</strong> وزن <span class="imath">e<sup>&#8722;st</sup></span> یک ویژگی کلیدی دارد:</p>
+
+  <ul>
+    <li>اگر <span class="imath">s</span> حقیقی و مثبت باشد، وقتی <span class="imath">t</span> بزرگ می‌شود، <span class="imath">e<sup>&#8722;st</sup></span> به‌سرعت به 0 می‌رود. یعنی <em>گذشتهٔ دوردست تأثیر کمتری دارد</em>.</li>
+    <li>اگر <span class="imath">s</span> کوچک یا منفی باشد، وزن کندتر به 0 می‌رود یا حتی رشد می‌کند؛ یعنی گذشتهٔ دور هنوز مهم است.</li>
+  </ul>
+
+  <p>پس <span class="imath">F(s)</span> یک <strong>تراکم وزن‌دار</strong> از تابع در طول زمان است. هر مقدار <span class="imath">s</span> یک «عینک» با ضریب زوال متفاوت به ما می‌دهد و می‌بینیم تابع از زاویهٔ آن عینک چه مقدار «جرم» دارد.</p>
+
+  <div class="box note">
+    <span class="label">تمثیل</span>
+    تصور کن <span class="imath">f(t)</span> صدای یک قطعهٔ موسیقی است. <span class="imath">F(s)</span> شبیه به یک طیف‌سنج است: می‌گوید در هر بسامد و نرخ زوال، چقدر انرژی وجود دارد. این نگاه، پل با تبدیل فوریه است.
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 360 180" width="360" height="180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="30" y1="150" x2="350" y2="150" stroke="#5a564e" stroke-width="1.2"/>
+      <text x="354" y="154" font-size="11" fill="#5a564e">t</text>
+      <path d="M30,150 Q60,40 90,150 Q120,150 150,150 Q180,80 210,150 Q240,150 270,150 Q300,120 330,150" fill="none" stroke="#5b7c8d" stroke-width="2"/>
+      <text x="40" y="50" font-size="11" fill="#5b7c8d">f(t)</text>
+      <path d="M30,150 Q90,70 150,110 Q210,140 270,148 Q300,150 350,150" fill="none" stroke="#b08968" stroke-dasharray="5 3" stroke-width="1.5"/>
+      <path d="M30,150 Q70,90 110,135 Q150,150 200,150 Q250,150 350,150" fill="none" stroke="#7d9b6a" stroke-dasharray="5 3" stroke-width="1.5"/>
+      <text x="170" y="100" font-size="10" fill="#b08968">e<sup>&#8722;s&#8321;t</sup></text>
+      <text x="90" y="120" font-size="10" fill="#7d9b6a">e<sup>&#8722;s&#8322;t</sup></text>
+    </svg>
+    <figcaption>دو وزن متفاوت e<sup>&#8722;st</sup>: هرکدام زاویهٔ متفاوتی برای دیدن f(t) می‌دهند</figcaption>
+  </figure>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    شهود را داریم. حالا تعریف را با دقت و رسمیت می‌نویسیم.
+  </div>
+
+  <!-- ===================== ۱۵. تعریف رسمی ===================== -->
+  <h2 id="ch-def"><span class="n">۱۵</span>تعریف رسمی تبدیل لاپلاس</h2>
+
+  <p>برای تابع <span class="imath">f(t)</span> که روی <span class="imath">t &#8805; 0</span> تعریف شده، <strong>تبدیل لاپلاس</strong> آن، تابع <span class="imath">F(s)</span> است که روی صفحهٔ مختلط <span class="imath">s</span> تعریف می‌شود:</p>
+
+  <div class="math">
+    F(s) = <span class="lop">&#8466;</span>{ f(t) } =
+    <span class="bigop int">
+      <span class="lim-top">&#8734;</span>
+      <span class="sym">&#8747;</span>
+      <span class="lim-bot">0</span>
+    </span>
+    f(t) &#183; e<sup>&#8722;st</sup> dt
+  </div>
+
+  <h3>۱۵.۱ یک‌طرفه در برابر دوطرفه</h3>
+  <p>این تعریف <em>یک‌طرفه</em> است: انتگرال از 0 تا &#8734;. نسخهٔ <em>دوطرفه</em> از <span class="imath">&#8722;&#8734;</span> تا <span class="imath">+&#8734;</span> انتگرال می‌گیرد و در نظریهٔ سیگنال بیشتر استفاده می‌شود. در حل ODE معمولی، نسخهٔ یک‌طرفه به‌خاطر وارد شدن مستقیم شرایط اولیه راحت‌تر است.</p>
+
+  <div class="math">
+    <span class="lop">&#8466;</span><sub>bilateral</sub>{ f(t) } =
+    <span class="bigop int">
+      <span class="lim-top">&#8734;</span>
+      <span class="sym">&#8747;</span>
+      <span class="lim-bot">&#8722;&#8734;</span>
+    </span>
+    f(t) &#183; e<sup>&#8722;st</sup> dt
+  </div>
+
+  <h3>۱۵.۲ چرا از t = 0 شروع می‌شود؟</h3>
+  <p>چون در مسائل فیزیکی معمولاً لحظهٔ شروع یک پدیده را به <span class="imath">t = 0</span> منتقل می‌کنیم (با تغییر متغیر). این انتخاب قراردادی است و تبدیل را به «حافظهٔ سیستم از لحظهٔ شروع» تبدیل می‌کند. شرط اولیه <span class="imath">y(0)</span> نیز در همین لحظه وارد می‌شود.</p>
+
+  <h3>۱۵.۳ تبدیل وارون</h3>
+  <p>اگر <span class="imath">F(s) = <span class="lop">&#8466;</span>{f(t)}</span> باشد، عملیات برگشت را <span class="imath"><span class="lop">&#8466;</span><sup>&#8722;1</sup>{F(s)} = f(t)</span> می‌نویسیم. در عمل، برگشت را با جدول و با تجزیه به کسر جزئی انجام می‌دهیم، نه با فرمول انتگرالی مستقیم (که در متون پیشرفته به‌صورت <span class="imath">f(t) = <span class="frac"><span class="num">1</span><span class="den">2&#960;i</span></span> &#8747; e<sup>st</sup>F(s) ds</span> نوشته می‌شود).</p>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    تعریف را داریم. حالا باید ببینیم کل فرایند «رفتن به فضای s و برگشتن» چه شکلی است. این مسیر رفت‌وبرگشت را با یک مثال عددی کامل در فصل بعد می‌بینیم.
+  </div>
+
+  <!-- ===================== ۱۶. رفت‌وبرگشت ===================== -->
+  <h2 id="ch-stos"><span class="n">۱۶</span>از t به s و برگشت: مسیر کامل رفت‌وبرگشت</h2>
+
+  <p>کل ایدهٔ تبدیل لاپلاس در این مسیر خلاصه می‌شود:</p>
+
+  <div class="flow">
+    <span class="step">مسأله در فضای t</span>
+    <span class="arrow">&#8592;</span>
+    <span class="step">&#8466; اعمال کن</span>
+    <span class="arrow">&#8592;</span>
+    <span class="step">معادلهٔ جبری در s</span>
+    <span class="arrow">&#8592;</span>
+    <span class="step">حل برای Y(s)</span>
+    <span class="arrow">&#8592;</span>
+    <span class="step">&#8466;<sup>&#8722;1</sup> اعمال کن</span>
+    <span class="arrow">&#8592;</span>
+    <span class="step">جواب در فضای t</span>
+  </div>
+
+  <p>برای آنکه این مسیر را به‌طور ملموس ببینیم، یک مثال عددی کامل می‌زنیم. مسألهٔ ساده: رشد جمعیت که در فصل ۷ دیدیم، ولی این بار با لاپلاس حل می‌کنیم.</p>
+
+  <h3>۱۶.۱ مثال عددی: y&#8242; = 0.05 y, y(0) = 1000</h3>
+
+  <p><strong>گام ۱ — فضای t:</strong> معادله <span class="imath">y&#8242; = 0.05 y</span> با <span class="imath">y(0) = 1000</span>.</p>
+
+  <p><strong>گام ۲ — اعمال &#8466;:</strong> با استفاده از <span class="imath">&#8466;{y&#8242;} = sY(s) &#8722; y(0)</span>:</p>
+  <div class="math">
+    sY(s) &#8722; 1000 = 0.05 &#183; Y(s)
+  </div>
+
+  <p><strong>گام ۳ — معادلهٔ جبری در s:</strong></p>
+  <div class="math">
+    (s &#8722; 0.05) &#183; Y(s) = 1000
+  </div>
+
+  <p><strong>گام ۴ — حل برای Y(s):</strong></p>
+  <div class="math">
+    Y(s) = 1000 / (s &#8722; 0.05)
+  </div>
+
+  <p><strong>گام ۵ — برگشت با &#8466;<sup>&#8722;1</sup>:</strong> از جدول (ردیف نمایی) می‌دانیم <span class="imath">&#8466;{e<sup>at</sup>} = 1/(s&#8722;a)</span>. پس:</p>
+  <div class="math">
+    y(t) = 1000 &#183; e<sup>0.05t</sup>
+  </div>
+
+  <p><strong>گام ۶ — بررسی:</strong> این همان جوابی است که در فصل ۷ به‌صورت شهودی پیدا کردیم. یعنی مسأله در فضای t به فضای s منتقل شد، آنجا به‌سادگی حل شد، و برگشت دقیقاً همان جواب را داد.</p>
+
+  <h3>۱۶.۲ تغییر مختصات</h3>
+  <p>در فضای زمان، متغیر مستقل <span class="imath">t</span> در بازهٔ <span class="imath">[0, &#8734;)</span> است؛ یعنی نیم‌خط حقیقی مثبت. در فضای لاپلاس، متغیر مستقل <span class="imath">s = &#963; + i&#969;</span> است؛ یعنی یک نقطهٔ دلخواه در صفحهٔ مختلط.</p>
+
+  <div class="math">
+    t &#8712; [0, +&#8734;) &#8834; &#8477; &nbsp;&nbsp;&#8594;&nbsp;&nbsp; s &#8712; &#8450; (complex plane)
+  </div>
+
+  <p>این تنها یک انتقال نمایشی نیست؛ یعنی یک <em>تابع یک متغیر حقیقی</em> به یک <em>تابع یک متغیر مختلط</em> نگاشت می‌شود. این نگاشت، به‌لطف ضریب <span class="imath">e<sup>&#8722;st</sup></span>، ساختار جبری را ساده می‌کند.</p>
+
+  <h3>۱۶.۳ معنای &#963; و &#969;</h3>
+  <ul>
+    <li><span class="imath">&#963;</span>: نرخ زوال. کنترل می‌کند وزن‌دهی <span class="imath">e<sup>&#8722;&#963;t</sup></span> چقدر سریع به 0 برود.</li>
+    <li><span class="imath">&#969;</span>: بسامد زاویه‌ای. از طریق <span class="imath">e<sup>&#8722;i&#969;t</sup> = cos(&#969;t) &#8722; i sin(&#969;t)</span> رفتار نوسانی را می‌سنجد.</li>
+  </ul>
+
+  <h3>۱۶.۴ ناحیهٔ همگرایی (ROC)</h3>
+  <p>انتگرال لاپلاس برای همهٔ <span class="imath">s</span>ها همگرا نیست. مجموعهٔ نقاطی از صفحهٔ <span class="imath">s</span> که در آن‌ها انتگرال همگراست، <strong>ناحیهٔ همگرایی</strong> نامیده می‌شود و معمولاً یک نیم‌صفحه است.</p>
+
+  <div class="math">
+    ROC = { s &#8712; &#8450; : Re(s) &gt; &#963;&#8320; }
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 260 220" width="260" height="220" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="110" x2="240" y2="110" stroke="#5a564e" stroke-width="1.2"/>
+      <line x1="120" y1="200" x2="120" y2="20" stroke="#5a564e" stroke-width="1.2"/>
+      <text x="244" y="114" font-size="11" fill="#5a564e">Re(s)</text>
+      <text x="124" y="22" font-size="11" fill="#5a564e">Im(s)</text>
+      <rect x="170" y="20" width="70" height="180" fill="#b08968" opacity="0.18"/>
+      <line x1="170" y1="20" x2="170" y2="200" stroke="#b08968" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="174" y="36" font-size="11" fill="#b08968">&#963;&#8320;</text>
+      <text x="190" y="120" font-size="11" fill="#b08968">ROC</text>
+    </svg>
+    <figcaption>ناحیهٔ همگرایی: نیم‌صفحهٔ راستِ خط &#963; = &#963;&#8320;</figcaption>
+  </figure>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    حالا باید بپرسیم: چه توابعی اصلاً چنین انتگرالی دارند؟ چه‌کسانی نصوب نمایی رشد می‌کنند و چه‌کسانی نه؟
+  </div>
+
+  <!-- ===================== ۱۷. شرایط وجود ===================== -->
+  <h2 id="ch-existence"><span class="n">۱۷</span>چه توابعی لاپلاس‌پذیرند؟</h2>
+
+  <p>برای آنکه انتگرال لاپلاس برای حداقل برخی از <span class="imath">s</span>ها همگرا باشد، تابع باید رشد کنترل‌شده‌ای داشته باشد. شرط کلاسیک این است:</p>
+
+  <div class="box note">
+    <span class="label">شرط کافی</span>
+    اگر <span class="imath">f(t)</span> روی هر بازهٔ متناهی <em>تکه‌ای پیوسته</em> باشد و وجود داشته باشد ثابت <span class="imath">M &gt; 0</span> و <span class="imath">&#945; &#8712; &#8477;</span> به‌طوری‌که برای همهٔ <span class="imath">t &#8805; t&#8320;</span> داشته باشیم <span class="imath">|f(t)| &#8804; M&#183;e<sup>&#945;t</sup></span>، آن‌گاه <span class="imath">&#8466;{f}</span> برای <span class="imath">Re(s) &gt; &#945;</span> موجود است.
+  </div>
+
+  <p>به زبان ساده: تابع باید <strong>نصوب نمایی</strong> رشد کند. یعنی سریع‌تر از یک نمایی با پایهٔ دلخواه بزرگ نشود. اگر چنین کران نمایی داشته باشیم، می‌توان <span class="imath">s</span> را با بخش حقیقی به اندازهٔ کافی بزرگ انتخاب کرد تا وزن <span class="imath">e<sup>&#8722;&#963;t</sup></span> بر رشد <span class="imath">f</span> غلبه کند و انتگرال همگرا شود.</p>
+
+  <h3>۱۷.۱ مثال‌هایی از توابع غیرلاپلاس‌پذیر</h3>
+  <ul>
+    <li><span class="imath">f(t) = e<sup>t&#178;</sup></span>: سریع‌تر از هر نمایی <span class="imath">e<sup>&#945;t</sup></span> رشد می‌کند. برای هیچ <span class="imath">s</span> انتگرال همگرا نیست.</li>
+    <li><span class="imath">f(t) = t!</span> یا <span class="imath">&#915;(t+1)</span> برای <span class="imath">t &#8594; &#8734;</span>: رشد فاکتوریل از هر نمایی سریع‌تر است.</li>
+    <li><span class="imath">f(t) = e<sup>e&#7528;</sup></span>: نمایی از نمایی.</li>
+  </ul>
+
+  <div class="box warn">
+    <span class="label">دقت</span>
+    پرش متناهی یا مقادیر منفی در نقاط منفصل مشکلی ایجاد نمی‌کنند. مشکل فقط با <em>رشد سریع به سمت بی‌نهایت</em> است.
+  </div>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    حالا می‌دانیم چه توابعی را می‌توانیم تبدیل کنیم. بگذار چند تابع پرکاربرد را از تعریف محاسبه کنیم تا هم دست‌مان باز بیاید و هم جدولی داشته باشیم برای حل مسأله.
+  </div>
+
+  <!-- ===================== ۱۸. توابع معروف ===================== -->
+  <h2 id="ch-standard"><span class="n">۱۸</span>توابع معروف و اثبات‌ها</h2>
+
+  <h3>۱۸.۱ تابع پلهٔ واحد u(t)</h3>
+  <p>تابع <span class="imath">u(t) = 1</span> برای <span class="imath">t &#8805; 0</span> و صفر در غیر این صورت. ساده‌ترین تابع و پایهٔ بسیاری از توابع دیگر.</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ u(t) } =
+    <span class="bigop int">
+      <span class="lim-top">&#8734;</span>
+      <span class="sym">&#8747;</span>
+      <span class="lim-bot">0</span>
+    </span>
+    e<sup>&#8722;st</sup> dt
+    = [ &#8722;<span class="frac"><span class="num">e<sup>&#8722;st</sup></span><span class="den">s</span></span> ]<sub>0</sub><sup>&#8734;</sup>
+    = <span class="frac"><span class="num">1</span><span class="den">s</span></span>,&nbsp;&nbsp; Re(s) &gt; 0
+  </div>
+
+  <h3>۱۸.۲ تابع نمایی e<sup>at</sup></h3>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ e<sup>at</sup> } =
+    <span class="bigop int">
+      <span class="lim-top">&#8734;</span>
+      <span class="sym">&#8747;</span>
+      <span class="lim-bot">0</span>
+    </span>
+    e<sup>at</sup>&#183;e<sup>&#8722;st</sup> dt
+    =
+    <span class="bigop int">
+      <span class="lim-top">&#8734;</span>
+      <span class="sym">&#8747;</span>
+      <span class="lim-bot">0</span>
+    </span>
+    e<sup>&#8722;(s&#8722;a)t</sup> dt
+    = <span class="frac"><span class="num">1</span><span class="den">s &#8722; a</span></span>,&nbsp;&nbsp; Re(s) &gt; Re(a)
+  </div>
+
+  <h3>۱۸.۳ تابع توانی t<sup>n</sup></h3>
+  <p>برای <span class="imath">n &#8712; &#8469;</span>، با انتگرال‌گیری جزء‌به‌جزت یا با تابع گاما:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ t<sup>n</sup> } = <span class="frac"><span class="num">n!</span><span class="den">s<sup>n+1</sup></span></span>,&nbsp;&nbsp; Re(s) &gt; 0
+  </div>
+  <p>تابع گاما <span class="imath">&#915;(z) = &#8747;<sub>0</sub><sup>&#8734;</sup> t<sup>z&#8722;1</sup> e<sup>&#8722;t</sup> dt</span> تعمیم فاکتوریل است و <span class="imath">&#915;(n+1) = n!</span>. با تغییر متغیر <span class="imath">u = st</span> به نتیجه می‌رسیم.</p>
+
+  <h3>۱۸.۴ سینوس و کسینوس — با استفاده از اویلر</h3>
+  <p>اینجا اولین کاربرد حقیقی فرمول اویلر است. از اویلر:</p>
+  <div class="math">
+    sin(&#969;t) = <span class="frac"><span class="num">e<sup>i&#969;t</sup> &#8722; e<sup>&#8722;i&#969;t</sup></span><span class="den">2i</span></span>
+  </div>
+  <p>با خطی بودن <span class="imath">&#8466;</span> و نتیجهٔ ۱۸.۲ با <span class="imath">a = i&#969;</span> و <span class="imath">a = &#8722;i&#969;</span>:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ sin(&#969;t) } = <span class="frac"><span class="num">1</span><span class="den">2i</span></span> [ <span class="frac"><span class="num">1</span><span class="den">s&#8722;i&#969;</span></span> &#8722; <span class="frac"><span class="num">1</span><span class="den">s+i&#969;</span></span> ]
+    = <span class="frac"><span class="num">1</span><span class="den">2i</span></span> [ <span class="frac"><span class="num">s+i&#969; &#8722; (s&#8722;i&#969;)</span><span class="den">s&#178;+&#969;&#178;</span></span> ]
+    = <span class="frac"><span class="num">1</span><span class="den">2i</span></span> [ <span class="frac"><span class="num">2i&#969;</span><span class="den">s&#178;+&#969;&#178;</span></span> ]
+    = <span class="frac"><span class="num">&#969;</span><span class="den">s&#178; + &#969;&#178;</span></span>
+  </div>
+  <p>و به‌طور مشابه:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ cos(&#969;t) } = <span class="frac"><span class="num">s</span><span class="den">s&#178; + &#969;&#178;</span></span>
+  </div>
+  <p>پس <strong>فرمول اویلر ابزار واقعی محاسبهٔ لاپلاس سینوس و کسینوس است</strong>؛ بدون اویلر، این محاسبه خیلی طولانی‌تر می‌شد.</p>
+
+  <h3>۱۸.۵ تابع پلهٔ واحد تأخیری u(t &#8722; a)</h3>
+  <p>با تغییر متغیر <span class="imath">&#964; = t &#8722; a</span>:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ u(t &#8722; a) } = <span class="frac"><span class="num">e<sup>&#8722;as</sup></span><span class="den">s</span></span>,&nbsp;&nbsp; Re(s) &gt; 0
+  </div>
+
+  <h3>۱۸.۶ ضربهٔ دیراک &#948;(t)</h3>
+  <p>تابع <span class="imath">&#948;</span> یک «توزیع» است که در <span class="imath">t = 0</span> متمرکز است و انتگرال‌گیری روی هر بازهٔ شامل صفر، نتیجهٔ ۱ می‌دهد. پس:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ &#948;(t) } =
+    <span class="bigop int">
+      <span class="lim-top">&#8734;</span>
+      <span class="sym">&#8747;</span>
+      <span class="lim-bot">0</span>
+    </span>
+    &#948;(t) e<sup>&#8722;st</sup> dt = e<sup>0</sup> = 1
+  </div>
+  <p>و به‌طور کلی <span class="imath"><span class="lop">&#8466;</span>{ &#948;(t &#8722; a) } = e<sup>&#8722;as</sup></span>.</p>
+
+  <h3>۱۸.۷ تابع شیب t&#183;u(t)</h3>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ t&#183;u(t) } = <span class="frac"><span class="num">1</span><span class="den">s&#178;</span></span>,&nbsp;&nbsp; Re(s) &gt; 0
+  </div>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    حالا همهٔ این‌ها را در یک جدول جمع می‌کنیم تا مرجع سریع داشته باشیم.
+  </div>
+
+  <!-- ===================== ۱۹. جدول ===================== -->
+  <h2 id="ch-table"><span class="n">۱۹</span>جدول تبدیل‌های پایه</h2>
+
+  <p>این جدول مرجع سریعی برای حل مسائل است. در همهٔ ردیف‌ها فرض بر آن است که <span class="imath">t &#8805; 0</span> و <span class="imath">Re(s)</span> به اندازهٔ کافی بزرگ است.</p>
+
+  <table>
+    <caption>جدول ۱: تبدیل‌های لاپلاس پرکاربرد</caption>
+    <thead><tr><th style="width:38%">تابع زمانی f(t)</th><th style="width:42%">تبدیل لاپلاس F(s)</th><th>ROC</th></tr></thead>
+    <tbody>
+      <tr><td><span class="imath">&#948;(t)</span></td><td><span class="imath">1</span></td><td>كل صفحه</td></tr>
+      <tr><td><span class="imath">u(t)</span></td><td><span class="imath"><span class="frac"><span class="num">1</span><span class="den">s</span></span></span></td><td><span class="imath">Re(s) &gt; 0</span></td></tr>
+      <tr><td><span class="imath">t&#183;u(t)</span></td><td><span class="imath"><span class="frac"><span class="num">1</span><span class="den">s&#178;</span></span></span></td><td><span class="imath">Re(s) &gt; 0</span></td></tr>
+      <tr><td><span class="imath">t<sup>n</sup>&#183;u(t), n &#8712; &#8469;</span></td><td><span class="imath"><span class="frac"><span class="num">n!</span><span class="den">s<sup>n+1</sup></span></span></span></td><td><span class="imath">Re(s) &gt; 0</span></td></tr>
+      <tr><td><span class="imath">e<sup>at</sup>&#183;u(t)</span></td><td><span class="imath"><span class="frac"><span class="num">1</span><span class="den">s &#8722; a</span></span></span></td><td><span class="imath">Re(s) &gt; Re(a)</span></td></tr>
+      <tr><td><span class="imath">t<sup>n</sup>&#183;e<sup>at</sup>&#183;u(t)</span></td><td><span class="imath"><span class="frac"><span class="num">n!</span><span class="den">(s &#8722; a)<sup>n+1</sup></span></span></span></td><td><span class="imath">Re(s) &gt; Re(a)</span></td></tr>
+      <tr><td><span class="imath">sin(&#969;t)&#183;u(t)</span></td><td><span class="imath"><span class="frac"><span class="num">&#969;</span><span class="den">s&#178; + &#969;&#178;</span></span></span></td><td><span class="imath">Re(s) &gt; 0</span></td></tr>
+      <tr><td><span class="imath">cos(&#969;t)&#183;u(t)</span></td><td><span class="imath"><span class="frac"><span class="num">s</span><span class="den">s&#178; + &#969;&#178;</span></span></span></td><td><span class="imath">Re(s) &gt; 0</span></td></tr>
+      <tr><td><span class="imath">e<sup>at</sup>&#183;sin(&#969;t)</span></td><td><span class="imath"><span class="frac"><span class="num">&#969;</span><span class="den">(s&#8722;a)&#178; + &#969;&#178;</span></span></span></td><td><span class="imath">Re(s) &gt; Re(a)</span></td></tr>
+      <tr><td><span class="imath">e<sup>at</sup>&#183;cos(&#969;t)</span></td><td><span class="imath"><span class="frac"><span class="num">s&#8722;a</span><span class="den">(s&#8722;a)&#178; + &#969;&#178;</span></span></span></td><td><span class="imath">Re(s) &gt; Re(a)</span></td></tr>
+      <tr><td><span class="imath">sinh(&#969;t)&#183;u(t)</span></td><td><span class="imath"><span class="frac"><span class="num">&#969;</span><span class="den">s&#178; &#8722; &#969;&#178;</span></span></span></td><td><span class="imath">Re(s) &gt; |&#969;|</span></td></tr>
+      <tr><td><span class="imath">cosh(&#969;t)&#183;u(t)</span></td><td><span class="imath"><span class="frac"><span class="num">s</span><span class="den">s&#178; &#8722; &#969;&#178;</span></span></span></td><td><span class="imath">Re(s) &gt; |&#969;|</span></td></tr>
+      <tr><td><span class="imath">u(t &#8722; a)</span></td><td><span class="imath"><span class="frac"><span class="num">e<sup>&#8722;as</sup></span><span class="den">s</span></span></span></td><td><span class="imath">Re(s) &gt; 0</span></td></tr>
+      <tr><td><span class="imath">&#948;(t &#8722; a)</span></td><td><span class="imath">e<sup>&#8722;as</sup></span></td><td>كل صفحه</td></tr>
+      <tr><td><span class="imath">t<sup>n&#8722;1</sup>&#183;e<sup>at</sup> / (n&#8722;1)!</span></td><td><span class="imath"><span class="frac"><span class="num">1</span><span class="den">(s &#8722; a)<sup>n</sup></span></span></span></td><td><span class="imath">Re(s) &gt; Re(a)</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    جدول فقط وقتی به کار می‌آید که خصوصیات جبری تبدیل را بلد باشیم؛ مثلاً وقتی تابع را بتوان به‌صورت جمع چند تابع ساده نوشت. این خصوصیات را در فصل بعد می‌بینیم؛ مهم‌ترین‌شان، رابطهٔ <em>مشتق &#8594; ضرب در s</em> است که کل فلسفهٔ لاپلاس است.
+  </div>
+
+  <!-- ===================== ۲۰. خصوصیات ===================== -->
+  <h2 id="ch-props"><span class="n">۲۰</span>خصوصیات جبری تبدیل لاپلاس</h2>
+
+  <h3>۲۰.۱ خطی بودن</h3>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ &#945;&#183;f + &#946;&#183;g } = &#945;&#183;F(s) + &#946;&#183;G(s)
+  </div>
+  <p>این از خطی بودن انتگرال می‌آید و اجازه می‌دهد تابع‌های مرکب را تکه‌تکه کنیم.</p>
+
+  <h3>۲۰.۲ شیفت در زمان</h3>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ f(t &#8722; a)&#183;u(t &#8722; a) } = e<sup>&#8722;as</sup>&#183;F(s)
+  </div>
+  <p>تأخیر به اندازهٔ <span class="imath">a</span> در زمان، ضرب در <span class="imath">e<sup>&#8722;as</sup></span> در فضای <span class="imath">s</span> می‌شود. در نظریهٔ کنترل بسیار مهم است.</p>
+
+  <h3>۲۰.۳ شیفت در s</h3>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ e<sup>at</sup>&#183;f(t) } = F(s &#8722; a)
+  </div>
+  <p>ضرب در نمایی در زمان، انتقال در فضای <span class="imath">s</span> است. این تقارن زیبا با شیفت زمانی، ابزار قدرتمندی می‌سازد.</p>
+
+  <h3>۲۰.۴ مشتق در زمان — مهم‌ترین ویژگی</h3>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ f&#8242;(t) } = s&#183;F(s) &#8722; f(0)
+  </div>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ f&#8243;(t) } = s&#178;&#183;F(s) &#8722; s&#183;f(0) &#8722; f&#8242;(0)
+  </div>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ f<sup>(n)</sup>(t) } = s<sup>n</sup>&#183;F(s) &#8722; s<sup>n&#8722;1</sup>&#183;f(0) &#8722; &#8230; &#8722; f<sup>(n&#8722;1)</sup>(0)
+  </div>
+
+  <p>اثبات مرتبهٔ اول با انتگرال‌گیری جزء‌به‌جزت:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ f&#8242; } =
+    <span class="bigop int">
+      <span class="lim-top">&#8734;</span>
+      <span class="sym">&#8747;</span>
+      <span class="lim-bot">0</span>
+    </span>
+    f&#8242; e<sup>&#8722;st</sup> dt
+    = [ f&#183;e<sup>&#8722;st</sup> ]<sub>0</sub><sup>&#8734;</sup> + s
+    <span class="bigop int">
+      <span class="lim-top">&#8734;</span>
+      <span class="sym">&#8747;</span>
+      <span class="lim-bot">0</span>
+    </span>
+    f&#183;e<sup>&#8722;st</sup> dt
+    = &#8722;f(0) + s&#183;F(s)
+  </div>
+
+  <p>این <em>دقیقاً همان</em> چیزی است که در فصل ۹ به آن نیاز داشتیم: <strong>مشتق در زمان برابر است با ضرب در s در فضای لاپلاس</strong> به علاوهٔ یک جملهٔ ثابت از شرط اولیه. این جملهٔ ثابت است که اطلاعات آغاز سیستم را وارد می‌کند.</p>
+
+  <h3>۲۰.۵ انتگرال در زمان</h3>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ <span class="bigop int"><span class="lim-top">t</span><span class="sym">&#8747;</span><span class="lim-bot">0</span></span> f(&#964;) d&#964; } = <span class="frac"><span class="num">F(s)</span><span class="den">s</span></span>
+  </div>
+  <p>انتگرال در زمان، تقسیم بر s در فضای لاپلاس. معکوسِ مشتق.</p>
+
+  <h3>۲۰.۶ مشتق در s</h3>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ t&#183;f(t) } = &#8722; <span class="frac"><span class="num">dF(s)</span><span class="den">ds</span></span>
+  </div>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ t<sup>n</sup>&#183;f(t) } = (&#8722;1)<sup>n</sup> &#183; <span class="frac"><span class="num">d<sup>n</sup>F(s)</span><span class="den">ds<sup>n</sup></span></span>
+  </div>
+
+  <h3>۲۰.۷ انتگرال در s</h3>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ <span class="frac"><span class="num">f(t)</span><span class="den">t</span></span> } =
+    <span class="bigop int">
+      <span class="lim-top">&#8734;</span>
+      <span class="sym">&#8747;</span>
+      <span class="lim-bot">s</span>
+    </span>
+    F(u) du
+  </div>
+
+  <h3>۲۰.۸ کانولوشن (Convolution)</h3>
+  <p>اگر <span class="imath">h(t) = (f &#8727; g)(t) = &#8747;<sub>0</sub><sup>t</sup> f(&#964;)&#183;g(t&#8722;&#964;) d&#964;</span> آن‌گاه:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ f &#8727; g } = F(s) &#183; G(s)
+  </div>
+  <p>کانولوشن در زمان برابر است با ضرب در فضای <span class="imath">s</span>. این ویژگی، پلِ مستقیم با نظریهٔ سیستم‌های خطی و پاسخ ضربه است.</p>
+
+  <h3>۲۰.۹ قضیهٔ مقدار اولیه و نهایی</h3>
+  <div class="math">
+    f(0<sup>+</sup>) = lim<sub>s &#8594; &#8734;</sub> s&#183;F(s)
+  </div>
+  <div class="math">
+    f(&#8734;) = lim<sub>s &#8594; 0</sub> s&#183;F(s)
+  </div>
+  <p>دومی تنها وقتی معتبر است که قطب‌های <span class="imath">s&#183;F(s)</span> در نیم‌صفحهٔ چپ باشند (سیستم پایدار).</p>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    حالا ابزارها را داریم. بگذار چند مثال را با دست حل کنیم تا با ترکیب خطی‌بودن و شیفت و مشتق در s، تبدیل توابع مختلف را به‌دست بیاوریم.
+  </div>
+
+  <!-- ===================== ۲۱. مثال‌ها ===================== -->
+  <h2 id="ch-examples"><span class="n">۲۱</span>مثال‌های گام‌به‌گام (ساده تا سخت)</h2>
+
+  <h3>مثال ۲۱.۱ — خطی (ساده)</h3>
+  <p>تبدیل <span class="imath">f(t) = 3 + 2t &#8722; 5e<sup>&#8722;4t</sup></span>:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{f} = <span class="frac"><span class="num">3</span><span class="den">s</span></span> + <span class="frac"><span class="num">2</span><span class="den">s&#178;</span></span> &#8722; <span class="frac"><span class="num">5</span><span class="den">s+4</span></span>
+  </div>
+
+  <h3>مثال ۲۱.۲ — چندجمله‌ای ضرب در نمایی (متوسط)</h3>
+  <p><span class="imath">f(t) = t&#178;&#183;e<sup>3t</sup></span>. از ۲۰.۳ و ۱۸.۳:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ t&#178; } = <span class="frac"><span class="num">2</span><span class="den">s&#179;</span></span>&nbsp;&nbsp;&#8614;&nbsp;&nbsp;<span class="lop">&#8466;</span>{ t&#178;&#183;e<sup>3t</sup> } = <span class="frac"><span class="num">2</span><span class="den">(s &#8722; 3)&#179;</span></span>
+  </div>
+
+  <h3>مثال ۲۱.۳ — سینوس ضرب در نمایی (متوسط)</h3>
+  <p><span class="imath">f(t) = e<sup>&#8722;2t</sup>&#183;sin(5t)</span>. با شیفت در s:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ sin(5t) } = <span class="frac"><span class="num">5</span><span class="den">s&#178; + 25</span></span>&nbsp;&nbsp;&#8614;&nbsp;&nbsp;<span class="lop">&#8466;</span>{ e<sup>&#8722;2t</sup>&#183;sin(5t) } = <span class="frac"><span class="num">5</span><span class="den">(s+2)&#178; + 25</span></span>
+  </div>
+
+  <h3>مثال ۲۱.۴ — تابع تکه‌ای (سخت‌تر)</h3>
+  <div class="math">
+    f(t) = { t ,&nbsp; 0 &#8804; t &lt; 1 ;&nbsp; 1 ,&nbsp; t &#8805; 1 }
+  </div>
+  <p>بازنویسی: <span class="imath">f(t) = t&#183;u(t) &#8722; (t &#8722; 1)&#183;u(t &#8722; 1)</span>. پس:</p>
+  <div class="math">
+    F(s) = <span class="frac"><span class="num">1</span><span class="den">s&#178;</span></span> &#8722; <span class="frac"><span class="num">e<sup>&#8722;s</sup></span><span class="den">s&#178;</span></span> = <span class="frac"><span class="num">1 &#8722; e<sup>&#8722;s</sup></span><span class="den">s&#178;</span></span>
+  </div>
+
+  <h3>مثال ۲۱.۵ — توانی غیرصحیح (سخت)</h3>
+  <p><span class="imath">f(t) = t<sup>1/2</sup></span>. با تابع گاما:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ t<sup>1/2</sup> } = <span class="frac"><span class="num">&#915;(3/2)</span><span class="den">s<sup>3/2</sup></span></span> = <span class="frac"><span class="num">&#8730;&#960;</span><span class="den">2 s<sup>3/2</sup></span></span>
+  </div>
+
+  <h3>مثال ۲۱.۶ — توابع هذلولی (متوسط)</h3>
+  <p><span class="imath">f(t) = cosh(3t)</span>. از <span class="imath">cosh(3t) = (e<sup>3t</sup> + e<sup>&#8722;3t</sup>)/2</span>:</p>
+  <div class="math">
+    F(s) = &#189; [ <span class="frac"><span class="num">1</span><span class="den">s&#8722;3</span></span> + <span class="frac"><span class="num">1</span><span class="den">s+3</span></span> ] = <span class="frac"><span class="num">s</span><span class="den">s&#178; &#8722; 9</span></span>
+  </div>
+
+  <h3>مثال ۲۱.۷ — ترکیب ضرب در t (سخت‌تر)</h3>
+  <p><span class="imath">f(t) = t&#183;sin(2t)</span>. از ۲۰.۶:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ t&#183;sin(2t) } = &#8722; <span class="frac"><span class="num">d</span><span class="den">ds</span></span> [ <span class="frac"><span class="num">2</span><span class="den">s&#178; + 4</span></span> ] = <span class="frac"><span class="num">4s</span><span class="den">(s&#178; + 4)&#178;</span></span>
+  </div>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    این مثال‌ها عمدتاً حقیقی بودند. ولی <span class="imath">s</span> مختلط است و فضای مختلط قابلیت‌هایی دارد که حقیقی ندارد. در فصل بعد مثال‌هایی می‌زنیم که در آن‌ها فرمول اویلر و فضای مختلط نقش اصلی را بازی می‌کنند.
+  </div>
+
+  <!-- ===================== ۲۲. مثال‌های مختلط با اویلر ===================== -->
+  <h2 id="ch-cex"><span class="n">۲۲</span>مثال‌ها در فضای مختلط با اویلر</h2>
+
+  <p>تا اینجا بیشتر مثال‌ها در فضای حقیقی بودند. ولی قدرت واقعی لاپلاس وقتی ظاهر می‌شود که <span class="imath">s</span> را مختلط بگیریم و از فرمول اویلر استفاده کنیم. در این فصل چند مثال می‌زنیم که در همهٔ آن‌ها اویلر کلید حل است.</p>
+
+  <h3>۲۲.۱ محاسبهٔ مستقیم با نمایی مختلط</h3>
+  <p>می‌خواهیم <span class="imath"><span class="lop">&#8466;</span>{cos(&#969;t)}</span> را مستقیماً از تعریف محاسبه کنیم — بدون استفاده از جدول. اویلر می‌گوید <span class="imath">cos(&#969;t) = Re(e<sup>i&#969;t</sup>)</span>. پس:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{cos(&#969;t)} = Re
+    <span class="bigop int">
+      <span class="lim-top">&#8734;</span>
+      <span class="sym">&#8747;</span>
+      <span class="lim-bot">0</span>
+    </span>
+    e<sup>i&#969;t</sup> &#183; e<sup>&#8722;st</sup> dt = Re
+    <span class="bigop int">
+      <span class="lim-top">&#8734;</span>
+      <span class="sym">&#8747;</span>
+      <span class="lim-bot">0</span>
+    </span>
+    e<sup>&#8722;(s&#8722;i&#969;)t</sup> dt = Re [ <span class="frac"><span class="num">1</span><span class="den">s &#8722; i&#969;</span></span> ]
+  </div>
+  <p>حالا <span class="imath">1/(s &#8722; i&#969;)</span> را با مخرج‌گیری مختلط ساده می‌کنیم. ضرب صورت و مخرج در <span class="imath">s + i&#969;</span>:</p>
+  <div class="math">
+    <span class="frac"><span class="num">1</span><span class="den">s &#8722; i&#969;</span></span> = <span class="frac"><span class="num">s + i&#969;</span><span class="den">s&#178; + &#969;&#178;</span></span>
+  </div>
+  <p>بخش حقیقی این <span class="imath">s/(s&#178; + &#969;&#178;)</span> است. پس:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{cos(&#969;t)} = <span class="frac"><span class="num">s</span><span class="den">s&#178; + &#969;&#178;</span></span>
+  </div>
+  <p>این هم‌خوان با جدول است، ولی حالا می‌بینیم <em>چرا</em> جدول این را می‌گوید: همه‌چیز از اویلر می‌آید.</p>
+
+  <h3>۲۲.۲ برگشت از یک کسر با مخرج مختلط</h3>
+  <p>فرض کن در حل یک مسأله به <span class="imath">Y(s) = 1 / (s &#8722; 1 + 2i)</span> رسیده‌ایم. می‌خواهیم <span class="imath">y(t)</span> را پیدا کنیم. مستقیماً از جدول (با <span class="imath">a = 1 &#8722; 2i</span>):</p>
+  <div class="math">
+    y(t) = e<sup>(1 &#8722; 2i)t</sup> = e<sup>t</sup> &#183; e<sup>&#8722;2it</sup>
+  </div>
+  <p>حالا با اویلر <span class="imath">e<sup>&#8722;2it</sup> = cos(2t) &#8722; i sin(2t)</span>. پس:</p>
+  <div class="math">
+    y(t) = e<sup>t</sup> [ cos(2t) &#8722; i sin(2t) ]
+  </div>
+  <p>یعنی یک پاسخ با دامنهٔ رشد نمایی و نوسان با بسامد ۲. اگر پاسخ حقیقی می‌خواستیم، بخش حقیقی و موهومی جدا تحلیل می‌شوند.</p>
+
+  <h3>۲۲.۳ تجزیهٔ کسر با قطب‌های مختلط مزدوج</h3>
+  <p>فرض کن <span class="imath">Y(s) = (s + 2) / (s&#178; + 2s + 5)</span>. مخرج را کامل مربع می‌کنیم: <span class="imath">s&#178; + 2s + 5 = (s+1)&#178; + 4</span>. پس:</p>
+  <div class="math">
+    Y(s) = <span class="frac"><span class="num">s + 1 + 1</span><span class="den">(s+1)&#178; + 4</span></span> = <span class="frac"><span class="num">s+1</span><span class="den">(s+1)&#178; + 4</span></span> + <span class="frac"><span class="num">1</span><span class="den">(s+1)&#178; + 4</span></span>
+  </div>
+  <p>با خطی بودن و شیفت در s:</p>
+  <div class="math">
+    y(t) = e<sup>&#8722;t</sup> cos(2t) + &#189; e<sup>&#8722;t</sup> sin(2t)
+  </div>
+  <p>اینجا قطب‌های <span class="imath">Y(s)</span> در <span class="imath">s = &#8722;1 &#177; 2i</span> هستند؛ یعنی مختلط مزدوج. بازگشت آن‌ها به زمان با اویلر، یک نوسان با بسامد ۲ و دامنهٔ نمایی زایل‌شونده می‌دهد.</p>
+
+  <h3>۲۲.۴ یک مثال عددی کامل با قطب مختلط</h3>
+  <p>مسأله: <span class="imath">y&#8242; + 2y = 0</span> با <span class="imath">y(0) = 5</span> — ساده. ولی بگذار با یک نوسان ترکیبش کنیم: <span class="imath">y&#8243; + 2y&#8242; + 5y = 0</span> با <span class="imath">y(0) = 1</span>، <span class="imath">y&#8242;(0) = 0</span>.</p>
+  <p>اعمال <span class="imath"><span class="lop">&#8466;</span></span>:</p>
+  <div class="math">
+    [s&#178;Y &#8722; s &#8722; 0] + 2[sY &#8722; 1] + 5Y = 0
+  </div>
+  <div class="math">
+    (s&#178; + 2s + 5) Y = s + 2&nbsp;&nbsp;&#8614;&nbsp;&nbsp;Y(s) = <span class="frac"><span class="num">s + 2</span><span class="den">s&#178; + 2s + 5</span></span>
+  </div>
+  <p>این همان مثال ۲۲.۳ است. پس جواب:</p>
+  <div class="math">
+    y(t) = e<sup>&#8722;t</sup> [ cos(2t) + &#189; sin(2t) ]
+  </div>
+  <p>بررسی عددی: در <span class="imath">t = 0</span>: <span class="imath">1&#183;[1 + 0] = 1</span> ✓. در <span class="imath">t = 1</span>: <span class="imath">e<sup>&#8722;1</sup> [cos(2) + &#189;sin(2)] &#8776; 0.368 &#183; [&#8722;0.416 + 0.455] &#8776; 0.014</span>. دامنه به‌سرعت با <span class="imath">e<sup>&#8722;t</sup></span> زایل می‌شود و نوسان می‌کند.</p>
+
+  <div class="box note">
+    <span class="label">درس</span>
+    هر بار که در <span class="imath">Y(s)</span> یک چندجمله‌ای درجهٔ ۲ با ریشه‌های مختلط داریم، در زمان یک نوسان ظاهر می‌شود. این یکی از مهم‌ترین ارتباط‌های بین فضای s و فضای t است: <em>قطب‌های مختلط &#8596; نوسان در زمان</em>.
+  </div>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    حالا می‌خواهیم همۀ این‌ها را در کنار هم بگذاریم و یک ODE واقعی را از ابتدا تا انتها با لاپلاس حل کنیم. اینجا است که مسیر «دیفـرانیل &#8594; جبر &#8594; بازگشت» به‌طور کامل دیده می‌شود.
+  </div>
+
+  <!-- ===================== ۲۳. حل ODE ===================== -->
+  <h2 id="ch-odesolve"><span class="n">۲۳</span>مسیر کامل حل ODE با لاپلاس</h2>
+
+  <h3>۲۳.۱ مسأله</h3>
+  <div class="math">
+    y&#8243; + 4y&#8242; + 3y = 0,&nbsp;&nbsp; y(0) = 1,&nbsp; y&#8242;(0) = 0
+  </div>
+
+  <h3>۲۳.۲ گام ۱ — اعمال &#8466; به دو طرف</h3>
+  <p>با استفاده از ۲۰.۴ برای <span class="imath">y&#8242;</span> و <span class="imath">y&#8243;</span>:</p>
+  <div class="math">
+    [ s&#178;Y(s) &#8722; s&#183;y(0) &#8722; y&#8242;(0) ] + 4[ sY(s) &#8722; y(0) ] + 3Y(s) = 0
+  </div>
+  <p>با جایگذاری شرایط اولیه:</p>
+  <div class="math">
+    (s&#178; + 4s + 3)&#183;Y(s) &#8722; s &#8722; 4 = 0
+  </div>
+
+  <h3>۲۳.۳ گام ۲ — حل جبری در فضای s</h3>
+  <div class="math">
+    Y(s) = <span class="frac"><span class="num">s + 4</span><span class="den">s&#178; + 4s + 3</span></span> = <span class="frac"><span class="num">s + 4</span><span class="den">(s + 1)(s + 3)</span></span>
+  </div>
+  <p>با تجزیه به کسر جزئی:</p>
+  <div class="math">
+    <span class="frac"><span class="num">s + 4</span><span class="den">(s+1)(s+3)</span></span> = <span class="frac"><span class="num">A</span><span class="den">s+1</span></span> + <span class="frac"><span class="num">B</span><span class="den">s+3</span></span>
+  </div>
+  <p>با حل: <span class="imath">A = 3/2</span>، <span class="imath">B = &#8722;1/2</span>. پس:</p>
+  <div class="math">
+    Y(s) = <span class="frac"><span class="num">3/2</span><span class="den">s+1</span></span> &#8722; <span class="frac"><span class="num">1/2</span><span class="den">s+3</span></span>
+  </div>
+
+  <h3>۲۳.۴ گام ۳ — بازگشت به فضای زمان</h3>
+  <p>با استفاده از جدول (ردیف نمایی):</p>
+  <div class="math">
+    y(t) = (3/2)&#183;e<sup>&#8722;t</sup> &#8722; (1/2)&#183;e<sup>&#8722;3t</sup>,&nbsp;&nbsp; t &#8805; 0
+  </div>
+
+  <h3>۲۳.۵ بازخوانی مسیر</h3>
+  <ol>
+    <li>ODE با شرایط اولیه در فضای <span class="imath">t</span> داشتیم.</li>
+    <li>اعمال <span class="imath">&#8466;</span> مشتق‌ها را به ضرب در <span class="imath">s</span> تبدیل کرد و شرایط اولیه به‌صورت جملات ثابت وارد شدند.</li>
+    <li>معادلهٔ جبری خطی روی <span class="imath">Y(s)</span> به‌دست آمد.</li>
+    <li>حل آن با ابزارهای جبر ساده (تجزیه به کسر جزئی) انجام شد.</li>
+    <li>بازگشت با جدول، جواب زمانی را داد.</li>
+  </ol>
+
+  <div class="box note">
+    <span class="label">یادآوری</span>
+    این مسیر دقیقاً همان است که لگاریتم برای ضرب انجام می‌دهد: ضرب را به جمع ترجمه می‌کند، در فضای لگاریتم حل می‌کنیم، و با exponentiation برمی‌گردیم. لاپلاس نقش لگاریتم را برای معادلات دیفرانسیلی بازی می‌کند.
+  </div>
+
+  <h3>۲۳.۶ ODE با ورودی غیرصفر و تشدید</h3>
+  <div class="math">
+    y&#8242; + y = sin(t),&nbsp;&nbsp; y(0) = 0,&nbsp; y&#8242;(0) = 0
+  </div>
+  <p>با اعمال <span class="imath"><span class="lop">&#8466;</span></span>:</p>
+  <div class="math">
+    (s&#178; + 1)&#183;Y(s) = <span class="frac"><span class="num">1</span><span class="den">s&#178; + 1</span></span>&nbsp;&nbsp;&#8614;&nbsp;&nbsp;Y(s) = <span class="frac"><span class="num">1</span><span class="den">(s&#178; + 1)&#178;</span></span>
+  </div>
+  <p>با استفاده از کانولوشن <span class="imath">sin &#8727; sin</span> یا فرمول <span class="imath"><span class="lop">&#8466;</span><sup>&#8722;1</sup>{1/(s&#178;+1)&#178;}</span>:</p>
+  <div class="math">
+    y(t) = &#189; ( sin t &#8722; t&#183;cos t )
+  </div>
+  <p>این یک پدیدهٔ <em>تشدید</em> است: ورودی هم‌فرکانس با پاسخ طبیعی سیستم، دامنه به‌صورت خطی با زمان رشد می‌کند.</p>
+
+  <h3>۲۳.۷ سرد شدن قهوه با لاپلاس — تکمیل مثال فصل ۷</h3>
+  <p>حالا می‌توانیم مثال سرد شدن قهوه را هم با لاپلاس حل کنیم. معادله:</p>
+  <div class="math">
+    T&#8242; = &#8722;0.1 &#183; (T &#8722; 20),&nbsp;&nbsp; T(0) = 90
+  </div>
+  <p>اعمال <span class="imath"><span class="lop">&#8466;</span></span>:</p>
+  <div class="math">
+    sT &#8722; 90 = &#8722;0.1 T + 0.1&#183;20 = &#8722;0.1 T + 2
+  </div>
+  <div class="math">
+    (s + 0.1) T = 92&nbsp;&nbsp;&#8614;&nbsp;&nbsp;T(s) = <span class="frac"><span class="num">92</span><span class="den">s + 0.1</span></span>
+  </div>
+  <p>تجزیه: <span class="imath">92/(s+0.1) = 20/(s+0.1) + 72/(s+0.1)</span>. برگشت:</p>
+  <div class="math">
+    T(t) = 92 &#183; e<sup>&#8722;0.1t</sup>
+  </div>
+  <p>ولی این در <span class="imath">t = 0</span> برابر ۹۲ می‌دهد، نه ۹۰. اشتباه کردیم. بگذار درست حل کنیم:</p>
+  <div class="math">
+    sT &#8722; 90 = &#8722;0.1 T + 2&nbsp;&nbsp;&#8614;&nbsp;&nbsp;(s + 0.1) T = 92&nbsp;&nbsp;&#8614;&nbsp;&nbsp;T(s) = <span class="frac"><span class="num">92</span><span class="den">s + 0.1</span></span>
+  </div>
+  <p>در <span class="imath">t = 0</span>: <span class="imath">92&#183;1 = 92</span>. ولی <span class="imath">T(0) = 90</span> بود. مشکل از کجاست؟ بازنویسی معادله:</p>
+  <div class="math">
+    T&#8242; = &#8722;0.1 (T &#8722; 20) = &#8722;0.1 T + 2
+  </div>
+  <p>اعمال <span class="imath"><span class="lop">&#8466;</span></span>: <span class="imath">sT &#8722; 90 = &#8722;0.1 T + 2</span>. بسط: <span class="imath">sT + 0.1 T = 92</span>. پس <span class="imath">T(s) = 92/(s + 0.1)</span>. برگشت: <span class="imath">T(t) = 92 e<sup>&#8722;0.1t</sup></span>. در <span class="imath">t = 0</span> برابر ۹۲. ولی شرط اولیه ۹۰ بود — ظاهراً ناسازگار است.</p>
+
+  <p>اشتباه در این است که معادلهٔ صحیح باید با یک ثابت اضافی نوشته شود. در واقع، اگر <span class="imath">T(t) = 20 + 70 e<sup>&#8722;0.1t</sup></span> آن‌گاه <span class="imath">T&#8242; = &#8722;7 e<sup>&#8722;0.1t</sup></span> و <span class="imath">&#8722;0.1(T &#8722; 20) = &#8722;0.1 &#183; 70 e<sup>&#8722;0.1t</sup> = &#8722;7 e<sup>&#8722;0.1t</sup></span>. سازگار است. ولی وقتی <span class="imath"><span class="lop">&#8466;</span></span> اعمال می‌کنیم، باید روی <span class="imath">(T &#8722; 20)</span> به‌طور کامل اعمال کنیم:</p>
+  <div class="math">
+    T&#8242; = &#8722;0.1 (T &#8722; 20)
+  </div>
+  <p>تعریف <span class="imath">Z(t) = T(t) &#8722; 20</span>. آن‌گاه <span class="imath">Z&#8242; = T&#8242;</span> و <span class="imath">Z(0) = 70</span>. معادله می‌شود:</p>
+  <div class="math">
+    Z&#8242; = &#8722;0.1 Z,&nbsp;&nbsp; Z(0) = 70
+  </div>
+  <p>اعمال <span class="imath"><span class="lop">&#8466;</span></span>: <span class="imath">sZ &#8722; 70 = &#8722;0.1 Z</span>، پس <span class="imath">(s + 0.1) Z = 70</span>، <span class="imath">Z(s) = 70/(s + 0.1)</span>، و <span class="imath">Z(t) = 70 e<sup>&#8722;0.1t</sup></span>. برگشت به T:</p>
+  <div class="math">
+    T(t) = 20 + 70 e<sup>&#8722;0.1t</sup>
+  </div>
+  <p>این دقیقاً همان جواب فصل ۷ است. <strong>درس: وقتی معادلهٔ دیفرانسیل حول یک حالت تعادل نوشته می‌شود، متغیر جدید را حول آن تعادل تعریف می‌کنیم تا شرط اولیه تمیز وارد شود.</strong></p>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    حالا که مسیر حل را کامل دیده‌ایم، می‌توانیم بپرسیم: این همه با فرمول اویلر، بسط تیلور، و قواعد نیوتن چه رابطه‌ای دارد؟ آیا شبیه‌اند یا واقعاً به هم وصل‌اند؟
+  </div>
+
+  <!-- ===================== ۲۴. ارتباط با اویلر/تیلور ===================== -->
+  <h2 id="ch-euler"><span class="n">۲۴</span>ارتباط با اویلر، تیلور و نیوتن</h2>
+
+  <h3>۲۴.۱ فرمول اویلر</h3>
+  <p>فرمول اویلر <span class="imath">e<sup>i&#952;</sup> = cos &#952; + i sin &#952;</span> مستقیماً در تعریف لاپلاس ظاهر می‌شود. وقتی <span class="imath">s = &#963; + i&#969;</span>، آن‌گاه:</p>
+  <div class="math">
+    e<sup>&#8722;st</sup> = e<sup>&#8722;&#963;t</sup>&#183;e<sup>&#8722;i&#969;t</sup> = e<sup>&#8722;&#963;t</sup> [ cos(&#969;t) &#8722; i&#183;sin(&#969;t) ]
+  </div>
+  <p>یعنی وزن‌دهی لاپلاس، یک فاکتور زوال <span class="imath">e<sup>&#8722;&#963;t</sup></span> ضرب در یک چرخش <span class="imath">e<sup>&#8722;i&#969;t</sup></span> است. اویلر این دو را به هم می‌چسباند. در فصل ۱۸ و ۲۲ دیدیم که محاسبهٔ لاپلاس سینوس، کسینوس، و کسرهای با قطب مختلط همگی به اویلر وابسته‌اند.</p>
+
+  <h3>۲۴.۲ بسط تیلور</h3>
+  <p>بسط تیلور برای <span class="imath">e<sup>x</sup></span> در <span class="imath">x = 0</span>:</p>
+  <div class="math">
+    e<sup>x</sup> =
+    <span class="bigop">
+      <span class="lim-top">&#8734;</span>
+      <span class="sym">&#8721;</span>
+      <span class="lim-bot">n=0</span>
+    </span>
+    <span class="frac"><span class="num">x<sup>n</sup></span><span class="den">n!</span></span>
+  </div>
+  <p>رابطهٔ <em>مستقیم</em> با لاپلاس: اگر یک تابع تحلیلی را با بسط تیلور بنویسیم <span class="imath">f(t) = &#8721; a&#8345; t<sup>n</sup></span>، با اعمال <span class="imath"><span class="lop">&#8466;</span></span> و خطی بودن:</p>
+  <div class="math">
+    F(s) =
+    <span class="bigop">
+      <span class="lim-top">&#8734;</span>
+      <span class="sym">&#8721;</span>
+      <span class="lim-bot">n=0</span>
+    </span>
+    a&#8345; &#183; <span class="frac"><span class="num">n!</span><span class="den">s<sup>n+1</sup></span></span>
+  </div>
+  <p>یعنی بسط تیلور در زمان، به بسط آسیمپتوتیک در <span class="imath">s</span> ترجمه می‌شود. این هم‌بندی مستقیم است، نه تشبیهی.</p>
+
+  <h3>۲۴.۳ نیوتن و قاعدهٔ توان</h3>
+  <p>قاعدهٔ نیوتن برای مشتق <span class="imath">d(t<sup>n</sup>)/dt = n&#183;t<sup>n&#8722;1</sup></span> در ستون فقرات قضیهٔ هم‌بندی «مشتق &#8596; ضرب در s» قرار دارد. در واقع، در بسط <span class="imath">F(s) = &#8721; a&#8345; n!/s<sup>n+1</sup></span>، هر بار که در زمان مشتق می‌گیریم، در فضای <span class="imath">s</span> یک ضرب در <span class="imath">s</span> و یک کاهش توان داریم؛ دقیقاً برعکسِ قاعدهٔ نیوتن.</p>
+
+  <div class="box note">
+    <span class="label">خلاصهٔ پیوند</span>
+    <ul>
+      <li><strong>اویلر:</strong> ضریب <span class="imath">e<sup>&#8722;st</sup></span> را به زوج زوال-چرخش تجزیه می‌کند و پایهٔ محاسبهٔ لاپلاس سینوس/کسینوس است.</li>
+      <li><strong>تیلور:</strong> بسط تابع در زمان را به بسط در <span class="imath">s</span> تبدیل می‌کند.</li>
+      <li><strong>نیوتن:</strong> قاعدهٔ توان را می‌دهد که هم‌بندی مشتق-ضرب را ممکن می‌کند.</li>
+    </ul>
+  </div>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    حالا بگذار چند مثال ترکیبی بزنیم که در هرکدام دو یا سه فرم (نمایی، سینوس، چندجمله‌ای، تأخیر، قطب مختلط) با هم آمده‌اند تا ببینیم چطور خصوصیات مختلف با هم کار می‌کنند.
+  </div>
+
+  <!-- ===================== ۲۵. مثال‌های ترکیبی ===================== -->
+  <h2 id="ch-mixed"><span class="n">۲۵</span>مثال‌های ترکیبی</h2>
+
+  <h3>مثال ۲۵.۱ — نمایی ضرب در کسینوس ضرب در t</h3>
+  <p><span class="imath">f(t) = t&#183;e<sup>&#8722;t</sup>&#183;cos(3t)</span>:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ cos(3t) } = <span class="frac"><span class="num">s</span><span class="den">s&#178;+9</span></span>
+    &#8614; <span class="lop">&#8466;</span>{ e<sup>&#8722;t</sup>&#183;cos(3t) } = <span class="frac"><span class="num">s+1</span><span class="den">(s+1)&#178;+9</span></span>
+    &#8614; <span class="lop">&#8466;</span>{ t&#183;e<sup>&#8722;t</sup>&#183;cos(3t) } = &#8722; <span class="frac"><span class="num">d</span><span class="den">ds</span></span> [ <span class="frac"><span class="num">s+1</span><span class="den">(s+1)&#178;+9</span></span> ]
+  </div>
+  <p>پس از محاسبهٔ مشتق:</p>
+  <div class="math">
+    F(s) = <span class="frac"><span class="num">(s+1)&#178; &#8722; 9</span><span class="den">[ (s+1)&#178; + 9 ]&#178;</span></span>
+  </div>
+
+  <h3>مثال ۲۵.۲ — تابع پله با تأخیر در پاسخ سیستم</h3>
+  <p>سیستم <span class="imath">y&#8242; + 2y = u(t &#8722; 1)</span> با <span class="imath">y(0) = 0</span>:</p>
+  <div class="math">
+    (s + 2)&#183;Y(s) = <span class="frac"><span class="num">e<sup>&#8722;s</sup></span><span class="den">s</span></span>&nbsp;&nbsp;&#8614;&nbsp;&nbsp;Y(s) = e<sup>&#8722;s</sup> &#183; [ <span class="frac"><span class="num">1</span><span class="den">s</span></span> &#8722; <span class="frac"><span class="num">1</span><span class="den">s+2</span></span> ] &#183; <span class="frac"><span class="num">1</span><span class="den">2</span></span>
+  </div>
+  <p>با بازگشت و اعمال شیفت زمانی:</p>
+  <div class="math">
+    y(t) = &#189; ( 1 &#8722; e<sup>&#8722;2(t&#8722;1)</sup> ) &#183; u(t &#8722; 1)
+  </div>
+
+  <h3>مثال ۲۵.۳ — ترکیب توانی و نمایی</h3>
+  <p><span class="imath">f(t) = t<sup>3/2</sup>&#183;e<sup>&#8722;2t</sup></span>:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ t<sup>3/2</sup> } = <span class="frac"><span class="num">&#915;(5/2)</span><span class="den">s<sup>5/2</sup></span></span> = <span class="frac"><span class="num">3&#8730;&#960;/4</span><span class="den">s<sup>5/2</sup></span></span>
+    &#8614; F(s) = <span class="frac"><span class="num">3&#8730;&#960;/4</span><span class="den">(s+2)<sup>5/2</sup></span></span>
+  </div>
+
+  <h3>مثال ۲۵.۴ — کانولوشن به جای انتگرال سنگین</h3>
+  <p>اگر <span class="imath">f(t) = t</span> و <span class="imath">g(t) = e<sup>&#8722;t</sup></span>:</p>
+  <div class="math">
+    (f &#8727; g)(t) =
+    <span class="bigop int">
+      <span class="lim-top">t</span>
+      <span class="sym">&#8747;</span>
+      <span class="lim-bot">0</span>
+    </span>
+    &#964;&#183;e<sup>&#8722;(t&#8722;&#964;)</sup> d&#964;
+  </div>
+  <p>محاسبهٔ مستقیم سنگین است؛ ولی در فضای <span class="imath">s</span>:</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ f &#8727; g } = <span class="frac"><span class="num">1</span><span class="den">s&#178;</span></span> &#183; <span class="frac"><span class="num">1</span><span class="den">s+1</span></span> = <span class="frac"><span class="num">1</span><span class="den">s&#178;(s+1)</span></span>
+  </div>
+  <p>با تجزیه به کسر جزئی:</p>
+  <div class="math">
+    <span class="frac"><span class="num">1</span><span class="den">s&#178;(s+1)</span></span> = <span class="frac"><span class="num">1</span><span class="den">s&#178;</span></span> &#8722; <span class="frac"><span class="num">1</span><span class="den">s</span></span> + <span class="frac"><span class="num">1</span><span class="den">s+1</span></span>
+    &#8614; (f &#8727; g)(t) = t &#8722; 1 + e<sup>&#8722;t</sup>
+  </div>
+
+  <h3>مثال ۲۵.۵ — قطب مختلط با تأخیر</h3>
+  <p>سیستم <span class="imath">y&#8243; + 4y = &#948;(t &#8722; 1)</span> با <span class="imath">y(0) = 0</span>، <span class="imath">y&#8242;(0) = 0</span>. اعمال <span class="imath"><span class="lop">&#8466;</span></span>:</p>
+  <div class="math">
+    (s&#178; + 4) Y = e<sup>&#8722;s</sup>&nbsp;&nbsp;&#8614;&nbsp;&nbsp;Y(s) = <span class="frac"><span class="num">e<sup>&#8722;s</sup></span><span class="den">s&#178; + 4</span></span>
+  </div>
+  <p>با برگشت و شیفت زمانی: <span class="imath"><span class="lop">&#8466;</span><sup>&#8722;1</sup>{1/(s&#178;+4)} = &#189; sin(2t)</span>. پس:</p>
+  <div class="math">
+    y(t) = &#189; sin(2(t &#8722; 1)) &#183; u(t &#8722; 1)
+  </div>
+  <p>یعنی یک ضربه در <span class="imath">t = 1</span> یک نوسان با بسامد ۲ آغاز می‌کند. قطب‌های مختلط <span class="imath">s = &#177;2i</span> به نوسان با بسامد ۲ ترجمه شده‌اند.</p>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    در فصل پایانی، بگذار به یک سطح بالاتر برویم: جبر خطی و عملگرهای برداری در فضای چندبعدی. این‌ها پایهٔ PDEها و معادلات فیزیک هستند که در فصل ۸ دیدیم و تناظر زیبایی با ایدهٔ «عملگر خطی» در لاپلاس دارند.
+  </div>
+
+  <!-- ===================== ۲۶. جبر خطی و عملگرهای برداری ===================== -->
+  <h2 id="ch-vec"><span class="n">۲۶</span>جبر خطی، ماتریس، و عملگرهای برداری</h2>
+
+  <p>تا اینجا متغیرها اسکالر بودند (یک عدد). ولی در فیزیک و هندسه، کمیت‌ها اغلب <em>بردار</em> هستند: سرعت، میدان الکتریکی، شار حرارتی. در این فصل، ابزارهای ریاضی برای کار با بردارها را مرور می‌کنیم و ارتباطشان را با چیزی که در طول متن دیدیم روشن می‌کنیم.</p>
+
+  <h3>۲۶.۱ بردار در فضای دوبعدی</h3>
+  <p>یک بردار در فضای ۲D یک جفت عدد است: <span class="imath">v = (v&#8321;, v&#8322;)</span>. هندسی، یک پیکان از مبدأ به نقطهٔ <span class="imath">(v&#8321;, v&#8322;)</span>. می‌توان آن را به‌صورت جمع مؤلفه‌های افقی و عمودی نوشت:</p>
+  <div class="math">
+    v = v&#8321; &#239; + v&#8322; &#1064;
+  </div>
+  <p>که در آن <span class="imath">&#239; = (1, 0)</span> و <span class="imath">&#1064; = (0, 1)</span> بردارهای واحدِ هم‌راستا با محورها هستند.</p>
+
+  <h3>۲۶.۲ ضرب داخلی (dot product)</h3>
+  <div class="math">
+    v &#183; w = v&#8321;w&#8321; + v&#8322;w&#8322; = |v| |w| cos &#952;
+  </div>
+  <p>ضرب داخلی یک عدد (اسکالر) می‌دهد و برابر حاصل‌ضرب اندازه‌ها در کسینوس زاویهٔ بینشان است. اگر <span class="imath">v &#183; w = 0</span> یعنی عمودند.</p>
+
+  <div class="box example">
+    <span class="label">مثال ۲۶.۱ — ضرب داخلی در ۲D</span>
+    <p><span class="imath">v = (3, 4)</span>، <span class="imath">w = (4, &#8722;3)</span>. ضرب داخلی:</p>
+    <div class="math">
+      v &#183; w = 3&#183;4 + 4&#183;(&#8722;3) = 12 &#8722; 12 = 0
+    </div>
+    <p>پس این دو بردار عمودند. (واقعاً هم هستند: <span class="imath">(3, 4)</span> و <span class="imath">(4, &#8722;3)</span> عمودند چون شیب‌هایشان <span class="imath">4/3</span> و <span class="imath">&#8722;3/4</span> وارون‌علامت‌اند.) اندازهٔ هر دو هم <span class="imath">5</span> است.</p>
+  </div>
+
+  <h3>۲۶.۳ ضرب خارجی (cross product) — در ۳D</h3>
+  <div class="math">
+    v &#215; w = ( v&#8322;w&#8323; &#8722; v&#8323;w&#8322; ,&nbsp; v&#8323;w&#8321; &#8722; v&#8321;w&#8323; ,&nbsp; v&#8321;w&#8322; &#8722; v&#8322;w&#8321; )
+  </div>
+  <p>ضرب خارجی یک بردار می‌دهد که بر هر دو عمود است و اندازه‌اش <span class="imath">|v| |w| sin &#952;</span> است.</p>
+
+  <div class="box example">
+    <span class="label">مثال ۲۶.۲ — ضرب خارجی در ۳D</span>
+    <p><span class="imath">v = (1, 0, 0)</span>، <span class="imath">w = (0, 1, 0)</span> (یعنی محورهای <span class="imath">x</span> و <span class="imath">y</span>):</p>
+    <div class="math">
+      v &#215; w = ( 0&#183;0 &#8722; 0&#183;1,&nbsp; 0&#183;0 &#8722; 1&#183;0,&nbsp; 1&#183;1 &#8722; 0&#183;0 ) = (0, 0, 1)
+    </div>
+    <p>یعنی ضرب خارجی محور <span class="imath">x</span> در محور <span class="imath">y</span>، محور <span class="imath">z</span> را می‌دهد. این همان قاعدهٔ دست راست است.</p>
+  </div>
+
+  <h3>۲۶.۴ ماتریس و دترمینان</h3>
+  <p>یک ماتریس <span class="imath">2&#215;2</span>: <span class="imath">A = [[a, b], [c, d]]</span>. دترمینان آن:</p>
+  <div class="math">
+    det(A) = a&#183;d &#8722; b&#183;c
+  </div>
+  <p>دترمینان اندازهٔ «کشیدگی یا فشردگی» که ماتریس به فضا می‌دهد را نشان می‌دهد. اگر <span class="imath">det(A) = 0</span> ماتریس معکوس‌پذیر نیست (فضا را به یک بُعد می‌شکند).</p>
+
+  <div class="box example">
+    <span class="label">مثال ۲۶.۳ — ضرب ماتریس در بردار (چرخش ۹۰ درجه)</span>
+    <p>ماتریس <span class="imath">A = [[0, &#8722;1], [1, 0]]</span> هر بردار را ۹۰ درجه می‌چرخاند. اعمال روی <span class="imath">v = (1, 0)</span>:</p>
+    <div class="math">
+      A&#183;v = [[0, &#8722;1], [1, 0]] &#183; (1, 0) = (0&#183;1 + (&#8722;1)&#183;0,&nbsp; 1&#183;1 + 0&#183;0) = (0, 1)
+    </div>
+    <p>یعنی <span class="imath">(1, 0)</span> به <span class="imath">(0, 1)</span> چرخید. دترمینان: <span class="imath">det(A) = 0&#183;0 &#8722; (&#8722;1)&#183;1 = 1</span>. اندازهٔ فضا حفظ شد (یک چرخش خالص).</p>
+  </div>
+
+  <h3>۲۶.۵ عملگر نابلا &#8711;</h3>
+  <p>نابلا یک عملگر برداری است که مشتق‌های پاره‌ای را در یک نماد جمع می‌کند. در ۳D:</p>
+  <div class="math">
+    &#8711; = ( <span class="frac"><span class="num">&#8706;</span><span class="den">&#8706;x</span></span> ,&nbsp; <span class="frac"><span class="num">&#8706;</span><span class="den">&#8706;y</span></span> ,&nbsp; <span class="frac"><span class="num">&#8706;</span><span class="den">&#8706;z</span></span> )
+  </div>
+  <p>این یک «بردار از عملگرها» است. می‌توان آن را روی یک تابع اسکالر اعمال کرد (گرادیان)، روی یک تابع برداری به‌صورت داخلی اعمال کرد (دیورژانس)، یا به‌صورت خارجی اعمال کرد (کرل).</p>
+
+  <h4>گرادیان</h4>
+  <p>اگر <span class="imath">&#981;(x, y, z)</span> یک تابع اسکالر باشد:</p>
+  <div class="math">
+    grad &#981; = &#8711;&#981; = ( <span class="frac"><span class="num">&#8706;&#981;</span><span class="den">&#8706;x</span></span> ,&nbsp; <span class="frac"><span class="num">&#8706;&#981;</span><span class="den">&#8706;y</span></span> ,&nbsp; <span class="frac"><span class="num">&#8706;&#981;</span><span class="den">&#8706;z</span></span> )
+  </div>
+  <p>یک بردار که جهت «سریع‌ترین افزایش» تابع را نشان می‌دهد.</p>
+
+  <div class="box example">
+    <span class="label">مثال ۲۶.۴ — گرادیان در ۲D</span>
+    <p><span class="imath">&#981;(x, y) = x&#178; + y&#178;</span> (یک کاسهٔ رو به بالا). مشتق‌های پاره‌ای:</p>
+    <div class="math">
+      <span class="frac"><span class="num">&#8706;&#981;</span><span class="den">&#8706;x</span></span> = 2x,&nbsp;&nbsp; <span class="frac"><span class="num">&#8706;&#981;</span><span class="den">&#8706;y</span></span> = 2y
+    </div>
+    <div class="math">
+      &#8711;&#981; = (2x,&nbsp; 2y)
+    </div>
+    <p>در نقطهٔ <span class="imath">(1, 2)</span>: <span class="imath">&#8711;&#981; = (2, 4)</span>. این بردار به‌سمت دور از مبدأ اشاره می‌کند؛ یعنی جهت سریع‌ترین افزایش فاصله از مبدأ.</p>
+  </div>
+
+  <h4>دیورژانس</h4>
+  <p>اگر <span class="imath">F = (F&#8321;, F&#8322;, F&#8323;)</span> یک میدان برداری باشد:</p>
+  <div class="math">
+    div F = &#8711; &#183; F = <span class="frac"><span class="num">&#8706;F&#8321;</span><span class="den">&#8706;x</span></span> + <span class="frac"><span class="num">&#8706;F&#8322;</span><span class="den">&#8706;y</span></span> + <span class="frac"><span class="num">&#8706;F&#8323;</span><span class="den">&#8706;z</span></span>
+  </div>
+  <p>یک اسکالر که می‌گوید در هر نقطه، چقدر میدان از آن نقطه «پخش» می‌شود یا «جمع» می‌شود.</p>
+
+  <div class="box example">
+    <span class="label">مثال ۲۶.۵ — دیورژانس</span>
+    <p><span class="imath">F = (x, y, z)</span> (میدان شعاعیِ خروج از مبدأ). مشتق‌های پاره‌ای:</p>
+    <div class="math">
+      <span class="frac"><span class="num">&#8706;x</span><span class="den">&#8706;x</span></span> = 1,&nbsp;&nbsp; <span class="frac"><span class="num">&#8706;y</span><span class="den">&#8706;y</span></span> = 1,&nbsp;&nbsp; <span class="frac"><span class="num">&#8706;z</span><span class="den">&#8706;z</span></span> = 1
+    </div>
+    <div class="math">
+      &#8711; &#183; F = 1 + 1 + 1 = 3
+    </div>
+    <p>در همهٔ نقاط، دیورژانس ۳ است؛ یعنی میدان همه‌جا در حال پخش است. (این پایهٔ قضیهٔ گاوس است: حجمی از «منبع» برابر ۳ بر حجم.)</p>
+  </div>
+
+  <h4>کرل</h4>
+  <div class="math">
+    curl F = &#8711; &#215; F = ( <span class="frac"><span class="num">&#8706;F&#8323;</span><span class="den">&#8706;y</span></span> &#8722; <span class="frac"><span class="num">&#8706;F&#8322;</span><span class="den">&#8706;z</span></span> ,&nbsp; <span class="frac"><span class="num">&#8706;F&#8321;</span><span class="den">&#8706;z</span></span> &#8722; <span class="frac"><span class="num">&#8706;F&#8323;</span><span class="den">&#8706;x</span></span> ,&nbsp; <span class="frac"><span class="num">&#8706;F&#8322;</span><span class="den">&#8706;x</span></span> &#8722; <span class="frac"><span class="num">&#8706;F&#8321;</span><span class="den">&#8706;y</span></span> )
+  </div>
+  <p>یک بردار که «چرخش» میدان در هر نقطه را نشان می‌دهد.</p>
+
+  <div class="box example">
+    <span class="label">مثال ۲۶.۶ — کرل میدان چرخشی</span>
+    <p><span class="imath">F = (&#8722;y, x, 0)</span> (میدان چرخش دور محور <span class="imath">z</span>). کرل:</p>
+    <div class="math">
+      curl F = ( <span class="frac"><span class="num">&#8706;0</span><span class="den">&#8706;y</span></span> &#8722; <span class="frac"><span class="num">&#8706;x</span><span class="den">&#8706;z</span></span> ,&nbsp; <span class="frac"><span class="num">&#8706;(&#8722;y)</span><span class="den">&#8706;z</span></span> &#8722; <span class="frac"><span class="num">&#8706;0</span><span class="den">&#8706;x</span></span> ,&nbsp; <span class="frac"><span class="num">&#8706;x</span><span class="den">&#8706;x</span></span> &#8722; <span class="frac"><span class="num">&#8706;(&#8722;y)</span><span class="den">&#8706;y</span></span> )
+    </div>
+    <div class="math">
+      = ( 0 &#8722; 0 ,&nbsp; 0 &#8722; 0 ,&nbsp; 1 &#8722; (&#8722;1) ) = (0, 0, 2)
+    </div>
+    <p>کرل در جهت <span class="imath">z</span> و برابر ۲ است؛ یعنی میدان با شدت ۲ حول محور <span class="imath">z</span> می‌چرخد. این پایهٔ قانون آمر-ماکسول است.</p>
+  </div>
+
+  <h4>لاپلاسین</h4>
+  <p>دیورژانس گرادیان، یعنی <span class="imath">&#8711; &#183; (&#8711;&#981;) = &#8711;&#178;&#981;</span>:</p>
+  <div class="math">
+    &#8711;&#178;&#981; = <span class="frac"><span class="num">&#8706;&#178;&#981;</span><span class="den">&#8706;x&#178;</span></span> + <span class="frac"><span class="num">&#8706;&#178;&#981;</span><span class="den">&#8706;y&#178;</span></span> + <span class="frac"><span class="num">&#8706;&#178;&#981;</span><span class="den">&#8706;z&#178;</span></span>
+  </div>
+  <p>این همان عملگری است که در معادلهٔ انتقال حرارت، معادلهٔ موج، و معادلهٔ لاپلاس (فصل ۸) ظاهر شد.</p>
+
+  <div class="box example">
+    <span class="label">مثال ۲۶.۷ — لاپلاسین</span>
+    <p><span class="imath">&#981;(x, y) = x&#178; + y&#178;</span> (همان تابع مثال ۲۶.۴). مشتق‌های دوم:</p>
+    <div class="math">
+      <span class="frac"><span class="num">&#8706;&#178;&#981;</span><span class="den">&#8706;x&#178;</span></span> = 2,&nbsp;&nbsp; <span class="frac"><span class="num">&#8706;&#178;&#981;</span><span class="den">&#8706;y&#178;</span></span> = 2
+    </div>
+    <div class="math">
+      &#8711;&#178;&#981; = 2 + 2 = 4
+    </div>
+    <p>یعنی تابع همه‌جا «کاسه‌ای» است؛ لاپلاسین مثبت است. اگر <span class="imath">&#8711;&#178;&#981; = 0</span> بود (مثل <span class="imath">&#981; = x&#178; &#8722; y&#178;</span> یا <span class="imath">&#981; = ln(r)</span>)، تابع «هارمونیک» است؛ یعنی در حالت پایدارِ معادلهٔ حرارت است.</p>
+  </div>
+
+  <h3>۲۶.۶ ارتباط با لاپلاس و جبر خطی</h3>
+  <p>سه ایده به هم وصل می‌شوند:</p>
+  <ul>
+    <li><strong>ماتریس به‌عنوان عملگر خطی:</strong> یک ماتریس <span class="imath">A</span> بردارها را به بردارها می‌برد، به‌صورت خطی.</li>
+    <li><strong>مشتق به‌عنوان عملگر خطی:</strong> مشتق گرفتن توابع را به توابع می‌برد، به‌صورت خطی.</li>
+    <li><strong>لاپلاس به‌عنوان عملگر خطی:</strong> تبدیل لاپلاس توابع را به توابع می‌برد، به‌صورت خطی.</li>
+  </ul>
+  <p>پس هر سه یک کار می‌کنند: <em>نگاشت خطی بین فضاهای برداری</em>. فقط فضاهایشان متفاوت است: ماتریس بین <span class="imath">&#8477;<sup>n</sup> &#8594; &#8477;<sup>m</sup></span>، مشتق بین فضای توابع و خودش، لاپلاس بین فضای توابع زمان و فضای توابع مختلط.</p>
+
+  <p>وقتی در یک معادلهٔ دیفرانسیل با مشتق‌های پاره‌ای کار داریم (مثلاً معادلهٔ حرارت <span class="imath">&#8706;T/&#8706;t = &#945; &#8711;&#178;T</span>)، می‌توانیم از <strong>تبدیل لاپلاس در متغیر زمان</strong> استفاده کنیم. این کار <span class="imath">&#8706;T/&#8706;t</span> را به <span class="imath>sT(s) &#8722; T(0)</span> تبدیل می‌کند و معادلهٔ PDE می‌شود یک ODE در متغیر مکان. این یک پل مستقیم بین تبدیل لاپلاس و عملگرهای برداری است که در این فصل معرفی شدند.</p>
+
+  <h3>۲۶.۷ مثال ترکیبی: حل PDE حرارت با لاپلاس + نابلا</h3>
+  <p>حالا همه‌چیز را به‌هم می‌زنیم. یک میلهٔ نازک در بازهٔ <span class="imath">x &#8712; [0, &#960;]</span>، با توزیع دمای اولیهٔ <span class="imath">T(x, 0) = sin(x)</span> و دمای صفر در دو سر. معادلهٔ حرارت:</p>
+  <div class="math">
+    <span class="frac"><span class="num">&#8706;T</span><span class="den">&#8706;t</span></span> = &#945; &#183; <span class="frac"><span class="num">&#8706;&#178;T</span><span class="den">&#8706;x&#178;</span></span>,&nbsp;&nbsp; T(0, t) = T(&#960;, t) = 0,&nbsp;&nbsp; T(x, 0) = sin(x)
+  </div>
+  <p>گام ۱: از تبدیل لاپلاس در متغیر <span class="imath">t</span> استفاده می‌کنیم (<span class="imath">x</span> را ثابت می‌گیریم):</p>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ <span class="frac"><span class="num">&#8706;T</span><span class="den">&#8706;t</span></span> } = s&#183;T&#770;(x, s) &#8722; T(x, 0) = s&#183;T&#770; &#8722; sin(x)
+  </div>
+  <div class="math">
+    <span class="lop">&#8466;</span>{ &#945; &#183; <span class="frac"><span class="num">&#8706;&#178;T</span><span class="den">&#8706;x&#178;</span></span> } = &#945; &#183; <span class="frac"><span class="num">&#8706;&#178;T&#770;</span><span class="den">&#8706;x&#178;</span></span>
+  </div>
+  <p>پس معادله در فضای <span class="imath">s</span> (و هنوز در متغیر <span class="imath">x</span>):</p>
+  <div class="math">
+    s&#183;T&#770; &#8722; sin(x) = &#945; &#183; <span class="frac"><span class="num">&#8706;&#178;T&#770;</span><span class="den">&#8706;x&#178;</span></span>
+  </div>
+  <p>گام ۲: حدس می‌زنیم <span class="imath">T&#770;(x, s)</span> از همان فرم <span class="imath">sin(x)</span> در <span class="imath">x</span> پیروی کند؛ یعنی <span class="imath">T&#770;(x, s) = A(s)&#183;sin(x)</span>. جای‌گذاری:</p>
+  <div class="math">
+    s&#183;A(s) sin(x) &#8722; sin(x) = &#945; &#183; A(s) &#183; (&#8722;sin(x))
+  </div>
+  <div class="math">
+    s&#183;A(s) &#8722; 1 = &#8722;&#945; A(s)&nbsp;&nbsp;&#8614;&nbsp;&nbsp;A(s) [s + &#945;] = 1
+  </div>
+  <div class="math">
+    A(s) = <span class="frac"><span class="num">1</span><span class="den">s + &#945;</span></span>&nbsp;&nbsp;&#8614;&nbsp;&nbsp;T&#770;(x, s) = <span class="frac"><span class="num">sin(x)</span><span class="den">s + &#945;</span></span>
+  </div>
+  <p>گام ۳: برگشت به زمان. <span class="imath"><span class="lop">&#8466;</span><sup>&#8722;1</sup>{1/(s+&#945;)} = e<sup>&#8722;&#945;t</sup></span>، پس:</p>
+  <div class="math">
+    T(x, t) = sin(x) &#183; e<sup>&#8722;&#945;t</sup>
+  </div>
+  <p>این یک جواب تمیز است: شکل <span class="imath">sin(x)</span> در مکان حفظ می‌شود ولی دامنه‌اش با نرخ <span class="imath">&#945;</span> در زمان میرا می‌شود. لاپلاسین در متغیر <span class="imath">x</span> (یعنی <span class="imath">&#8706;&#178;/&#8706;x&#178;</span>) همان چیزی بود که <span class="imath">&#8722;sin(x)</span> داد و آنچه معادله را به یک ODE ساده تبدیل کرد.</p>
+
+  <div class="box example">
+    <span class="label">مثال ۲۶.۸ — میدان برداری با معادلهٔ دیفرانسیل (۲D)</span>
+    <p>یک میدان برداری <span class="imath">F(t) = ( f&#8321;(t), f&#8322;(t) )</span> که هر مؤلفه‌اش یک ODE مجزا دارد:</p>
+    <div class="math">
+      <span class="frac"><span class="num">dF</span><span class="den">dt</span></span> = A&#183;F,&nbsp;&nbsp;A = [[0, 1], [&#8722;1, 0]],&nbsp;&nbsp;F(0) = (1, 0)
+    </div>
+    <p>این یعنی <span class="imath">f&#8321;&#8242; = f&#8322;</span> و <span class="imath">f&#8322;&#8242; = &#8722;f&#8321;</span>. اعمال لاپلاس روی هر مؤلفه:</p>
+    <div class="math">
+      sF&#8321; &#8722; 1 = F&#8322;,&nbsp;&nbsp; sF&#8322; &#8722; 0 = &#8722;F&#8321;
+    </div>
+    <p>از دومی <span class="imath">F&#8322; = &#8722;F&#8321;/s</span>؛ در اولی:</p>
+    <div class="math">
+      sF&#8321; &#8722; 1 = &#8722;<span class="frac"><span class="num">F&#8321;</span><span class="den">s</span></span>&nbsp;&nbsp;&#8614;&nbsp;&nbsp;F&#8321; (s + <span class="frac"><span class="num">1</span><span class="den">s</span></span>) = 1&nbsp;&nbsp;&#8614;&nbsp;&nbsp;F&#8321; = <span class="frac"><span class="num">s</span><span class="den">s&#178; + 1</span></span>
+    </div>
+    <p>و <span class="imath">F&#8322; = &#8722;1/(s&#178; + 1)</span>. برگشت به زمان:</p>
+    <div class="math">
+      f&#8321;(t) = cos(t),&nbsp;&nbsp; f&#8322;(t) = &#8722;sin(t)
+    </div>
+    <p>پس <span class="imath">F(t) = (cos(t), &#8722;sin(t))</span>؛ یک چرخش باسامد ۱ در صفحه. ماتریس <span class="imath">A</span> ضد‌متقارن بود و چرخش زایید؛ دقیقاً مثل مثال ۲۶.۳ که ماتریس چرخش را به‌صورت عددی دیدیم.</p>
+  </div>
+
+  <div class="box note">
+    <span class="label">درس پایانی</span>
+    حساب، جبر خطی، و عملگرهای برداری سه روی یک سکه‌اند: همه به نوعی «نگاشت خطی» هستند. تبدیل لاپلاس یک پل عملی است که اجازه می‌دهد مسائل سخت در یک فضا (زمان، توابع با مشتق) به مسائل آسان در فضاي دیگر (مختلط، توابع جبری) منتقل شوند.
+  </div>
+
+  <div class="box bridge">
+    <span class="label">گام بعدی</span>
+    همهٔ مفاهیم و ابزارها را پوشش دادیم. حالا ۱۰ مسئلهٔ چالشی می‌آوریم که هرکدام چند مفهوم را به‌هم می‌زنند.
+  </div>
+
+  <!-- ===================== ۲۷. مسائل چالشی ===================== -->
+  <h2 id="ch-challenge"><span class="n">۲۷</span>۱۰ مسئلهٔ چالشی</h2>
+
+  <p>مسائل زیر ترکیبی از مفاهیم این متن‌اند. توصیه: ابتدا فضا را در <span class="imath">s</span> حل کنید، سپس بازگشت را با جدول انجام دهید.</p>
+
+  <div class="problem">
+    <span class="num">۱.</span> تبدیل لاپلاس تابع <span class="imath">f(t) = t&#183;e<sup>&#8722;2t</sup>&#183;sin(4t)</span> را به‌دست بیاورید و ROC را مشخص کنید.
+  </div>
+
+  <div class="problem">
+    <span class="num">۲.</span> معادلهٔ <span class="imath">y&#8243; + 6y&#8242; + 9y = e<sup>&#8722;3t</sup></span> با شرایط <span class="imath">y(0) = 1</span> و <span class="imath">y&#8242;(0) = 0</span> را با لاپلاس حل کنید و پدیدهٔ «تشدید ظاهری» (برخورد با قطب مضاعف) را تفسیر کنید.
+  </div>
+
+  <div class="problem">
+    <span class="num">۳.</span> نشان دهید که اگر <span class="imath">F(s) = <span class="lop">&#8466;</span>{f(t)}</span> آن‌گاه <span class="imath"><span class="lop">&#8466;</span>{ &#8747;<sub>0</sub><sup>t</sup> (t &#8722; &#964;)&#183;f(&#964;) d&#964; } = F(s)/s&#178;</span> و آن را به یک کانولوشن مشخص بشناسید.
+  </div>
+
+  <div class="problem">
+    <span class="num">۴.</span> تابع <span class="imath">f(t) = t&#183;u(t) &#8722; 2(t &#8722; 1)&#183;u(t &#8722; 1) + (t &#8722; 2)&#183;u(t &#8722; 2)</span> یک «مثلث» در زمان می‌سازد. <span class="imath">F(s)</span> را حساب کنید و با قضیهٔ مقدار نهایی، مقدار حد <span class="imath">t &#8594; &#8734;</span> را به‌دست بیاورید.
+  </div>
+
+  <div class="problem">
+    <span class="num">۵.</span> آیا تابع <span class="imath">f(t) = e<sup>t&#183;ln(t)</sup></span> (برای <span class="imath">t &#8805; 1</span>) لاپلاس‌پذیر است؟ با بررسیٔ رشد آسیمپتوتیک استدلال کنید.
+  </div>
+
+  <div class="problem">
+    <span class="num">۶.</span> اگر <span class="imath">y(t)</span> پاسخ سیستم <span class="imath">y&#8243; + y = &#8722;&#948;(t &#8722; &#960;)</span> با <span class="imath">y(0) = 0</span> و <span class="imath">y&#8242;(0) = 0</span> باشد، نشان دهید <span class="imath">y(t) = sin(t)&#183;u(t &#8722; &#960;)</span> را با دو روش (لاپلاس و تحلیل مستقیم با پرش در مشتق) به‌دست بیاورید.
+  </div>
+
+  <div class="problem">
+    <span class="num">۷.</span> با استفاده از بسط تیلور <span class="imath">e<sup>at</sup> = &#8721; (a<sup>n</sup>t<sup>n</sup>/n!)</span> و خطی بودن <span class="imath">&#8466;</span>، نشان دهید که <span class="imath">&#8466;{e<sup>at</sup>} = 1/(s &#8722; a)</span> با مجموع یک سری هندسی به‌دست می‌آید و ROC آن را از همین مجموع استخراج کنید.
+  </div>
+
+  <div class="problem">
+    <span class="num">۸.</span> معادلهٔ <span class="imath">y&#8243; + 4y = cos(2t)</span> با <span class="imath">y(0) = 0</span> و <span class="imath">y&#8242;(0) = 0</span> را حل کنید و نشان دهید پاسخ شامل یک جملهٔ <span class="imath">t&#183;sin(2t)</span> است؛ دلیل ظاهر شدن این جمله را با تحلیل قطب‌های <span class="imath">Y(s)</span> توضیح دهید.
+  </div>
+
+  <div class="problem">
+    <span class="num">۹.</span> تابع <span class="imath">f(t) = (sin t)/t</span> را در نظر بگیرید. ابتدا نشان دهید <span class="imath">&#8466;{f(t)}</span> با انتگرال در <span class="imath">s</span> به‌دست می‌آید و سپس مقدار <span class="imath">&#8747;<sub>0</sub><sup>&#8734;</sup> (sin t)/t dt</span> را از طریق قضیهٔ مقدار نهایی به‌دست بیاورید.
+  </div>
+
+  <div class="problem">
+    <span class="num">۱۰.</span> یک سیستمِ کانولوشنی با پاسخ ضربهٔ <span class="imath">h(t) = e<sup>&#8722;t</sup>&#183;u(t)</span> ورودی <span class="imath">x(t) = sin(t)&#183;u(t)</span> را دریافت می‌کند. پاسخ <span class="imath">y(t) = (h &#8727; x)(t)</span> را به دو روش (محاسبهٔ مستقیم کانولوشن و استفاده از ضرب در فضای <span class="imath">s</span>) به‌دست بیاورید و تطابق آن‌ها را نشان دهید.
+  </div>
+
+  <div class="box note">
+    <span class="label">تذکر</span>
+    این مسائل به‌گونه‌ای طراحی شده‌اند که هر کدام حداقل دو مفهوم از متن را به‌هم بزنند. در حل آن‌ها، ابتدا فضای <span class="imath">s</span> را تا انتها پیش ببرید، سپس بازگشت را با ابزارهای این متن انجام دهید.
+  </div>
+
+  <hr>
+
+  <div class="footer">
+    تبدیل لاپلاس — از مفهوم نرخ تغییر در یک لحظه تا حل معادلهٔ دیفرانسیل · نسخهٔ آموزشی پلکانی
+  </div>
+
+</div>
+
+<div class="totop" id="totop">↑ بالا</div>
+
+<script>
+  (function(){
+    var btn = document.getElementById('totop');
+    window.addEventListener('scroll', function(){
+      if (window.scrollY > 400) btn.classList.add('show');
+      else btn.classList.remove('show');
+    });
+    btn.addEventListener('click', function(){
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  })();
+
+  document.addEventListener("DOMContentLoaded", function(){
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "$", right: "$", display: false},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false,
+        ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
