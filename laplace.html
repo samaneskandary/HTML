@@ -83,7 +83,7 @@
   a{ color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent); }
   a:hover{ color: var(--accent-2); border-color: var(--accent-2); }
   strong{ color: var(--ink); font-weight:600; }
-  em{ color: var(--accent-2); font-style: italic; }
+  em{ color: var(--ink-soft); font-style: italic; }
   ul,ol{ padding-right: 24px; }
   li{ margin: 6px 0; }
 
@@ -158,6 +158,9 @@
     background: var(--bridge-bg); border-color: var(--bridge-border); border-style: dashed;
   }
   .box.bridge .label{ background: var(--accent-3); }
+  details.answer > summary{ cursor: pointer; font-weight: 700; color: #4a6b85; padding: 4px 0; }
+  details.answer[open] > summary{ margin-bottom: 10px; }
+  details.answer{ background: #f0f5f8; border: 1px solid #c8d4dd; border-right: 4px solid #4a6b85; border-radius: 10px; padding: 12px 18px; margin: 12px 0 20px 0; }
   .box .label{
     display:inline-block; font-size:12px; font-weight:700;
     color: #fff; background: var(--accent); padding: 2px 12px;
@@ -1681,8 +1684,8 @@ A\cdot v &= [[0, -1], [1, 0]] \cdot (1, 0) \\[10pt]
     <p><span class="imath">$F = (-y, x, 0)$</span> (میدان چرخش دور محور <span class="imath">$z$</span>). کرل:</p>
     <div class="math">$$\operatorname{curl} F = \begin{pmatrix} \dfrac{\partial 0}{\partial y} - \dfrac{\partial x}{\partial z} \\[10pt] \dfrac{\partial (-y)}{\partial z} - \dfrac{\partial 0}{\partial x} \\[10pt] \dfrac{\partial x}{\partial x} - \dfrac{\partial (-y)}{\partial y} \end{pmatrix}$$</div>
     <div class="math">$$\begin{aligned}
-\operatorname{curl} F &= \begin{pmatrix} 0 - 0 \\[6pt] 0 - 0 \\[6pt] 1 - (-1) \end{pmatrix} \\[10pt]
-&= \begin{pmatrix} 0 \\[6pt] 0 \\[6pt] 2 \end{pmatrix} \\[10pt]
+\operatorname{curl} F &= \begin{pmatrix} 0 - 0 \\[12pt] 0 - 0 \\[12pt] 1 - (-1) \end{pmatrix} \\[10pt]
+&= \begin{pmatrix} 0 \\[12pt] 0 \\[12pt] 2 \end{pmatrix} \\[10pt]
 &= 2 \, \hat{z}
 \end{aligned}$$</div>
     <p>کرل در جهت <span class="imath">$z$</span> و برابر ۲ است؛ یعنی میدان با شدت ۲ حول محور <span class="imath">$z$</span> می‌چرخد. این پایهٔ قانون آمر-ماکسول است.</p>
@@ -1795,41 +1798,164 @@ f_2(t) &= -\sin(t)
     <span class="num">۱.</span> تبدیل لاپلاس تابع <span class="imath">$f(t) = t\cdot e^{-2t}\cdot \sin(4t)$</span> را به‌دست بیاورید و ROC را مشخص کنید.
   </div>
 
+  <details class="answer">
+    <summary>پاسخ مسئله ۱</summary>
+    <p>از قضیهٔ شیفت در <span class="imath">$s$</span> و ضریب <span class="imath">$t$</span> استفاده می‌کنیم. ابتدا <span class="imath">$\mathcal{L}\{\sin(4t)\} = \dfrac{4}{s^2 + 16}$</span> با ROC <span class="imath">$\Re(s) &gt; 0$</span>. با ضربِ <span class="imath">$e^{-2t}$</span>، شیفت در <span class="imath">$s$</span> به‌اندازهٔ <span class="imath">$-2$</span>:</p>
+    <div class="math">$$\mathcal{L}\{e^{-2t}\sin(4t)\} = \frac{4}{(s+2)^2 + 16}, \quad \Re(s) &gt; -2$$</div>
+    <p>حالا ضرب در <span class="imath">$t$</span> در حوزهٔ زمان، منجر به <span class="imath">$-\dfrac{d}{ds}$</span> در حوزهٔ <span class="imath">$s$</span> می‌شود:</p>
+    <div class="math">$$\begin{aligned}
+\mathcal{L}\{t\, e^{-2t}\sin(4t)\} &= -\frac{d}{ds}\!\left[\frac{4}{(s+2)^2 + 16}\right] \\[10pt]
+&= -\left(-\frac{4 \cdot 2(s+2)}{((s+2)^2 + 16)^2}\right) \\[10pt]
+&= \frac{8(s+2)}{((s+2)^2 + 16)^2}
+\end{aligned}$$</div>
+    <p>ROC: <span class="imath">$\Re(s) &gt; -2$</span> (تغییر نمی‌کند، چون مشتق‌گیری در <span class="imath">$s$</span> ROC را جابه‌جا نمی‌کند).</p>
+  </details>
+
   <div class="problem">
     <span class="num">۲.</span> معادلهٔ <span class="imath">$y'' + 6y' + 9y = e^{-3t}$</span> با شرایط <span class="imath">$y(0) = 1$</span> و <span class="imath">$y'(0) = 0$</span> را با لاپلاس حل کنید و پدیدهٔ «تشدید ظاهری» (برخورد با قطب مضاعف) را تفسیر کنید.
   </div>
+
+  <details class="answer">
+    <summary>پاسخ مسئله ۲</summary>
+    <p>تبدیل لاپلاس از دو طرف (با <span class="imath">$\mathcal{L}\{y'\} = sY - y(0)$</span> و <span class="imath">$\mathcal{L}\{y''\} = s^2 Y - s\, y(0) - y'(0)$</span>):</p>
+    <div class="math">$$\bigl(s^2 Y - s\bigr) + 6\bigl(sY - 1\bigr) + 9Y = \frac{1}{s+3}$$</div>
+    <div class="math">$$\begin{aligned}
+(s^2 + 6s + 9)\, Y &= s + 6 + \frac{1}{s+3} \\[10pt]
+(s+3)^2\, Y &= s + 6 + \frac{1}{s+3} \\[10pt]
+Y &= \frac{s + 6}{(s+3)^2} + \frac{1}{(s+3)^3}
+\end{aligned}$$</div>
+    <p>نکتهٔ بحرانی: مخرجِ <span class="imath">$(s+3)^2$</span> یک <strong>قطبِ مضاعف</strong> در <span class="imath">$s = -3$</span> است — دقیقاً همان نقطه‌ای که تحریکِ <span class="imath">$e^{-3t}$</span> قطبِ ساده‌اش را دارد. این، تشدیدِ ظاهری است. بازگشت:</p>
+    <div class="math">$$\frac{s+6}{(s+3)^2} = \frac{(s+3) + 3}{(s+3)^2} = \frac{1}{s+3} + \frac{3}{(s+3)^2}$$</div>
+    <p>پس:</p>
+    <div class="math">$$Y = \frac{1}{s+3} + \frac{3}{(s+3)^2} + \frac{1}{(s+3)^3}$$</div>
+    <div class="math">$$y(t) = e^{-3t} + 3\, t\, e^{-3t} + \tfrac{1}{2}\, t^2\, e^{-3t}$$</div>
+    <p>تفسیر: جملهٔ <span class="imath">$t\, e^{-3t}$</span> و <span class="imath">$t^2 e^{-3t}$</span> از قطبِ مضاعف می‌آیند — این‌ها نشانهٔ تشدیدِ ظاهری‌اند: سیستم در فرکانسِ طبیعیِ خودش (که <span class="imath">$-3$</span> است، یعنی میرای بحرانی) تحریک می‌شود و پاسخ با <span class="imath">$t$</span> و <span class="imath">$t^2$</span> رشد می‌کند قبل از میرایی. اگر تحریک در فرکانسِ متفاوت بود، فقط <span class="imath">$e^{-3t}$</span> می‌داشتیم.</p>
+  </details>
 
   <div class="problem">
     <span class="num">۳.</span> نشان دهید که اگر <span class="imath">$F(s) = \mathcal{L}\{f(t)\}$</span> آن‌گاه <span class="imath">$\mathcal{L}\{ \int _{0}^{t} (t - \tau )\cdot f(\tau ) d\tau \} = F\frac{s}{s^2}$</span> و آن را به یک کانولوشن مشخص بشناسید.
   </div>
 
+  <details class="answer">
+    <summary>پاسخ مسئله ۳</summary>
+    <p>انتگرال <span class="imath">$\int_0^t (t - \tau)\, f(\tau)\, d\tau$</span> یک کانولوشن است: <span class="imath">$(g * f)(t)$</span> با <span class="imath">$g(t) = t$</span>. در حوزهٔ <span class="imath">$s$</span>، کانولوشن به ضرب تبدیل می‌شود:</p>
+    <div class="math">$$\mathcal{L}\{(g * f)(t)\} = G(s)\, F(s)$$</div>
+    <p>و <span class="imath">$\mathcal{L}\{t\} = \dfrac{1}{s^2}$</span>. پس:</p>
+    <div class="math">$$\mathcal{L}\left\{\int_0^t (t - \tau)\, f(\tau)\, d\tau\right\} = \frac{1}{s^2}\, F(s)$$</div>
+    <p>این، <strong>انتگرالِ دوگانهٔ کانولوشنی</strong> است: <span class="imath">$g * f$</span> با <span class="imath">$g(t) = t$</span>، یعنی انتگرال‌گیریِ دو بار از <span class="imath">$f$</span>. در واقع، <span class="imath">$(t) * f = \int_0^t (t - \tau) f(\tau) d\tau$</span> دقیقاً انتگرالِ دوگانهٔ <span class="imath">$\int_0^t \int_0^{t_1} f(\tau) d\tau\, dt_1$</span> است — که با تعویفِ ترتیبِ انتگرال‌گیری به‌دست می‌آید.</p>
+  </details>
+
   <div class="problem">
     <span class="num">۴.</span> تابع <span class="imath">$f(t) = t\cdot u(t) - 2(t - 1)\cdot u(t - 1) + (t - 2)\cdot u(t - 2)$</span> یک «مثلث» در زمان می‌سازد. <span class="imath">$F(s)$</span> را حساب کنید و با قضیهٔ مقدار نهایی، مقدار حد <span class="imath">$t \to \infty$</span> را به‌دست بیاورید.
   </div>
+
+  <details class="answer">
+    <summary>پاسخ مسئله ۴</summary>
+    <p>با قضیهٔ تأخیرِ زمانی <span class="imath">$\mathcal{L}\{g(t - a) u(t - a)\} = e^{-as} G(s)$</span> و <span class="imath">$\mathcal{L}\{t\, u(t)\} = 1/s^2$</span>:</p>
+    <div class="math">$$\begin{aligned}
+F(s) &= \frac{1}{s^2} - \frac{2 e^{-s}}{s^2} + \frac{e^{-2s}}{s^2} \\[10pt]
+&= \frac{1 - 2 e^{-s} + e^{-2s}}{s^2} \\[10pt]
+&= \frac{(1 - e^{-s})^2}{s^2}
+\end{aligned}$$</div>
+    <p>بررسیِ شکل: از <span class="imath">$t = 0$</span> تا <span class="imath">$1$</span> خطِ رو به بالا با شیبِ ۱، از <span class="imath">$1$</span> تا <span class="imath">$2$</span> خطِ رو به پایین با شیبِ <span class="imath">$-1$</span>، و بعد از <span class="imath">$2$</span> صفر — یک مثلث با رأس در <span class="imath">$(1, 1)$</span>.</p>
+    <p>قضیهٔ مقدار نهایی: <span class="imath">$\lim_{t\to\infty} f(t) = \lim_{s \to 0} s\, F(s)$</span> اگر همهٔ قطب‌های <span class="imath">$sF(s)$</span> در نیم‌صفحهٔ چپ باشند. این‌جا <span class="imath">$f(t) = 0$</span> برای <span class="imath">$t &gt; 2$</span>، پس:</p>
+    <div class="math">$$\lim_{t\to\infty} f(t) = 0$$</div>
+    <p>با قضیهٔ مقدار نهایی: <span class="imath">$s F(s) = \dfrac{(1 - e^{-s})^2}{s}$</span>. چون <span class="imath">$1 - e^{-s} \to 0$</span> وقتی <span class="imath">$s \to 0$</span>، این یک <span class="imath">$0/0$</span> است. با هوپیتال:</p>
+    <div class="math">$$\lim_{s \to 0} \frac{(1 - e^{-s})^2}{s} = \lim_{s \to 0} \frac{2(1 - e^{-s}) e^{-s}}{1} = 0$$</div>
+    <p>تطبیق ✓. مثلث در نهایت به صفر می‌رسد — که منطقی است، چون تابع از <span class="imath">$t = 2$</span> به بعد صفر است.</p>
+  </details>
 
   <div class="problem">
     <span class="num">۵.</span> آیا تابع <span class="imath">$f(t) = e^{t\cdot \ln(t)}$</span> (برای <span class="imath">$t \ge 1$</span>) لاپلاس‌پذیر است؟ با بررسیٔ رشد آسیمپتوتیک استدلال کنید.
   </div>
 
+  <details class="answer">
+    <summary>پاسخ مسئله ۵</summary>
+    <p>تابع را بازنویسی می‌کنیم: <span class="imath">$f(t) = e^{t \ln t} = t^t$</span>. برای رشدِ آسیمپتوتیک، وقتی <span class="imath">$t \to \infty$</span>، <span class="imath">$\ln t \to \infty$</span> پس <span class="imath">$t \ln t \to \infty$</span> سریع‌تر از خودِ <span class="imath">$t$</span>. در واقع، برای هر <span class="imath">$a$</span> ثابت:</p>
+    <div class="math">$$t \ln t \gg a\, t \quad \text{وقتی } t \to \infty$$</div>
+    <p>پس <span class="imath">$t^t = e^{t \ln t} \gg e^{at}$</span> برای هر <span class="imath">$a$</span> ثابت. شرطِ لاپلاس‌پذیری این است که <span class="imath">$|f(t)| \le M e^{at}$</span> برای برخی <span class="imath">$M, a$</span>. ولی <span class="imath">$t^t$</span> از هر <span class="imath">$e^{at}$</span> سریع‌تر رشد می‌کند، پس <strong>هیچ <span class="imath">$a$</span> وجود ندارد</strong> که این شرط را برآورده کند. نتیجه: <span class="imath">$f(t) = t^t$</span> <strong>لاپلاس‌پذیر نیست</strong>.</p>
+    <p>این، نمونه‌ای از این است که تبدیل لاپلاس همهٔ توابع را پوشش نمی‌دهد — فقط توابعی که رشدِ نمایی‌شان محدود است. توابعی مثل <span class="imath">$t^t$</span>، <span class="imath">$e^{t^2}$</span>، یا <span class="imath">$e^{e^t}$</span> لاپلاس‌پذیر نیستند.</p>
+  </details>
+
   <div class="problem">
     <span class="num">۶.</span> اگر <span class="imath">$y(t)$</span> پاسخ سیستم <span class="imath">$y'' + y = -\delta (t - \pi )$</span> با <span class="imath">$y(0) = 0$</span> و <span class="imath">$y'(0) = 0$</span> باشد، نشان دهید <span class="imath">$y(t) = \sin(t)\cdot u(t - \pi )$</span> را با دو روش (لاپلاس و تحلیل مستقیم با پرش در مشتق) به‌دست بیاورید.
   </div>
+
+  <details class="answer">
+    <summary>پاسخ مسئله ۶</summary>
+    <p><strong>روش لاپلاس</strong>: <span class="imath">$\mathcal{L}\{\delta(t - \pi)\} = e^{-\pi s}$</span>. با شرایطِ صفرِ اولیه:</p>
+    <div class="math">$$s^2 Y + Y = -e^{-\pi s} \;\Rightarrow\; Y = -\frac{e^{-\pi s}}{s^2 + 1}$$</div>
+    <p>با قضیهٔ تأخیر: <span class="imath">$\mathcal{L}^{-1}\{e^{-\pi s} G(s)\} = g(t - \pi)\, u(t - \pi)$</span> که در آن <span class="imath">$g(t) = \sin t$</span>:</p>
+    <div class="math">$$y(t) = -\sin(t - \pi)\, u(t - \pi) = \sin(t)\, u(t - \pi)$$</div>
+    <p>چون <span class="imath">$\sin(t - \pi) = -\sin t$</span>.</p>
+    <p><strong>روش تحلیل مستقیم</strong>: برای <span class="imath">$t &lt; \pi$</span>، تحریک صفر است و با شرایطِ صفر، <span class="imath">$y = 0$</span>. در <span class="imath">$t = \pi$</span>، <span class="imath">$\delta(t - \pi)$</span> یک ضربهٔ لحظه‌ای است. از معادلهٔ <span class="imath">$y'' = -y - \delta(t - \pi)$</span> انتگرال‌گیری روی <span class="imath">$[\pi - \varepsilon, \pi + \varepsilon]$</span>:</p>
+    <div class="math">$$y'(\pi^+) - y'(\pi^-) = \int_{\pi^-}^{\pi^+} y''\, dt = -\int_{\pi^-}^{\pi^+} \delta(t - \pi)\, dt = -1$$</div>
+    <p>یعنی <span class="imath">$y'$</span> در <span class="imath">$t = \pi$</span> به‌اندازهٔ <span class="imath">$-1$</span> می‌پرد. چون <span class="imath">$y'(\pi^-) = 0$</span>، پس <span class="imath">$y'(\pi^+) = -1$</span>. برای <span class="imath">$t &gt; \pi$</span>، معادلهٔ همگن با شرایطِ <span class="imath">$y(\pi) = 0$</span> و <span class="imath">$y'(\pi) = -1$</span>:</p>
+    <div class="math">$$y(t) = -\sin(t - \pi) = \sin t \quad (t &gt; \pi)$$</div>
+    <p>تطبیق ✓. <strong>تفسیر فیزیکی</strong>: ضربهٔ <span class="imath">$\delta(t - \pi)$</span> در <span class="imath">$t = \pi$</span> به‌جلیزنده‌ای که در حالِ استراحت بود، یک تکانهٔ لحظه‌ای می‌دهد که آن را به حرکتِ <span class="imath">$\sin t$</span> درمی‌آورد — ولی فقط از <span class="imath">$t = \pi$</span> به بعد.</p>
+  </details>
 
   <div class="problem">
     <span class="num">۷.</span> با استفاده از بسط تیلور <span class="imath">$e^{at} = \sum (a^{n}t^{n}/n!)$</span> و خطی بودن <span class="imath">$\mathcal{L}$</span>، نشان دهید که <span class="imath">$\mathcal{L}\{e^{at}\} = \frac{1}{s - a}$</span> با مجموع یک سری هندسی به‌دست می‌آید و ROC آن را از همین مجموع استخراج کنید.
   </div>
 
+  <details class="answer">
+    <summary>پاسخ مسئله ۷</summary>
+    <p>از بسطِ تیلور: <span class="imath">$e^{at} = \sum_{n=0}^{\infty} \dfrac{a^n t^n}{n!}$</span>. با خطی بودنِ <span class="imath">$\mathcal{L}$</span> (اگر بتوانیم با حد و انتگرال جابه‌جا کنیم):</p>
+    <div class="math">$$\mathcal{L}\{e^{at}\} = \sum_{n=0}^{\infty} \frac{a^n}{n!}\, \mathcal{L}\{t^n\} = \sum_{n=0}^{\infty} \frac{a^n}{n!}\, \frac{n!}{s^{n+1}} = \frac{1}{s} \sum_{n=0}^{\infty} \left(\frac{a}{s}\right)^n$$</div>
+    <p>این، یک <strong>سری هندسی</strong> است با نسبتِ <span class="imath">$r = a/s$</span>. این سری همگراست iff <span class="imath">$|r| &lt; 1$</span> یعنی <span class="imath">$|a| &lt; |s|$</span>، یا دقیق‌تر <span class="imath">$\Re(s) &gt; \Re(a)$</span>. در این صورت:</p>
+    <div class="math">$$\frac{1}{s} \cdot \frac{1}{1 - a/s} = \frac{1}{s - a}$$</div>
+    <p>ROC: <span class="imath">$\Re(s) &gt; \Re(a)$</span> — که از شرطِ همگراییِ سریِ هندسی به‌دست آمد. این، روشی زیبا برای دیدنِ این است که ROC فقط شرطِ همگراییِ سری است، نه یک قرارداد.</p>
+  </details>
+
   <div class="problem">
     <span class="num">۸.</span> معادلهٔ <span class="imath">$y'' + 4y = \cos(2t)$</span> با <span class="imath">$y(0) = 0$</span> و <span class="imath">$y'(0) = 0$</span> را حل کنید و نشان دهید پاسخ شامل یک جملهٔ <span class="imath">$t\cdot \sin(2t)$</span> است؛ دلیل ظاهر شدن این جمله را با تحلیل قطب‌های <span class="imath">$Y(s)$</span> توضیح دهید.
   </div>
+
+  <details class="answer">
+    <summary>پاسخ مسئله ۸</summary>
+    <p>با <span class="imath">$\mathcal{L}\{\cos(2t)\} = \dfrac{s}{s^2 + 4}$</span> و شرایطِ صفر:</p>
+    <div class="math">$$s^2 Y + 4Y = \frac{s}{s^2 + 4} \;\Rightarrow\; Y = \frac{s}{(s^2 + 4)^2}$$</div>
+    <p>تحلیلِ قطب‌ها: <span class="imath">$(s^2 + 4)^2 = (s - 2i)^2 (s + 2i)^2$</span> — یعنی <strong>قطب‌های مضاعف</strong> در <span class="imath">$s = \pm 2i$</span>. این، دقیقاً همان فرکانسِ تحریکِ <span class="imath">$\cos(2t)$</span> است — تشدیدِ ظاهری. بازگشت با کسرهای جزئی یا با شناساییِ الگوی <span class="imath">$\mathcal{L}^{-1}\left\{\dfrac{s}{(s^2 + 4)^2}\right\}$</span>:</p>
+    <p>قاعدهٔ مفید: <span class="imath">$\mathcal{L}\{t \sin(at)\} = \dfrac{2as}{(s^2 + a^2)^2}$</span>. با <span class="imath">$a = 2$</span>:</p>
+    <div class="math">$$\mathcal{L}\{t \sin(2t)\} = \frac{4s}{(s^2 + 4)^2} \;\Rightarrow\; \mathcal{L}^{-1}\left\{\frac{s}{(s^2 + 4)^2}\right\} = \frac{t \sin(2t)}{4}$$</div>
+    <div class="math">$$y(t) = \tfrac{1}{4}\, t\, \sin(2t)$$</div>
+    <p><strong>تفسیر</strong>: جملهٔ <span class="imath">$t \sin(2t)$</span> از قطبِ مضاعف می‌آید. بدون تشدید (مثلاً اگر تحریکِ <span class="imath">$\cos(3t)$</span> بود)، پاسخ فقط نوسانیِ محدود بود. ولی چون فرکانسِ تحریک با فرکانسِ طبیعیِ سیستم یکی است، دامنهٔ نوسان به‌طورِ خطی با <span class="imath">$t$</span> رشد می‌کند — این، <strong>تشدیدِ واقعی</strong> (resonance) است. در فیزیک، این پدیده شکستِ پل‌ها در اثرِ باد یا پره‌های موتور در فرکانسِ بحرانی را توضیح می‌دهد.</p>
+  </details>
 
   <div class="problem">
     <span class="num">۹.</span> تابع <span class="imath">$f(t) = \frac{\sin t}{t}$</span> را در نظر بگیرید. ابتدا نشان دهید <span class="imath">$\mathcal{L}\{f(t)\}$</span> با انتگرال در <span class="imath">$s$</span> به‌دست می‌آید و سپس مقدار <span class="imath">$\int _{0}^{\infty } \frac{\sin t}{t} dt$</span> را از طریق قضیهٔ مقدار نهایی به‌دست بیاورید.
   </div>
 
+  <details class="answer">
+    <summary>پاسخ مسئله ۹</summary>
+    <p>قاعدهٔ مفید: اگر <span class="imath">$g(t) = f(t)/t$</span> و <span class="imath">$\lim_{t \to 0^+} f(t)/t$</span> موجود باشد، آن‌گاه:</p>
+    <div class="math">$$\mathcal{L}\{f(t)/t\} = \int_{s}^{\infty} F(\sigma)\, d\sigma$$</div>
+    <p>اینجا <span class="imath">$f(t) = \sin t$</span> با <span class="imath">$F(s) = \dfrac{1}{s^2 + 1}$</span>. پس:</p>
+    <div class="math">$$\mathcal{L}\{\sin t / t\} = \int_s^{\infty} \frac{d\sigma}{\sigma^2 + 1} = \arctan(\sigma)\Big|_s^{\infty} = \frac{\pi}{2} - \arctan(s)$$</div>
+    <p>ROC: <span class="imath">$\Re(s) &gt; 0$</span> (چون <span class="imath">$\sin t / t$</span> نزدیکِ <span class="imath">$t = 0$</span> به‌صورتِ <span class="imath">$1$</span> است، نه نمایی).</p>
+    <p>برای محاسبهٔ <span class="imath">$\int_0^{\infty} \dfrac{\sin t}{t}\, dt$</span>: این دقیقاً <span class="imath">$F(0)$</span> است (چون <span class="imath">$F(s) = \int_0^{\infty} e^{-st} \dfrac{\sin t}{t}\, dt$</span>، پس در <span class="imath">$s = 0$</span> انتگرالِ بدونِ میرایی به‌دست می‌آید):</p>
+    <div class="math">$$\int_0^{\infty} \frac{\sin t}{t}\, dt = F(0) = \frac{\pi}{2} - \arctan(0) = \frac{\pi}{2}$$</div>
+    <p>این، <strong>انتگرالِ دیریخله</strong> معروف است — یک انتگرالِ شرطیِ همگرا که با روش‌های معمولیِ حسابان سخت به‌دست می‌آید، ولی با لاپلاس به‌سادگی ظاهر می‌شود. این، قدرتِ تبدیل لاپلاس در محاسبهٔ انتگرال‌های دیریخله است.</p>
+  </details>
+
   <div class="problem">
     <span class="num">۱۰.</span> یک سیستمِ کانولوشنی با پاسخ ضربهٔ <span class="imath">$h(t) = e^{-t}\cdot u(t)$</span> ورودی <span class="imath">$x(t) = \sin(t)\cdot u(t)$</span> را دریافت می‌کند. پاسخ <span class="imath">$y(t) = (h * x)(t)$</span> را به دو روش (محاسبهٔ مستقیم کانولوشن و استفاده از ضرب در فضای <span class="imath">$s$</span>) به‌دست بیاورید و تطابق آن‌ها را نشان دهید.
   </div>
+
+  <details class="answer">
+    <summary>پاسخ مسئله ۱۰</summary>
+    <p><strong>روش لاپلاس</strong>: <span class="imath">$H(s) = \dfrac{1}{s+1}$</span> و <span class="imath">$X(s) = \dfrac{1}{s^2 + 1}$</span>. کانولوشن در زمان = ضرب در <span class="imath">$s$</span>:</p>
+    <div class="math">$$Y(s) = H(s)\, X(s) = \frac{1}{(s+1)(s^2 + 1)}$$</div>
+    <p>کسرهای جزئی: <span class="imath">$\dfrac{1}{(s+1)(s^2 + 1)} = \dfrac{A}{s+1} + \dfrac{Bs + C}{s^2 + 1}$</span>. با حل: <span class="imath">$A = 1/2$</span>، <span class="imath">$B = -1/2$</span>، <span class="imath">$C = 1/2$</span>:</p>
+    <div class="math">$$Y(s) = \frac{1/2}{s+1} + \frac{-s/2 + 1/2}{s^2 + 1} = \frac{1/2}{s+1} - \frac{1}{2}\cdot\frac{s}{s^2 + 1} + \frac{1}{2}\cdot\frac{1}{s^2 + 1}$$</div>
+    <div class="math">$$y(t) = \tfrac{1}{2}\, e^{-t} - \tfrac{1}{2}\, \cos t + \tfrac{1}{2}\, \sin t \quad (t \ge 0)$$</div>
+    <p><strong>روش مستقیم کانولوشن</strong>: <span class="imath">$y(t) = \int_0^t h(\tau)\, x(t - \tau)\, d\tau = \int_0^t e^{-\tau} \sin(t - \tau)\, d\tau$</span>. با <span class="imath">$\sin(t - \tau) = \sin t \cos\tau - \cos t \sin\tau$</span>:</p>
+    <div class="math">$$y(t) = \sin t \int_0^t e^{-\tau}\cos\tau\, d\tau - \cos t \int_0^t e^{-\tau}\sin\tau\, d\tau$$</div>
+    <p>با انتگرال‌گیریِ مستقیم (یا با فرمول‌های استانداردِ <span class="imath">$\int e^{-\tau}\cos\tau\, d\tau$</span> و <span class="imath">$\int e^{-\tau}\sin\tau\, d\tau$</span>) و ساده‌سازی:</p>
+    <div class="math">$$y(t) = \tfrac{1}{2}\, e^{-t} - \tfrac{1}{2}\, \cos t + \tfrac{1}{2}\, \sin t$$</div>
+    <p>تطبیق ✓. <strong>تفسیر</strong>: پاسخِ حالتِ پایدار (وقتی <span class="imath">$e^{-t}$</span> میرا شده) برابر <span class="imath">$\tfrac{1}{2}(\sin t - \cos t) = \tfrac{1}{\sqrt{2}} \sin(t - \pi/4)$</span> است — همان فرکانسِ ورودی ولی با دامنهٔ <span class="imath">$1/\sqrt{2}$</span> و فازِ <span class="imath">$-\pi/4$</span>. این، <strong>پاسخِ فرکانسی</strong> سیستم است: <span class="imath">$H(i\omega) = \dfrac{1}{1 + i\omega}$</span> در <span class="imath">$\omega = 1$</span> برابر <span class="imath">$\dfrac{1}{1 + i} = \dfrac{1 - i}{2}$</span> با دامنهٔ <span class="imath">$1/\sqrt{2}$</span> و فازِ <span class="imath">$-\pi/4$</span> — تطبیقِ کامل.</p>
+  </details>
 
   <div class="box note">
     <span class="label">تذکر</span>
