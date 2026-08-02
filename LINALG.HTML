@@ -12,30 +12,33 @@
 <script defer src="katex/contrib/auto-render.min.js"></script>
 <style>
   :root{
-    --bg: #e8e6db;
-    --paper: #fbfaf3;
-    --paper-edge: #d8d6c8;
-    --ink: #1f2a26;
-    --ink-soft: #4a5450;
+    --bg: #e9e7dc;
+    --paper: #fdfcf6;
+    --paper-edge: #dcdac9;
+    --ink: #1e2a24;
+    --ink-soft: #47524c;
     --muted: #8a8a7e;
-    --accent: #2a6b4a;
-    --accent-2: #c8702a;
+    --accent: #1f7a54;
+    --accent-soft: #2a936a;
+    --accent-2: #cf6f24;
     --accent-3: #7a8a2a;
     --accent-4: #6a3a7a;
-    --line: #c8c8b8;
-    --math-bg: #eef2e8;
-    --math-border: #b8c4a8;
-    --note-bg: #e4eee0;
-    --note-border: #9cc48c;
-    --warn-bg: #fbe8d0;
-    --warn-border: #e8b878;
-    --good-bg: #e0eee4;
+    --line: #cecec0;
+    --math-bg: #eef4ec;
+    --math-border: #bcccae;
+    --note-bg: #e6f0e8;
+    --note-border: #9cc9a4;
+    --warn-bg: #fbe9d2;
+    --warn-border: #eab878;
+    --good-bg: #e2efe6;
     --good-border: #8cc4a4;
-    --example-bg: #eee4f0;
-    --example-border: #c8a4d4;
-    --bridge-bg: #e8e4d8;
-    --bridge-border: #b8b48c;
-    --shadow: 0 1px 3px rgba(40,50,30,.10), 0 8px 28px rgba(40,50,30,.12);
+    --example-bg: #f3ecd8;
+    --example-border: #d9bf94;
+    --bridge-bg: #eae5d6;
+    --bridge-border: #c2b487;
+    --radius: 10px;
+    --shadow: 0 1px 3px rgba(40,50,30,.08), 0 10px 30px rgba(40,50,30,.10);
+    --soft-shadow: 0 1px 2px rgba(40,50,30,.05), 0 6px 18px rgba(40,50,30,.07);
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -50,39 +53,50 @@
   }
   .paper{
     max-width: 920px;
-    margin: 40px auto;
+    margin: 44px auto;
     background: var(--paper);
     padding: 56px 64px 80px;
-    border-radius: 4px;
+    border-radius: var(--radius);
     box-shadow: var(--shadow);
     border: 1px solid var(--paper-edge);
-    border-top: 3px solid var(--accent);
+    position: relative;
+    overflow: hidden;
+  }
+  .paper::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-soft) 45%, var(--accent-2));
   }
   @media (max-width: 760px){
-    .paper{ margin: 0; padding: 24px 18px 60px; border-radius: 0; }
+    .paper{ margin: 0; padding: 28px 18px 60px; border-radius: 0; }
     body{ font-size: 16px; }
   }
   h1,h2,h3,h4{ font-family:'Estedad','Vazirmatn',sans-serif; font-weight:700; line-height:1.5; color: var(--ink); }
-  h1{ font-size: 30px; margin: 0 0 6px; letter-spacing:-.3px; }
+  h1{ font-size: 32px; margin: 0 0 6px; letter-spacing:-.4px; }
   h2{
-    font-size: 24px; margin: 84px 0 18px; padding-bottom: 10px;
+    font-size: 24px; margin: 80px 0 20px; padding-bottom: 12px;
     border-bottom: 1px solid var(--line); position: relative;
   }
   h2::before{
-    content:""; position:absolute; bottom:-1px; right:0; width:96px; height:3px;
-    background: var(--accent);
-  }
-  h2::after{
-    content:""; position:absolute; bottom:-1px; right:96px; width:24px; height:3px;
-    background: var(--accent-2);
+    content:""; position:absolute; bottom:-1px; right:0; width:120px; height:3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    border-radius: 2px;
   }
   h2 .n{
-    display:inline-block; background: var(--accent); color:#fff;
-    width: 30px; height:30px; line-height:30px; text-align:center; border-radius:3px;
-    font-size: 15px; margin-left: 12px; vertical-align: middle;
-    box-shadow: 2px 2px 0 var(--accent-2);
+    display:inline-flex; align-items:center; justify-content:center;
+    background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+    color:#fff; width: 34px; height:34px; text-align:center; border-radius:50%;
+    font-size: 15px; margin-left: 14px; vertical-align: middle;
+    box-shadow: 0 2px 6px rgba(31,122,84,.35);
   }
-  h3{ font-size: 19px; margin: 36px 0 10px; color: var(--accent); padding-right: 10px; border-right: 3px solid var(--accent-2); }
+  h3{
+    font-size: 19px; margin: 36px 0 10px; color: var(--accent);
+    padding-right: 14px; position: relative;
+  }
+  h3::before{
+    content:""; position:absolute; right:0; top:4px; bottom:4px; width:4px;
+    background: linear-gradient(180deg, var(--accent), var(--accent-2));
+    border-radius: 2px;
+  }
   h4{ font-size: 17px; margin: 24px 0 8px; color: var(--accent-3); }
   p{ margin: 12px 0; }
   a{ color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent); }
@@ -93,56 +107,76 @@
   li{ margin: 6px 0; }
 
   .cover{
-    text-align:center; padding: 14px 0 24px; margin-bottom: 18px;
+    text-align:center; padding: 18px 0 26px; margin-bottom: 20px;
     border-bottom: 1px solid var(--line);
-    background: linear-gradient(180deg, rgba(31,74,58,.04), transparent 80%);
   }
-  .cover .sub{ color: var(--ink-soft); font-size: 15px; margin-top: 6px; }
+  .cover h1{
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .cover .sub{ color: var(--ink-soft); font-size: 15px; margin-top: 8px; }
+  .cover .rule{
+    width: 90px; height: 4px; margin: 16px auto 0; border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  }
 
+  @counter-style persian-decimal{
+    system: numeric;
+    symbols: "\06F0" "\06F1" "\06F2" "\06F3" "\06F4" "\06F5" "\06F6" "\06F7" "\06F8" "\06F9";
+    suffix: "";
+  }
   .toc{
-    background: #ecebe0;
+    background: linear-gradient(180deg, #eef0e6, #eae9dd);
     border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: 18px 22px 22px;
-    margin: 18px 0 8px;
+    border-radius: var(--radius);
+    padding: 20px 24px 24px;
+    margin: 20px 0 8px;
+    box-shadow: var(--soft-shadow);
   }
-  .toc h2{ margin: 4px 0 14px; border:0; padding:0; font-size: 18px; }
+  .toc h2{ margin: 4px 0 16px; border:0; padding:0; font-size: 18px; text-align:center; }
   .toc h2::before{ display:none; }
-  .toc h2::after{ display:none; }
-  .toc ol{ list-style: none; padding: 0; margin: 0; counter-reset: tocitem; }
+  .toc ol{
+    list-style: none; padding: 0; margin: 0; counter-reset: tocitem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2px 26px;
+  }
   .toc li{
-    counter-increment: tocitem; margin: 5px 0; break-inside: avoid;
-    padding-right: 40px; position: relative;
+    counter-increment: tocitem; margin: 3px 0; break-inside: avoid;
+    padding-right: 40px; position: relative; border-radius: 6px;
+    transition: background .15s;
   }
+  .toc li:hover{ background: rgba(31,122,84,.07); }
   .toc li::before{
-    content: counter(tocitem, decimal);
-    position: absolute; right: 0; top: 0;
-    color: var(--accent); font-weight: 700; font-family: 'Estedad', serif;
-    background: #d8dac4; width: 26px; height: 22px; line-height: 22px;
-    text-align: center; border-radius: 2px; font-size: 13px;
+    content: counter(tocitem, persian-decimal);
+    position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+    color: #fff; font-weight: 700; font-family: 'Estedad', serif;
+    background: var(--accent); width: 24px; height: 24px; line-height: 24px;
+    text-align: center; border-radius: 50%; font-size: 12px;
   }
-  .toc a{ border:0; color: var(--ink); }
+  .toc a{ border:0; color: var(--ink); display:block; padding: 5px 4px; }
   .toc a:hover{ color: var(--accent); }
-  @media (max-width: 640px){ .toc li{ padding-right: 36px; } }
+  @media (max-width: 640px){ .toc ol{ grid-template-columns: 1fr; } .toc li{ padding-right: 36px; } }
 
   .math{
     direction: ltr; text-align: center;
     background: var(--math-bg); border: 1px solid var(--math-border);
-    border-radius: 3px; padding: 16px 18px; margin: 18px auto;
+    border-radius: 8px; padding: 18px 20px; margin: 20px auto;
     font-size: 18px; color: #1f2a26; overflow-x: auto; max-width: 92%;
     line-height: 1.6; position: relative;
+    box-shadow: var(--soft-shadow);
   }
   .math::before{
-    content:""; position:absolute; top:0; right:0; width:4px; height:24px;
-    background: var(--accent); border-radius: 0 0 0 3px;
+    content:""; position:absolute; top:0; bottom:0; left:0; width:4px;
+    background: linear-gradient(180deg, var(--accent), var(--accent-soft));
+    border-radius: 8px 0 0 8px;
   }
   .math .katex{ font-size: 1.15em; }
   .math .katex-display{ margin: 0; }
 
   .imath{
     direction: ltr; display:inline-block;
-    background: #eef2e8; border:1px solid var(--math-border);
-    padding: 2px 8px; border-radius:3px;
+    background: #eef4ec; border:1px solid var(--math-border);
+    padding: 1px 7px; border-radius:5px;
     color:#1f2a26; vertical-align: baseline; margin: 0 2px;
   }
   .imath .katex{ font-size: 1.05em; }
@@ -155,14 +189,14 @@
   }
 
   .box{
-    border:1px solid var(--line); border-radius:4px; padding:16px 20px;
-    margin: 20px 0; background: #f8f7ee;
-    box-shadow: 0 1px 2px rgba(40,50,30,.04); text-align: justify;
-    position: relative;
+    border:1px solid var(--line); border-radius: var(--radius); padding:16px 22px 16px 24px;
+    margin: 22px 0; background: #f9f8ef;
+    box-shadow: var(--soft-shadow); text-align: justify;
+    position: relative; overflow: hidden;
   }
   .box::before{
-    content:""; position:absolute; top:0; left:0; width:36px; height:4px;
-    background: var(--accent); border-radius: 0 0 0 4px;
+    content:""; position:absolute; top:0; bottom:0; left:0; width:5px;
+    background: var(--accent);
   }
   .box.note{ background: var(--note-bg); border-color: var(--note-border); }
   .box.note::before{ background: var(--accent); }
@@ -170,8 +204,8 @@
   .box.warn::before{ background: var(--accent-2); }
   .box.example{ background: var(--example-bg); border-color: var(--example-border); }
   .box.example::before{ background: var(--accent-4); }
-  .box.bridge{ background: var(--bridge-bg); border-color: var(--bridge-border); border-style: dashed; }
-  .box.bridge::before{ background: var(--accent-3); }
+  .box.bridge{ background: var(--bridge-bg); border-color: var(--bridge-border); }
+  .box.bridge::before{ background: linear-gradient(180deg, var(--accent-3), var(--accent-2)); }
   .box.bridge .label{ background: var(--accent-3); }
   .box.answer{ background: #e8eee4; border-color: #b4c8a8; }
   .box.answer::before{ background: #4a6a3a; }
@@ -182,8 +216,9 @@
   details.answer::before{ content:""; position:absolute; top:0; left:0; width:36px; height:4px; background: #4a6a3a; border-radius: 0 0 0 4px; }
   .box .label{
     display:inline-block; font-size:12px; font-weight:700; color: #fff;
-    background: var(--accent); padding: 2px 12px; border-radius: 2px;
+    background: var(--accent); padding: 3px 14px; border-radius: 999px;
     margin-left: 8px; vertical-align: middle; letter-spacing: .2px;
+    box-shadow: 0 1px 2px rgba(40,50,30,.18);
   }
   .box.note .label{ background: var(--accent); }
   .box.warn .label{ background: var(--accent-2); }
@@ -230,10 +265,14 @@
   }
 
   .problem{
-    border-right: 4px solid var(--accent); background: #ecebe0;
-    padding: 14px 18px; margin: 16px 0; border-radius: 3px;
+    border-right: 4px solid var(--accent); background: #eef0e6;
+    padding: 14px 20px; margin: 16px 0; border-radius: 8px;
+    box-shadow: var(--soft-shadow);
   }
-  .problem .num{ font-weight:700; color: var(--accent); margin-left:6px; }
+  .problem .num{
+    font-weight:700; color: #fff; background: var(--accent);
+    border-radius: 999px; padding: 1px 10px; margin-left:8px; font-size: 13px;
+  }
 </style>
 </head>
 <body>
@@ -243,6 +282,7 @@
   <div class="cover">
     <h1>جبر خطی و حساب برداری</h1>
     <div class="sub">از یک پیکان در صفحه، تا ماتریس‌هایی که فضا را می‌چرخانند، می‌کشند، و خم می‌کنند</div>
+    <div class="rule"></div>
   </div>
 
   <div class="toc">
@@ -1004,6 +1044,18 @@ x + 2y = 8 \\
   <!-- ===================== ۱۶. عملگر نابلا ===================== -->
   <h2 id="ch-nabla"><span class="n">۱۶</span>عملگر نابلا ∇</h2>
 
+  <div class="box bridge">
+    <span class="label">پیش از ورود — شهود</span>
+    <p>تا این‌جا بردارها اعدادی بودند که کنارِ هم می‌نشستند. حالا یک ایدهٔ نو: بردار می‌تواند به‌جای اعداد، <em>دستور</em> داشته باشد. نابلا یک «بردار» است که مؤلفه‌هایش عدد نیستند، بلکه <strong>عملِ مشتق‌گیری</strong> در هر جهت‌اند.</p>
+    <p>چرا این مفید است؟ چون همان سه عملِ آشنایی که روی بردارهای معمولی داشتیم — ضرب در اسکالر، ضرب داخلی، ضرب خارجی — وقتی روی نابلا اعمال شوند، سه ابزارِ بنیادیِ حساب برداری را می‌سازند:</p>
+    <ul>
+      <li>نابلا <em>در یک تابع</em> (مثل ضرب در اسکالر) ← <strong>گرادیان</strong>.</li>
+      <li>نابلا <em>در ضرب داخلی</em> با یک میدان ← <strong>دیورژانس</strong>.</li>
+      <li>نابلا <em>در ضرب خارجی</em> با یک میدان ← <strong>کرل</strong>.</li>
+    </ul>
+    <p>پس نابلا فقط یک نمادِ کوتاه‌نویسی نیست؛ یک <em>قالبِ یکپارچه</em> است که سه مفهومِ فصل‌های بعد را از یک ریشه بیرون می‌کشد.</p>
+  </div>
+
   <p>نابلا (نماد <span class="imath">$\nabla$</span>، به انگلیسی <span class="eterm">nabla</span> یا <span class="eterm">del</span>) یک <strong>بردارِ عملگری</strong> است که مشتق‌های پاره‌ای را در یک نماد جمع می‌کند. در ۳D:</p>
   <div class="math">$$\nabla = \hat{\imath}\, \frac{\partial}{\partial x} + \hat{\jmath}\, \frac{\partial}{\partial y} + \hat{k}\, \frac{\partial}{\partial z} = \begin{pmatrix} \dfrac{\partial}{\partial x} \\[12pt] \dfrac{\partial}{\partial y} \\[12pt] \dfrac{\partial}{\partial z} \end{pmatrix}$$</div>
   <p>این «بردار» است که مؤلفه‌هایش عملگرِ مشتق‌گیری‌اند. سه نوع اعمالِ متفاوت روی آن می‌توان انجام داد:</p>
@@ -1015,11 +1067,22 @@ x + 2y = 8 \\
 
   <div class="box note">
     <span class="label">نمادگذاری</span>
-    در متن‌های مختلف، <span class="imath">$\operatorname{grad}\varphi$</span>، <span class="imath">$\operatorname{div}\mathbf{F}$</span>، <span class="imath">$\operatorname{curl}\mathbf{F}$</span> هم به‌کار می‌رود که همان <span class="imath">$\nabla\varphi$</span>، <span class="imath">$\nabla\cdot\mathbf{F}$</span>، <span class="imath">$\nabla\times\mathbf{F}$</span> هستند. ما هر دو را به‌کار می‌بریم تا با هر دو سروناسازی پیدا کنید.
+    در متن‌های مختلف، <span class="imath">$\operatorname{grad}\varphi$</span>، <span class="imath">$\operatorname{div}\mathbf{F}$</span>، <span class="imath">$\operatorname{curl}\mathbf{F}$</span> هم به‌کار می‌رود که همان <span class="imath">$\nabla\varphi$</span>، <span class="imath">$\nabla\cdot\mathbf{F}$</span>، <span class="imath">$\nabla\times\mathbf{F}$</span> هستند. ما هر دو را به‌کار می‌بریم تا با هر دو نمادگذاری آشنا شوید.
   </div>
 
   <!-- ===================== ۱۷. گرادیان ===================== -->
   <h2 id="ch-grad"><span class="n">۱۷</span>گرادیان: جهتِ سریع‌ترین افزایش</h2>
+
+  <div class="box bridge">
+    <span class="label">پیش از ورود — شهود</span>
+    <p>یک تابعِ اسکالر <span class="imath">$\varphi(x,y)$</span> را مثل یک <em>چشم‌انداز کوهستانی</em> ببینید: هر نقطه از زمین یک ارتفاع دارد. حالا روی نقطه‌ای ایستاده‌اید و می‌پرسید: «اگر بخواهم تندترین سربالایی را بروم، به کدام سو گام بردارم؟»</p>
+    <p>پاسخ همین است که گرادیان می‌دهد. گرادیان یک <strong>بردار</strong> است که:</p>
+    <ul>
+      <li><em>جهتش</em> = سویی که تابع در آن سریع‌ترین افزایش را دارد (تندترین سربالایی).</li>
+      <li><em>طولش</em> = شیبِ آن سربالایی؛ هرچه تندتر، بردار بلندتر.</li>
+    </ul>
+    <p>چرا گرادیان از مشتق‌های پاره‌ای ساخته می‌شود؟ چون هر مؤلفه‌اش می‌گوید «اگر فقط در جهتِ آن محور یک گامِ کوچک بردارم، تابع چقدر تغییر می‌کند». کنارِ هم گذاشتنِ این نرخ‌ها در هر محور، بردارِ کلِ تندترین تغییر را می‌سازد. یک نکتهٔ کلیدی هم این‌که گرادیان همیشه <em>عمود بر خطوطِ هم‌ارتفاع</em> است — درست مثل این‌که تندترین مسیرِ بالا رفتن از یک تپه، عمود بر خط‌های تراز روی نقشه است.</p>
+  </div>
 
   <p>برای یک تابعِ اسکالر <span class="imath">$\varphi(x,y,z)$</span>، گرادیانش:</p>
   <div class="math">$$\operatorname{grad} \varphi = \nabla \varphi = \begin{pmatrix} \dfrac{\partial \varphi}{\partial x} \\[10pt] \dfrac{\partial \varphi}{\partial y} \\[10pt] \dfrac{\partial \varphi}{\partial z} \end{pmatrix}$$</div>
@@ -1067,6 +1130,18 @@ x + 2y = 8 \\
   <!-- ===================== ۱۸. دیورژانس ===================== -->
   <h2 id="ch-div"><span class="n">۱۸</span>دیورژانس: پخش یا جمع</h2>
 
+  <div class="box bridge">
+    <span class="label">پیش از ورود — شهود</span>
+    <p>یک میدانِ برداری <span class="imath">$\mathbf{F}$</span> را مثل جریانِ آب تصور کنید: در هر نقطه یک بردارِ سرعت هست. حالا یک نقطهٔ کوچک را در نظر بگیرید. آیا آب از آن نقطه <em>بیرون می‌پاشد</em> (مثل یک چشمه) یا به آن <em>می‌ریزد</em> (مثل یک چاهک)؟ این را دیورژانس می‌سنجد.</p>
+    <p>دیورژانس، یک عدد (اسکالر) است که به هر نقطه از فضا یک عدد نسبت می‌دهد:</p>
+    <ul>
+      <li><span class="imath">$\operatorname{div} \mathbf{F} &gt; 0$</span> → آن نقطه یک <strong>منبع</strong> است: میدان از آن می‌پاشد.</li>
+      <li><span class="imath">$\operatorname{div} \mathbf{F} &lt; 0$</span> → آن نقطه یک <strong>چاهک</strong> است: میدان به آن می‌ریزد.</li>
+      <li><span class="imath">$\operatorname{div} \mathbf{F} = 0$</span> → نه منبع نه چاهک: جریان فقط عبور می‌کند (مثل آبِ تراکم‌ناپذیر).</li>
+    </ul>
+    <p>چرا فرمولش جمعِ سه مشتقِ پاره‌ای است؟ چون سه جهتِ فضایی (<span class="imath">$x, y, z$</span>) مستقل‌اند: می‌سنجیم در جهتِ <span class="imath">$x$</span> چقدر میدان می‌گشاید یا می‌فشرد، همین در جهتِ <span class="imath">$y$</span> و <span class="imath">$z$</span>، و جمع می‌کنیم. این جمع، خالصِ پخش در سه جهت را می‌دهد.</p>
+  </div>
+
   <p>برای یک میدانِ برداری <span class="imath">$\mathbf{F} = (F_1, F_2, F_3)$</span>، دیورژانسش:</p>
   <div class="math">$$\begin{aligned}
 \operatorname{div} \mathbf{F} &= \nabla \cdot \mathbf{F} \\[10pt]
@@ -1082,20 +1157,20 @@ x + 2y = 8 \\
         </marker>
       </defs>
       <circle cx="90" cy="110" r="6" fill="#b5762a"/>
-      <line x1="90" y1="110" x2="150" y2="60" stroke="#b5762a" stroke-width="2" marker-end="url(#arr4)"/>
-      <line x1="90" y1="110" x2="150" y2="160" stroke="#b5762a" stroke-width="2" marker-end="url(#arr4)"/>
-      <line x1="90" y1="110" x2="30" y2="60" stroke="#b5762a" stroke-width="2" marker-end="url(#arr4)"/>
-      <line x1="90" y1="110" x2="30" y2="160" stroke="#b5762a" stroke-width="2" marker-end="url(#arr4)"/>
-      <line x1="90" y1="110" x2="150" y2="110" stroke="#b5762a" stroke-width="2" marker-end="url(#arr4)"/>
-      <line x1="90" y1="110" x2="30" y2="110" stroke="#b5762a" stroke-width="2" marker-end="url(#arr4)"/>
+      <line x1="101" y1="101" x2="150" y2="60" stroke="#b5762a" stroke-width="2" marker-end="url(#arr4)"/>
+      <line x1="101" y1="119" x2="150" y2="160" stroke="#b5762a" stroke-width="2" marker-end="url(#arr4)"/>
+      <line x1="79" y1="101" x2="30" y2="60" stroke="#b5762a" stroke-width="2" marker-end="url(#arr4)"/>
+      <line x1="79" y1="119" x2="30" y2="160" stroke="#b5762a" stroke-width="2" marker-end="url(#arr4)"/>
+      <line x1="104" y1="110" x2="150" y2="110" stroke="#b5762a" stroke-width="2" marker-end="url(#arr4)"/>
+      <line x1="76" y1="110" x2="30" y2="110" stroke="#b5762a" stroke-width="2" marker-end="url(#arr4)"/>
       <text x="60" y="200" font-size="12" fill="#b5762a" font-weight="600">div &gt; 0 (source)</text>
       <circle cx="270" cy="110" r="6" fill="#1d3a5f"/>
-      <line x1="210" y1="60" x2="270" y2="110" stroke="#1d3a5f" stroke-width="2" marker-end="url(#arr4)"/>
-      <line x1="210" y1="160" x2="270" y2="110" stroke="#1d3a5f" stroke-width="2" marker-end="url(#arr4)"/>
-      <line x1="330" y1="60" x2="270" y2="110" stroke="#1d3a5f" stroke-width="2" marker-end="url(#arr4)"/>
-      <line x1="330" y1="160" x2="270" y2="110" stroke="#1d3a5f" stroke-width="2" marker-end="url(#arr4)"/>
-      <line x1="210" y1="110" x2="270" y2="110" stroke="#1d3a5f" stroke-width="2" marker-end="url(#arr4)"/>
-      <line x1="330" y1="110" x2="270" y2="110" stroke="#1d3a5f" stroke-width="2" marker-end="url(#arr4)"/>
+      <line x1="210" y1="60" x2="259" y2="101" stroke="#1d3a5f" stroke-width="2" marker-end="url(#arr4)"/>
+      <line x1="210" y1="160" x2="259" y2="119" stroke="#1d3a5f" stroke-width="2" marker-end="url(#arr4)"/>
+      <line x1="330" y1="60" x2="281" y2="101" stroke="#1d3a5f" stroke-width="2" marker-end="url(#arr4)"/>
+      <line x1="330" y1="160" x2="281" y2="119" stroke="#1d3a5f" stroke-width="2" marker-end="url(#arr4)"/>
+      <line x1="210" y1="110" x2="256" y2="110" stroke="#1d3a5f" stroke-width="2" marker-end="url(#arr4)"/>
+      <line x1="330" y1="110" x2="284" y2="110" stroke="#1d3a5f" stroke-width="2" marker-end="url(#arr4)"/>
       <text x="240" y="200" font-size="12" fill="#1d3a5f" font-weight="600">div &lt; 0 (sink)</text>
     </svg>
     <figcaption>دیورژانسِ مثبت = میدان از نقطه پخش می‌شود (منبع، چپ)؛ دیورژانسِ منفی = میدان به نقطه جمع می‌شود (چاهک، راست).</figcaption>
@@ -1117,6 +1192,18 @@ x + 2y = 8 \\
 
   <!-- ===================== ۱۹. کرل ===================== -->
   <h2 id="ch-curl"><span class="n">۱۹</span>کرل: چرخشِ میدان</h2>
+
+  <div class="box bridge">
+    <span class="label">پیش از ورود — شهود</span>
+    <p>دیورژانس به ما گفت میدان چقدر <em>پخش</em> می‌کند. حالا پرسشِ دیگری: میدان چقدر <em>می‌چرخد</em>؟ یک چرخ‌وفولِ آب، یک گردبادِ هوا، یا میدانِ مغناطیسی دورِ یک سیم — همه چرخش دارند. کرل این را می‌سنجد.</p>
+    <p>یک پرهٔ کوچک را در نقطه‌ای از میدان قرار دهید (مثل بادبادکِ باد). اگر پره شروع به چرخید، میدان در آن نقطه کرل دارد. دو چیز را می‌خواهیم بدانیم:</p>
+    <ul>
+      <li><strong>شدتِ چرخش</strong> — پره چقدر تند می‌چرخد.</li>
+      <li><strong>محورِ چرخش</strong> — پره دورِ کدام محور می‌چرخد (در ۳D، یک چرخش یک محور دارد).</li>
+    </ul>
+    <p>پس کرل یک <strong>بردار</strong> است (برخلافِ دیورژانس که اسکالر بود): جهتِ بردار = محورِ چرخش، طولِ بردار = شدتِ چرخش. جهت با قاعدهٔ دستِ راست: اگر انگشتانِ دستِ راست در جهتِ چرخش بپیچند، شست، جهتِ بردارِ کرل را نشان می‌دهد.</p>
+    <p>چرا فرمولش ضربِ خارجیِ <span class="imath">$\nabla \times \mathbf{F}$</span> است؟ چون ضربِ خارجیِ دو بردار، برداری عمود بر هر دو می‌دهد — و چرخشِ میدان هم عمود بر صفحهٔ چرخش است. این تشابه، فقط قرارداد نیست؛ ساختاری است.</p>
+  </div>
 
   <p>برای یک میدانِ برداری <span class="imath">$\mathbf{F}$</span>، کرلش:</p>
   <div class="math">$$\begin{aligned}
@@ -1157,6 +1244,18 @@ x + 2y = 8 \\
 
   <!-- ===================== ۲۰. لاپلاسین ===================== -->
   <h2 id="ch-lap"><span class="n">۲۰</span>لاپلاسین: میانگینِ همسایه‌ها</h2>
+
+  <div class="box bridge">
+    <span class="label">پیش از ورود — شهود</span>
+    <p>تا حالا دو عملگر دیدیم: گرادیان (که جهتِ بیشینهٔ تغییر را می‌دهد) و دیورژانس (که پخش را می‌سنجد). لاپلاسین، <em>ترکیبِ</em> این دو است: دیورژانسِ گرادیان. یعنی می‌پرسیم: «گرادیانِ تابع چقدر پخش می‌کند؟»</p>
+    <p>یک شهودِ زیبا: لاپلاسینِ <span class="imath">$\varphi$</span> در یک نقطه می‌گوید مقدارِ <span class="imath">$\varphi$</span> در آن نقطه چقدر از <em>میانگینِ همسایه‌هایش</em> فاصله دارد. مثال:</p>
+    <ul>
+      <li>اگر نقطه از همسایه‌ها <strong>بالاتر</strong> باشد → لاپلاسین منفی است (نقطه یک قله است، پخش به پایین).</li>
+      <li>اگر نقطه از همسایه‌ها <strong>پایین‌تر</strong> باشد → لاپلاسین مثبت است (نقطه یک کف است، پخش به بالا).</li>
+      <li>اگر نقطه <strong>برابرِ میانگینِ همسایه‌ها</strong> باشد → لاپلاسین صفر است (سطح صاف، بدون قله یا کف).</li>
+    </ul>
+    <p>پس <span class="imath">$\nabla^2 \varphi = 0$</span> یعنی تابع در هر نقطه میانگینِ همسایه‌هاست — این، تعریفِ «تابعِ هارمونیک» است. این معادله، پایهٔ انتقالِ حرارت (دما در حال تعادل، میانگینِ همسایه‌هاست) و جریانِ سیالِ تراکم‌ناپذیر است.</p>
+  </div>
 
   <p>لاپلاسین، دیورژانسِ گرادیان است — یعنی <span class="imath">$\nabla \cdot (\nabla \varphi) = \nabla^2 \varphi$</span>:</p>
   <div class="math">$$\begin{aligned}
@@ -1211,6 +1310,14 @@ x + 2y = 8 \\
 
   <!-- ===================== ۲۱. ماتریس ژاکوبین ===================== -->
   <h2 id="ch-jac"><span class="n">۲۱</span>ماتریس ژاکوبین: تبدیل محلیِ فضا</h2>
+
+  <div class="box bridge">
+    <span class="label">پیش از ورود — شهود</span>
+    <p>در حسابِ یک‌بُعدی، مشتقِ <span class="imath">$f'(x_0)$</span> یک عدد است که می‌گوید: «اگر از <span class="imath">$x_0$</span> یک گامِ کوچک <span class="imath">$h$</span> برداری، تابع تقریباً به‌اندازهٔ <span class="imath">$f'(x_0)\, h$</span> تغییر می‌کند.» یعنی تابع را در حدِ خطی، با یک عدد (یک ضرب) تقریب می‌زنیم.</p>
+    <p>در چندبُعدی، ورودی و خروجی هر کدام ممکن است چند مؤلفه داشته باشند. دیگر یک عدد کافی نیست؛ یک <strong>ماتریس</strong> لازم است که بگوید: «گامِ کوچک در جهتِ <span class="imath">$x_j$</span>، چه برداری در خروجی می‌سازد؟» این ماتریس، ژاکوبین است.</p>
+    <p>یک شهودِ هندسی: اگر یک مربعِ کوچک در ورودی بگیرید و آن را با تبدیل <span class="imath">$\mathbf{F}$</span> نگاشت کنید، خروجی دقیقاً مربع نیست — ولی اگر مربع به‌اندازهٔ کافی کوچک باشد، خروجی تقریباً یک <em>متوازی‌الاضلاع</em> است (در ۲D). ژاکوبین، ماتریسِ این خطی‌سازیِ محلی است: ستونِ <span class="imath">$j$</span>امش می‌گوید بردارِ پایهٔ <span class="imath">$j$</span>امِ ورودی به چه برداری نگاشت می‌شود.</p>
+    <p>و <strong>دترمینانِ ژاکوبین</strong>؟ همان‌طور که دترمینانِ یک ماتریس = نسبتِ کششِ حجم، دترمینانِ ژاکوبین می‌گوید این تبدیل محلی، مساحت (یا حجم) را چقدر بزرگ یا کوچک می‌کند. این، قلبِ «تغییرِ متغیر در انتگرال» است: <span class="imath">$dx\, dy$</span> در مختصاتِ جدید، ضرب در <span class="imath">$|\det J|$</span> می‌شود.</p>
+  </div>
 
   <p>یک تابع <span class="imath">$\mathbf{F} : \mathbb{R}^n \to \mathbb{R}^m$</span> را در نظر بگیر. در هر نقطه، اگر به اندازهٔ کافی کوچک نگاه کنیم، تبدیل <em>خطی</em> به‌نظر می‌رسد. ماتریسِ این خطی‌سازیِ محلی، <strong>ماتریس ژاکوبین</strong> است:</p>
   <div class="math">$$J_{\mathbf{F}}(\mathbf{x}) = \begin{pmatrix} \dfrac{\partial F_1}{\partial x_1} & \cdots & \dfrac{\partial F_1}{\partial x_n} \\ \vdots & \ddots & \vdots \\ \dfrac{\partial F_m}{\partial x_1} & \cdots & \dfrac{\partial F_m}{\partial x_n} \end{pmatrix}$$</div>
@@ -1285,6 +1392,18 @@ S &= \iint_{\text{دیسک}} dx\, dy = \int_{0}^{2\pi}\!\int_{0}^{R} r\, dr\, d\
   <!-- ===================== ۲۲. هسیان ===================== -->
   <h2 id="ch-hess"><span class="n">۲۲</span>ماتریس هِسین <span class="eterm">(Hessian)</span>: انحنای تابع</h2>
 
+  <div class="box bridge">
+    <span class="label">پیش از ورود — مرورِ شهودی</span>
+    <p>در حسابِ یک‌بُعدی، وقتی می‌خواهیم بفهمیم یک نقطهٔ بحرانی (جایی که <span class="imath">$f'(x_0)=0$</span>) چه نوعی است، به <strong>مشتقِ دوم</strong> نگاه می‌کنیم:</p>
+    <ul>
+      <li><span class="imath">$f''(x_0) &gt; 0$</span> → تابع در آن نقطه کاسه‌ای است → <strong>کمینه</strong>.</li>
+      <li><span class="imath">$f''(x_0) &lt; 0$</span> → تابع در آن نقطه کلاهی است → <strong>بیشینه</strong>.</li>
+      <li><span class="imath">$f''(x_0) = 0$</span> → آزمون بی‌نتیجه است (شاید نقطهٔ عطف باشد).</li>
+    </ul>
+    <p>مشتقِ دوم، <em>انحنای</em> تابع را می‌سنجد: مثبت بودنش یعنی تابع رو به بالاست (کاسه)، منفی بودنش یعنی رو به پایین (کلاه).</p>
+    <p>حالا در چندبُعدی، تابع <span class="imath">$f(x,y)$</span> یک <em>چشم‌انداز</em> است (مثل سطحِ زمین). در یک نقطهٔ بحرانی (جایی که گرادیان صفر است، یعنی سطح صاف است)، می‌خواهیم بدانیم آیا کاسه‌ایم یا کلاهی یا... زین‌اسبی. ولی دیگر یک عدد (مشتقِ دوم) کافی نیست، چون انحنا به <em>جهت</em> هم بستگی دارد: ممکن است در جهتِ <span class="imath">$x$</span> کاسه و در جهتِ <span class="imath">$y$</span> کلاه باشد (مثل زینِ اسب). پس به یک <strong>ماتریس</strong> از مشتق‌های دوم نیاز داریم که انحنای هر جهت را بگیرد — این، ماتریس هِسین است.</p>
+  </div>
+
   <p>برای یک تابعِ اسکالر <span class="imath">$f(x_1,\ldots,x_n)$</span>، ماتریسِ هِسین (به انگلیسی <span class="eterm">Hessian matrix</span>) ماتریسِ متقارنِ مشتق‌های پاره‌ایِ دوم است:</p>
   <div class="math">$$H_f = \begin{pmatrix} \dfrac{\partial^2 f}{\partial x_1^2} & \dfrac{\partial^2 f}{\partial x_1 \partial x_2} & \cdots \\[14pt] \dfrac{\partial^2 f}{\partial x_2 \partial x_1} & \dfrac{\partial^2 f}{\partial x_2^2} & \cdots \\[14pt] \vdots & \vdots & \ddots \end{pmatrix}$$</div>
 
@@ -1336,6 +1455,18 @@ S &= \iint_{\text{دیسک}} dx\, dy = \int_{0}^{2\pi}\!\int_{0}^{R} r\, dr\, d\
   <!-- ===================== ۲۳. توابع بردار-ارزشی و حرکت در فضا ===================== -->
   <h2 id="ch-vvf"><span class="n">۲۳</span>توابع بردار-ارزشی و حرکت در فضا</h2>
 
+  <div class="box bridge">
+    <span class="label">پیش از ورود — شهود</span>
+    <p>تا حالا دو نوع تابع دیدیم:</p>
+    <ul>
+      <li><span class="imath">$f(x, y, z)$</span> — ورودی نقطه، خروجی عدد (اسکالر). مثل دما در هر نقطهٔ اتاق.</li>
+      <li><span class="imath">$\mathbf{F}(x, y, z)$</span> — ورودی نقطه، خروجی بردار. مثل سرعتِ باد در هر نقطه (میدانِ برداری).</li>
+    </ul>
+    <p>حالا نوعِ سوم: <span class="imath">$\mathbf{r}(t)$</span> — ورودی <em>یک عدد</em> (مثل زمان)، خروجی یک <em>بردار</em> (مثل موقعیت). این، زبانِ طبیعیِ توصیفِ حرکت است: در هر لحظه، یک نقطه در فضا هستیم.</p>
+    <p>مثال: پرتابِ یک توپ. <span class="imath">$\mathbf{r}(t) = (x(t), y(t), z(t))$</span> موقعیتِ توپ در زمانِ <span class="imath">$t$</span>. مشتقش <span class="imath">$\mathbf{r}'(t) = \mathbf{v}(t)$</span> سرعت است، مشتقِ دوم <span class="imath">$\mathbf{r}''(t) = \mathbf{a}(t)$</span> شتاب. این، همان حسابِ آشنای ۱D است، ولی به‌جای یک تابع، سه تابع هم‌زمان (سه مؤلفه) داریم — و مشتق‌گیری روی هر مؤلفه جداگانه انجام می‌شود.</p>
+    <p>پس توابع بردار-ارزشی، تعمیمِ حرکتِ یک‌بُعدی به فضای ۳D هستند. تمامِ قواعدِ مشتق (قاعدهٔ زنجیره‌ای، ضرب، ...) به‌صورتِ مؤلفه‌به‌مؤلفه کار می‌کنند، با یک استثنا: ضربِ خارجی و ضربِ داخلی، که ساختارِ برداری دارند.</p>
+  </div>
+
   <p>تا اینجا میدان‌های برداری را دیدیم — توابعی که هر نقطه را به یک بردار نگاشت می‌کنند. حالا سراغِ <strong>توابع بردار-ارزشی</strong> می‌رویم: توابعی از یک متغیر (مثل زمان) که خروجی‌شان بردار است. این، زبانِ طبیعیِ توصیفِ حرکت است.</p>
 
   <h3>۲۳.۱ تعریف و مشتق</h3>
@@ -1383,6 +1514,17 @@ S &= \iint_{\text{دیسک}} dx\, dy = \int_{0}^{2\pi}\!\int_{0}^{R} r\, dr\, d\
   <!-- ===================== ۲۴. انتگرال‌های خطی و سطحی ===================== -->
   <h2 id="ch-lineint"><span class="n">۲۴</span>انتگرال‌های خطی و سطحی</h2>
 
+  <div class="box bridge">
+    <span class="label">پیش از ورود — شهود</span>
+    <p>انتگرالِ معمولی <span class="imath">$\int_a^b f(x)\, dx$</span> چه می‌گوید؟ مقدارِ <span class="imath">$f$</span> را در هر نقطهٔ بازه ضرب در طولِ المان، و جمع می‌کند. مثلاً اگر <span class="imath">$f$</span> چگالیِ یک میله باشد، انتگرال جرمِ کل را می‌دهد.</p>
+    <p>حالا دو تعمیمِ طبیعی:</p>
+    <ul>
+      <li><strong>انتگرالِ خطی</strong> — به‌جای بازهٔ مستقیم، یک <em>منحنی</em> در فضا. مثلاً جرمِ یک سیمِ خمیده، یا کارِ نیرو روی ذره‌ای که در مسیری منحنی حرکت می‌کند.</li>
+      <li><strong>انتگرالِ سطحی</strong> — به‌جای بازه، یک <em>سطح</em> در فضا. مثلاً شارِ آب از یک شبکهٔ خمیده، یا جرمِ یک ورقهٔ نازک.</li>
+    </ul>
+    <p>ایده یکی است: مقدار را در هر المان ضرب در «اندازهٔ المان» (طولِ المانِ منحنی، یا مساحتِ المانِ سطح) و جمع کن. فرمول‌ها، تنها تبدیلِ این جمع‌بندیِ پیوسته به یک انتگرالِ معمولی رویِ پارامتر است.</p>
+  </div>
+
   <p>انتگرال‌های خطی و سطحی، تعمیمِ انتگرالِ معمولی به میدان‌های رویِ منحنی‌ها و سطوح‌اند. این‌ها، زبانِ طبیعیِ فیزیک برای محاسبهٔ کار، شار، و گردش‌اند.</p>
 
   <h3>۲۴.۱ انتگرالِ خطیِ اسکالری</h3>
@@ -1407,6 +1549,12 @@ S &= \iint_{\text{دیسک}} dx\, dy = \int_{0}^{2\pi}\!\int_{0}^{R} r\, dr\, d\
   <div class="math">$$\iint_{S} \mathbf{F} \cdot d\mathbf{S} = \iint_{D} \mathbf{F}(\mathbf{r}(u,v)) \cdot \left(\frac{\partial \mathbf{r}}{\partial u} \times \frac{\partial \mathbf{r}}{\partial v}\right) du\, dv$$</div>
   <p>ضرب خارجیِ دو بردارِ مماسی، بردارِ نرمالِ سطح را می‌دهد (اندازه‌اش مساحتِ المانی است). ضرب داخلیِ میدان در این نرمال، شارِ عبوری از آن المان است.</p>
 
+  <div class="box note">
+    <span class="label">دایره‌ دورِ علامتِ انتگرال یعنی چه؟</span>
+    <p>نمادِ <span class="imath">$\iint$</span> انتگرال روی یک سطحِ <em>باز</em> است (سطحي که مرز دارد، مثل یک ورقه). ولی <span class="imath">$\oiint$</span> — با دایره‌ دورِ آن — یعنی انتگرال روی یک سطحِ <em>بسته</em>: سطحی که مرز ندارد و خودش را می‌بندد، مثل پوستهٔ یک کره یا یک بالن بسته. این دایره، همان معنایِ دایره‌ دورِ <span class="imath">$\oint$</span> در انتگرالِ خطی است: <span class="imath">$\int_C$</span> روی یک منحنیِ باز، ولی <span class="imath">$\oint_C$</span> روی یک منحنیِ <em>بسته</em> (حلقه) که نقطهٔ آغاز و پایان یکی‌اند.</p>
+    <p>پس خلاصه: <span class="imath">$\oiint_S$</span> = شار از یک سطحِ بستهٔ <span class="imath">$S$</span> (مثل کره)، و <span class="imath">$\oint_C$</span> = گردش روی یک منحنیِ بستهٔ <span class="imath">$C$</span> (مثل دایره). این نشانه‌گذاری، قراردادی است که در همهٔ متونِ ریاضی و فیزیک به‌کار می‌رود.</p>
+  </div>
+
   <div class="box example">
     <span class="label">مثال ۲۴.۲ — شار از کره</span>
     <p>میدانِ <span class="imath">$\mathbf{F} = (x, y, z)$</span> از کرهٔ واحد. با تقارن، نرمالِ کره در نقطهٔ <span class="imath">$(x,y,z)$</span> همان <span class="imath">$(x,y,z)$</span> است (واحد). پس <span class="imath">$\mathbf{F} \cdot \hat{\mathbf{n}} = x^2 + y^2 + z^2 = 1$</span> رویِ کرهٔ واحد. شار:</p>
@@ -1419,6 +1567,24 @@ S &= \iint_{\text{دیسک}} dx\, dy = \int_{0}^{2\pi}\!\int_{0}^{R} r\, dr\, d\
 
   <!-- ===================== ۲۵. قضیه‌های انتگرال برداری ===================== -->
   <h2 id="ch-thm"><span class="n">۲۵</span>قضیه‌های انتگرال برداری</h2>
+
+  <div class="box bridge">
+    <span class="label">پیش از ورود — شهود</span>
+    <p>سه قضیهٔ بزرگِ حسابِ برداری، در نگاهِ اول شاید ترسناک باشند، ولی همه یک ایدهٔ واحد دارند: <strong>یک انتگرال روی یک ناحیه برابر یک انتگرال روی مرزِ آن ناحیه است.</strong></p>
+    <p>یک قیاسِ ساده: فرض کنید می‌خواهیم بفهمیم در یک شهر چند نفر زندگی می‌کنند. دو راه هست:</p>
+    <ul>
+      <li>راهِ اول: در هر محله بشمار، و جمع کن (انتگرال روی ناحیه).</li>
+      <li>راهِ دوم: در تمامِ جاده‌های ورودی به شهر، شمارشِ خودروهای وارد و خارج شونده (انتگرال روی مرز).</li>
+    </ul>
+    <p>این قضایا می‌گویند این دو راه، در شرایطِ مناسب، یک عدد می‌دهند. یعنی آنچه درونِ ناحیه رخ می‌دهد، در مرزِ آن «دیده» می‌شود.</p>
+    <p>سه قضیه، سه شکلِ ابعادی:</p>
+    <ul>
+      <li><strong>قضیهٔ گاوس (دیورژانس)</strong>: ناحیه = حجم، مرز = سطحِ بسته. «پخشِ کلِ درون = شارِ کلِ از مرز».</li>
+      <li><strong>قضیهٔ استوکس (کرل)</strong>: ناحیه = سطح، مرز = منحنیِ بسته. «چرخشِ کلِ روی سطح = گردشِ روی مرز».</li>
+      <li><strong>قضیهٔ گرین</strong>: حالتِ دوبعدیِ استوکس. «در ۲D، چرخش روی ناحیه = گردش روی مرز».</li>
+    </ul>
+    <p>این‌ها، پایهٔ معادلاتِ ماکسول در فیزیک‌اند: قانونِ گاوس، قانونِ فارادی، قانونِ آمر — همه، صورتِ «انتگرال روی مرز = انتگرال روی ناحیه» دارند.</p>
+  </div>
 
   <p>سه قضیهٔ بزرگِ حسابِ برداری، پلِ میانِ مشتق‌های محلی (گرادیان، دیورژانس، کرل) و انتگرال‌های جهانی (شار از سطح، چرخش روی منحنی) هستند. هر کدام می‌گوید یک انتگرال روی یک ناحیه برابر یک انتگرال روی مرزِ آن ناحیه است.</p>
 
