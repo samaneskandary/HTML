@@ -1,0 +1,2449 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>در راهِ اثبات — چهل قضیهٔ بنیادی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&family=Estedad:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="katex/katex.min.css">
+<script defer src="katex/katex.min.js"></script>
+<script defer src="katex/contrib/auto-render.min.js"></script>
+<style>
+  :root{
+    --bg: #ede4d0;
+    --paper: #fbf5e6;
+    --paper-edge: #d8c8a4;
+    --ink: #2a1f1a;
+    --ink-soft: #5a4a40;
+    --muted: #8a7a60;
+    --accent: #8a1f3a;
+    --accent-2: #c4600a;
+    --accent-3: #5a7a1a;
+    --accent-4: #1a5a7a;
+    --line: #c8b890;
+    --math-bg: #f4ead0;
+    --math-border: #c8b078;
+    --note-bg: #e0e6e0;
+    --note-border: #8aa890;
+    --warn-bg: #f0e0c0;
+    --warn-border: #d8a868;
+    --example-bg: #e4e4d4;
+    --example-border: #a8b890;
+    --bridge-bg: #e8d8b8;
+    --bridge-border: #c0a878;
+    --thm-bg: #f0e0c8;
+    --thm-border: #d4a868;
+    --shadow: 0 1px 3px rgba(70,50,30,.10), 0 8px 28px rgba(70,50,30,.12);
+    --c-all: #8a1f3a;
+    --c-ex:  #c4600a;
+    --c-and: #5a7a1a;
+    --c-or:  #b84a1a;
+    --c-imp: #1a5a7a;
+    --c-iff: #2a7a8a;
+    --c-not: #a8203a;
+    --c-neq: #a8203a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Vazirmatn', 'Estedad', sans-serif;
+    font-size: 17px;
+    line-height: 2;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .paper{
+    max-width: 940px;
+    margin: 40px auto;
+    background: var(--paper);
+    padding: 56px 64px 80px 72px;
+    border-radius: 2px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--paper-edge);
+    position: relative;
+  }
+  .paper::before{
+    content:""; position:absolute; top:0; bottom:0; left:0; width:5px;
+    background: linear-gradient(180deg, var(--accent), var(--accent-2) 50%, var(--accent-3));
+  }
+  @media (max-width: 760px){
+    .paper{ margin: 0; padding: 24px 18px 60px 28px; border-radius: 0; }
+    body{ font-size: 16px; }
+  }
+  h1,h2,h3,h4{ font-family:'Estedad','Vazirmatn',sans-serif; font-weight:700; line-height:1.5; color: var(--ink); }
+  h1{ font-size: 32px; margin: 0 0 6px; letter-spacing:-.3px; text-align:center; }
+  h2{
+    font-size: 24px; margin: 88px 0 22px; padding-bottom: 14px;
+    text-align:center; position: relative;
+  }
+  h2::before, h2::after{
+    content:""; position:absolute; left:50%; transform:translateX(-50%);
+    height:1px; background: var(--accent);
+  }
+  h2::before{ bottom:0; width:240px; }
+  h2::after{ bottom:4px; width:120px; opacity:.55; }
+  h2 .n{
+    display:inline-block; color: var(--accent); background: var(--paper);
+    width: 38px; height:38px; line-height:34px; text-align:center;
+    border: 1.5px solid var(--accent); border-radius:50%;
+    font-size: 16px; margin-left: 12px; vertical-align: middle;
+    font-family:'Estedad',serif;
+  }
+  h3{
+    font-size: 19px; margin: 38px 0 12px; color: var(--accent);
+    padding-right: 22px; position: relative;
+  }
+  h3::before{
+    content:"◂"; position:absolute; right:0; top:-2px; color: var(--accent-2); font-size:18px;
+  }
+  h4{ font-size: 17px; margin: 24px 0 8px; color: var(--accent-4); }
+  p{ margin: 12px 0; }
+  a{ color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent); }
+  a:hover{ color: var(--accent-2); border-color: var(--accent-2); }
+  strong{ color: var(--ink); font-weight:600; }
+  em{ color: var(--ink-soft); font-style: italic; }
+  ul,ol{ padding-right: 24px; }
+  li{ margin: 6px 0; }
+
+  .cover{
+    text-align:center; padding: 18px 0 28px; margin-bottom: 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .cover .sub{ color: var(--ink-soft); font-size: 15px; margin-top: 8px; font-style: italic; }
+  .cover .symlegend{
+    margin-top: 18px; padding: 12px 14px; background: #f8eed0; border:1px solid var(--line);
+    border-radius: 4px; display:inline-block; text-align:right; font-size: 14px;
+  }
+  .cover .symlegend .row{ display:flex; gap:10px; align-items:center; margin:4px 0; }
+  .cover .symlegend .sw{ display:inline-block; min-width: 28px; text-align:center; font-family:'Estedad',serif; font-size:16px; font-weight:700; }
+  .cover .symlegend .label{ color: var(--ink-soft); }
+
+  .toc{
+    background: #f0e8d4; border: 1px solid var(--line);
+    border-radius: 4px; padding: 20px 26px 24px; margin: 22px 0 12px;
+  }
+  .toc h2{ margin: 4px 0 16px; border:0; padding:0; font-size: 18px; }
+  .toc h2::before{ display:none; }
+  .toc h2::after{ display:none; }
+  .toc ol{ list-style: upper-roman; padding-right: 36px; margin: 0; }
+  .toc li{ margin: 6px 0; break-inside: avoid; transition: padding .15s; }
+  .toc li:hover{ padding-right: 6px; }
+  .toc a{ border:0; color: var(--ink); }
+  .toc a:hover{ color: var(--accent); }
+  .toc .diff{ color: var(--muted); font-size: 13px; margin-right: 8px; }
+
+  .math{
+    direction: ltr; text-align: center;
+    background: var(--math-bg); border: 1px solid var(--math-border);
+    border-left: 4px solid var(--accent);
+    border-radius: 3px; padding: 22px 24px; margin: 20px auto;
+    font-size: 18px; color: #2a1f1a; overflow-x: auto; max-width: 94%;
+    line-height: 2;
+  }
+  .math .katex{ font-size: 1.15em; }
+  .math .katex-display{ margin: 0; }
+  .math .katex-display > .katex{ display: block; margin: 6px 0; }
+
+  .imath{
+    direction: ltr; display:inline-block;
+    background: #fbf2dc; border:1px solid var(--math-border);
+    padding: 2px 8px; border-radius:3px;
+    color:#2a1f1a; vertical-align: baseline; margin: 0 2px;
+  }
+  .imath .katex{ font-size: 1.05em; }
+
+  .eterm{
+    direction: ltr; unicode-bidi: isolate; display: inline-block;
+    background: #f0e4cc; padding: 1px 6px; border-radius: 2px;
+    color: #2a1f1a; font-style: normal; margin: 0 2px;
+    border-bottom: 1px dotted var(--accent-2);
+  }
+
+  .thm{
+    margin: 22px 0; padding: 14px 20px 14px 22px;
+    background: var(--thm-bg); border: 1px solid var(--thm-border);
+    border-right: 4px solid var(--accent); border-radius: 3px;
+  }
+  .thm .name{
+    display:block; font-family:'Estedad',serif; font-weight:700; color: var(--accent);
+    font-size: 16px; margin-bottom: 6px; letter-spacing: .2px;
+  }
+  .thm .name::before{ content:"قضیه — "; color: var(--accent-2); }
+
+  .box{
+    border:1px solid var(--line); border-radius:6px; padding:16px 20px;
+    margin: 20px 0; background: #fbf5e4;
+    box-shadow: 0 1px 2px rgba(70,50,30,.04); text-align: justify;
+  }
+  .box.note{ background: var(--note-bg); border-color: var(--note-border); border-top: 3px solid var(--accent-3); }
+  .box.warn{ background: var(--warn-bg); border-color: var(--warn-border); border-top: 3px solid var(--accent-2); }
+  .box.example{ background: var(--example-bg); border-color: var(--example-border); border-top: 3px solid var(--accent-4); }
+  .box.bridge{ background: var(--bridge-bg); border-color: var(--bridge-border); border-style: dashed; }
+  .box .label{
+    display:inline-block; font-size:12px; font-weight:700; color: var(--accent);
+    background: transparent; padding: 0 0 2px 0; border-radius: 0;
+    border-bottom: 1.5px solid var(--accent); margin-left: 8px;
+    vertical-align: middle; letter-spacing: .3px; font-family:'Estedad',serif;
+  }
+  .box.note .label{ color: var(--accent-3); border-color: var(--accent-3); }
+  .box.warn .label{ color: var(--accent-2); border-color: var(--accent-2); }
+  .box.example .label{ color: var(--accent-4); border-color: var(--accent-4); }
+  .box.bridge .label{ color: var(--accent-4); border-color: var(--accent-4); }
+
+  .proof{ margin: 18px 0 24px; padding: 6px 0; }
+  .proof > .ph{
+    font-family:'Estedad',serif; font-weight:700; color: var(--accent-2); font-size: 15px;
+    margin-bottom: 10px; display:block;
+  }
+  .proof > .ph::before{ content:"اثبات. "; color: var(--accent); }
+  .step{
+    position: relative; padding: 14px 60px 12px 16px; margin: 12px 0;
+    background: #fbf5e4; border: 1px solid var(--line); border-radius: 4px;
+    min-height: 44px;
+  }
+  .step .sn{
+    position: absolute; right: 12px; top: 12px;
+    width: 30px; height: 30px; line-height: 28px; text-align:center;
+    border: 1.5px solid var(--accent); color: var(--accent);
+    background: var(--paper); border-radius: 50%;
+    font-family:'Estedad',serif; font-size: 14px; font-weight:700;
+  }
+  .step .formal{ display:block; direction:ltr; text-align:left; line-height: 1.8; }
+  .step .gloss{
+    display:block; color: var(--ink-soft); font-size: 14px; margin-top: 10px;
+    padding: 6px 10px; border-right: 2px solid var(--accent-2);
+    line-height: 1.9;
+  }
+  .step .gloss::before{ content:"یعنی: "; color: var(--accent-2); font-weight:600; }
+
+  .qed{
+    display:inline-block; width: 12px; height: 12px; background: var(--accent);
+    margin-right: 4px; vertical-align: middle; transform: rotate(45deg);
+  }
+
+  .flow{
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+    gap: 6px; margin: 18px 0; direction: rtl;
+  }
+  .flow .step{
+    background: #f0e8d4; border:1px solid var(--line);
+    padding: 6px 12px; border-radius: 3px; font-size: 14px;
+    position: static; min-height: 0;
+  }
+  .flow .arrow{ color: var(--accent); font-size: 18px; }
+
+  table{ width:100%; border-collapse: collapse; margin: 18px 0; font-size: 15px; background: #fff8ec; }
+  caption{ caption-side: top; text-align:right; color: var(--ink-soft); font-size: 13px; padding: 4px 0 8px; }
+  th,td{ border:1px solid var(--line); padding: 8px 10px; text-align:right; vertical-align: top; }
+  th{ background: #f0e4cc; color: var(--ink); font-weight:600; border-bottom: 2px solid var(--accent); }
+  td .imath, td .math{ margin: 0; }
+  tr:nth-child(even) td{ background: #f8eed4; }
+
+  figure{ margin: 22px auto; text-align:center; direction: ltr; display:block; }
+  figure svg{ max-width: 100%; height: auto; display: block; margin: 0 auto; }
+  figcaption{
+    color: var(--ink-soft); font-size: 13px; margin-top: 6px;
+    padding: 4px 10px; border-top: 1px solid var(--line); display:inline-block;
+    direction: rtl; text-align: right;
+  }
+
+  hr{ border:0; border-top:1px dashed var(--line); margin: 30px 0; }
+
+  .totop{
+    position: fixed; left: 20px; bottom: 20px;
+    background: var(--accent); color: #fff; padding: 8px 14px;
+    border-radius: 2px; font-size: 13px; cursor: pointer;
+    box-shadow: var(--shadow); display: none;
+  }
+  .totop.show{ display: block; }
+
+  .footer{
+    margin-top: 50px; padding-top: 18px; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: 13px; text-align:center;
+  }
+</style>
+</head>
+<body>
+
+<div class="paper">
+  <div class="cover">
+    <h1>در راهِ اثبات — چهل قضیهٔ بنیادی</h1>
+    <div class="sub">از مجموع زوایای مثلث تا اصل لانه کبوتری، به زبانِ نمادینِ ریاضی</div>
+    <div class="symlegend">
+      <div class="row"><span class="sw" style="color:var(--c-all)">∀</span><span class="label">برای هر (سور عمومی)</span></div>
+      <div class="row"><span class="sw" style="color:var(--c-ex)">∃</span><span class="label">یافت می‌شود (سور وجودی)</span></div>
+      <div class="row"><span class="sw" style="color:var(--c-and)">∧</span><span class="label">و — عطف منطقی</span></div>
+      <div class="row"><span class="sw" style="color:var(--c-or)">∨</span><span class="label">یا — فصل منطقی</span></div>
+      <div class="row"><span class="sw" style="color:var(--c-imp)">⇒</span><span class="label">نتیجه می‌دهد (مستلزم)</span></div>
+      <div class="row"><span class="sw" style="color:var(--c-iff)">⇔</span><span class="label">اگر و تنها اگر (هم‌ارز)</span></div>
+      <div class="row"><span class="sw" style="color:var(--c-not)">¬</span><span class="label">نقیض</span></div>
+      <div class="row"><span class="sw" style="color:var(--c-neq)">≠</span><span class="label">نابرابر</span></div>
+      <div class="row"><span class="sw" style="color:var(--c-div)">∣</span><span class="label">بر ... بخش‌پذیر است</span></div>
+      <div class="row"><span class="sw" style="color:var(--c-equiv)">≡</span><span class="label">هم‌نهشتی پیمانه‌ای</span></div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>فهرست اثبات‌ها</h2>
+    <ol>
+      <li><a href="#p-angles">مجموع زوایای مثلث</a><span class="diff">— آسان</span></li>
+      <li><a href="#p-pythag">قضیه فیثاغورس</a><span class="diff">— آسان</span></li>
+      <li><a href="#p-triineq">نامساوی مثلثی</a><span class="diff">— آسان</span></li>
+      <li><a href="#p-cosines">قانون کسینوس‌ها</a><span class="diff">— آسان</span></li>
+      <li><a href="#p-arith">مجموع دنبالهٔ حسابی</a><span class="diff">— آسان</span></li>
+      <li><a href="#p-geom">مجموع دنبالهٔ هندسی</a><span class="diff">— آسان</span></li>
+      <li><a href="#p-subsets">تعداد زیرمجموعه‌ها = ۲<sup>n</sup></a><span class="diff">— آسان</span></li>
+      <li><a href="#p-comb">فرمول ترکیب‌ها</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-binom">قضیه دوجمله‌ای</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-sqrt2">گویا نبودن √۲</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-primes">نامتناهی بودن اعداد اول</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-div3">قاعده بخشش بر ۳</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-fta-arith">قضیه بنیادی حساب</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-bezout">اتحاد بزو</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-wilson">قضیه ویلسن</a><span class="diff">— سخت</span></li>
+      <li><a href="#p-cauchy">نامساوی کاشی-شوارتس</a><span class="diff">— سخت</span></li>
+      <li><a href="#p-amgm">نامساوی میانگین حسابی-هندسی</a><span class="diff">— سخت</span></li>
+      <li><a href="#p-induction">اصل استقرای ریاضی</a><span class="diff">— سخت</span></li>
+      <li><a href="#p-thales">قضیه تالس</a><span class="diff">— آسان</span></li>
+      <li><a href="#p-isoceles">قضیه مثلث متساوی‌الساقین</a><span class="diff">— آسان</span></li>
+      <li><a href="#p-heron">فرمول مساحت هرون</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-ptolemy">قضیه بطلمیوس</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-ceva">قضیه چوا</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-triples">فرمول سه‌تایی‌های فیثاغورسی</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-harm">واگرایی سری هارمونیک</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-tri-recip">قانون تقابل درجه دوم</a><span class="diff">— سخت</span></li>
+      <li><a href="#p-fermat-little">قضیه کوچک فرما</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-euler-fermat">تعمیم اویلر قضیه کوچک فرما</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-four-sq">قضیه چهار مربع لاگرانژ</a><span class="diff">— سخت</span></li>
+      <li><a href="#p-2sq-prime">مجموع دو مربع برای اول‌های ۱ mod ۴</a><span class="diff">— سخت</span></li>
+      <li><a href="#p-denom">شمارش‌پذیری گویاها</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-cantor">قضیه کانتور</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-schroeder-bernstein">قضیه شرودر-برنشتاین</a><span class="diff">— سخت</span></li>
+      <li><a href="#p-ivt">قضیه مقدار میانی</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-mvt">قضیه مقدار میانگین</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-ftc">قضیه بنیادی حساب دیفرانسیل و انتگرال</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-taylor">قضیه تیلور</a><span class="diff">— سخت</span></li>
+      <li><a href="#p-derangements">فرمول بی‌ترتیبی‌ها</a><span class="diff">— سخت</span></li>
+      <li><a href="#p-birthday">مسألهٔ تولد</a><span class="diff">— متوسط</span></li>
+      <li><a href="#p-pigeonhole">اصل لانه کبوتری</a><span class="diff">— آسان</span></li>
+    </ol>
+  </div>
+
+  <!-- ===================== ۱. مجموع زوایای مثلث ===================== -->
+  <h2 id="p-angles"><span class="n">۱</span>مجموع زوایای مثلث</h2>
+
+  <div class="thm">
+    <span class="name">مجموع زوایای مثلث</span>
+    <div class="math">$$\cAll \,\triangle ABC \;:\; \alpha + \beta + \gamma = \pi$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">جابه‌جایی موازی</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Let $\ell$ be the line through $A$ parallel to $BC$.</span>
+      <span class="gloss">خطی موازی با ضلع $BC$ از رأس $A$ می‌کشیم — یک خط کمکی.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Since $\ell \parallel BC$ and $AB$ is a transversal: $\angle(\ell, AB) = \beta$ (alternate interior angles).</span>
+      <span class="gloss">زاویهٔ $\beta$ به‌واسطهٔ زاویه‌های متناوبِ داخلی به خطِ موازی منتقل می‌شود.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Likewise $\ell \parallel BC$ and $AC$ is a transversal: $\angle(AC, \ell) = \gamma$.</span>
+      <span class="gloss">همین استدلال برای $\gamma$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">At $A$, the three angles $\beta$, $\alpha$, $\gamma$ lie on one side of a straight line, hence $\beta + \alpha + \gamma = \pi$.</span>
+      <span class="gloss">سه زاویه کنار هم، روی یک خطِ راست قرار می‌گیرند — مجموعشان نیم‌دایره است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">$\therefore\; \alpha + \beta + \gamma = \pi$. <span class="qed"></span></span>
+      <span class="gloss">مجموعِ زاویه‌های هر مثلث برابرِ $\\pi$ است. ∎</span>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 400 240" width="400" height="240" xmlns="http://www.w3.org/2000/svg" style="direction:ltr">
+      <line x1="20" y1="60" x2="380" y2="60" stroke="#9a6a1a" stroke-width="1.6" stroke-dasharray="6 4"/>
+      <text x="346" y="52" font-size="13" fill="#9a6a1a" font-style="italic">ℓ ∥ BC</text>
+      <polygon points="140,60 70,210 270,210" fill="rgba(122,40,69,0.08)" stroke="#7a2845" stroke-width="1.8"/>
+      <text x="132" y="54" font-size="14" fill="#7a2845" font-weight="700">A</text>
+      <text x="60" y="226" font-size="14" fill="#7a2845" font-weight="700">B</text>
+      <text x="276" y="226" font-size="14" fill="#7a2845" font-weight="700">C</text>
+      <path d="M 156,60 A 16,16 0 0,1 150.5,72.1" fill="none" stroke="#6a7a2a" stroke-width="1.4"/>
+      <text x="164" y="74" font-size="14" fill="#6a7a2a" font-style="italic">γ</text>
+      <path d="M 150.5,72.1 A 16,16 0 0,1 133.2,74.5" fill="none" stroke="#7a2845" stroke-width="1.4"/>
+      <text x="138" y="88" font-size="14" fill="#7a2845" font-style="italic">α</text>
+      <path d="M 133.2,74.5 A 16,16 0 0,1 124,60" fill="none" stroke="#b8651a" stroke-width="1.4"/>
+      <text x="112" y="76" font-size="14" fill="#b8651a" font-style="italic">β</text>
+      <path d="M 75.9,197.3 A 14,14 0 0,1 84,210" fill="none" stroke="#b8651a" stroke-width="1.4"/>
+      <text x="88" y="200" font-size="14" fill="#b8651a" font-style="italic">β</text>
+      <path d="M 256,210 A 14,14 0 0,1 260.9,197.3" fill="none" stroke="#6a7a2a" stroke-width="1.4"/>
+      <text x="244" y="200" font-size="14" fill="#6a7a2a" font-style="italic">γ</text>
+    </svg>
+    <figcaption>
+      خطِ موازی $\ell$ از $A$.<br>
+      زاویه‌های متناوبِ $\beta$ و $\gamma$ به $A$ منتقل می‌شوند و کنارِ $\alpha$ می‌نشینند.<br>
+      مجموعشان نیم‌دایره.
+    </figcaption>
+  </figure>
+
+  <!-- placeholder-proofs2 -->
+
+  <!-- ===================== ۲. فیثاغورس ===================== -->
+  <h2 id="p-pythag"><span class="n">۲</span>قضیه فیثاغورس</h2>
+
+  <div class="thm">
+    <span class="name">فیثاغورس</span>
+    <div class="math">$$\cAll\;\text{right } \triangle\;\text{with legs } a, b \;\cAnd\; \text{hypotenuse } c \;:\; a^2 + b^2 = c^2$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">بازآراییِ چهار مثلث</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Let $S = a + b$. Take a square of side $S$ and place four copies of the right triangle (legs $a, b$, hypotenuse $c$) inside it.</span>
+      <span class="gloss">چهار نسخهٔ یکسانِ مثلثِ قائم را درون یک مربعِ بزرگ با ضلع $a+b$ می‌چینیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Arrangement (A): the four triangles sit at the corners, hypotenuses facing inward. The leftover region is a quadrilateral with all sides $c$ — a square of area $c^2$.</span>
+      <span class="gloss">چینشِ الف: مثلث‌ها در گوشه‌ها، وترها به‌داخل؛ ناحیهٔ خالی، مربعی با ضلع $c$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Arrangement (B): the four triangles form two rectangles; the leftover region is two squares of sides $a$ and $b$, with total area $a^2 + b^2$.</span>
+      <span class="gloss">چینشِ ب: مثلث‌ها دو مستطیل می‌سازند؛ ناحیهٔ خالی، دو مربع با ضلع‌های $a$ و $b$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">In both arrangements: $\text{area(big square)} = 4 \cdot \tfrac{1}{2}ab + \text{area(leftover)}$.</span>
+      <span class="gloss">در هر دو چینش، مساحتِ مربعِ بزرگ = مساحتِ چهار مثلث + مساحتِ ناحیهٔ خالی.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">The big square and the four triangles are identical in (A) and (B), so the leftover areas are equal: $c^2 = a^2 + b^2$.</span>
+      <span class="gloss">چون مربعِ بزرگ و مثلث‌ها در هر دو چینش یکسان‌اند، ناحیهٔ خالی هم باید برابر باشد.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۶</span>
+      <span class="formal">$\therefore\; a^2 + b^2 = c^2$. <span class="qed"></span></span>
+      <span class="gloss">فیثاغورس ثابت شد. ∎</span>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 460 230" width="460" height="230" xmlns="http://www.w3.org/2000/svg" style="direction:ltr">
+      <!-- ====== Arrangement A (left): big square side a+b, four corner triangles, inner c² square ====== -->
+      <!-- big square -->
+      <rect x="40" y="40" width="140" height="140" fill="rgba(122,40,69,0.05)" stroke="#7a2845" stroke-width="1.4"/>
+      <!-- four triangles (light tan); a=60, b=80, windmill arrangement -->
+      <polygon points="40,40 100,40 40,120" fill="rgba(184,101,26,0.18)" stroke="#b8651a" stroke-width="1"/>
+      <polygon points="180,40 100,40 180,100" fill="rgba(184,101,26,0.18)" stroke="#b8651a" stroke-width="1"/>
+      <polygon points="180,180 120,180 180,100" fill="rgba(184,101,26,0.18)" stroke="#b8651a" stroke-width="1"/>
+      <polygon points="40,180 120,180 40,120" fill="rgba(184,101,26,0.18)" stroke="#b8651a" stroke-width="1"/>
+      <!-- inner c² square (wine tint): vertices (100,40),(180,100),(120,180),(40,120) -->
+      <polygon points="100,40 180,100 120,180 40,120" fill="rgba(138,31,58,0.22)" stroke="#8a1f3a" stroke-width="2"/>
+      <text x="110" y="115" font-size="16" fill="#8a1f3a" font-weight="700" text-anchor="middle">c²</text>
+      <!-- colored side segments: a=orange, b=green -->
+      <line x1="40" y1="40" x2="100" y2="40" stroke="#b8651a" stroke-width="3"/>
+      <line x1="100" y1="40" x2="180" y2="40" stroke="#5a7a1a" stroke-width="3"/>
+      <line x1="40" y1="40" x2="40" y2="120" stroke="#b8651a" stroke-width="3"/>
+      <line x1="40" y1="120" x2="40" y2="180" stroke="#5a7a1a" stroke-width="3"/>
+      <line x1="180" y1="40" x2="180" y2="100" stroke="#b8651a" stroke-width="3"/>
+      <line x1="180" y1="100" x2="180" y2="180" stroke="#5a7a1a" stroke-width="3"/>
+      <line x1="40" y1="180" x2="120" y2="180" stroke="#5a7a1a" stroke-width="3"/>
+      <line x1="120" y1="180" x2="180" y2="180" stroke="#b8651a" stroke-width="3"/>
+      <!-- side labels a, b -->
+      <text x="70" y="34" font-size="12" fill="#b8651a" font-style="italic" text-anchor="middle" font-weight="700">a</text>
+      <text x="140" y="34" font-size="12" fill="#5a7a1a" font-style="italic" text-anchor="middle" font-weight="700">b</text>
+      <text x="34" y="84" font-size="12" fill="#b8651a" font-style="italic" text-anchor="end" font-weight="700">a</text>
+      <text x="34" y="154" font-size="12" fill="#5a7a1a" font-style="italic" text-anchor="end" font-weight="700">b</text>
+      <!-- a+b bracket on top -->
+      <path d="M 40,28 L 40,24 L 180,24 L 180,28" fill="none" stroke="#5a4a40" stroke-width="1.2"/>
+      <text x="110" y="20" font-size="13" fill="#5a4a40" text-anchor="middle" font-weight="700">a+b</text>
+      <!-- a+b bracket on left -->
+      <path d="M 28,40 L 24,40 L 24,180 L 28,180" fill="none" stroke="#5a4a40" stroke-width="1.2"/>
+      <text x="18" y="114" font-size="13" fill="#5a4a40" text-anchor="middle" font-weight="700" transform="rotate(-90 18 114)">a+b</text>
+      <!-- arrangement label -->
+      <text x="110" y="205" font-size="12" fill="#5a4a40" text-anchor="middle" font-weight="700">(الف)</text>
+
+      <!-- equals sign -->
+      <text x="205" y="118" font-size="22" fill="#5a4a40" text-anchor="middle">=</text>
+
+      <!-- ====== Arrangement B (right): big square side a+b, a² square bottom-left, b² square top-right, four triangles ====== -->
+      <rect x="270" y="40" width="140" height="140" fill="rgba(122,40,69,0.05)" stroke="#7a2845" stroke-width="1.4"/>
+      <!-- a² square (orange tint) bottom-left: (270,120) to (330,180) -->
+      <rect x="270" y="120" width="60" height="60" fill="rgba(184,101,26,0.28)" stroke="#b8651a" stroke-width="1.8"/>
+      <text x="300" y="155" font-size="14" fill="#b8651a" font-weight="700" text-anchor="middle">a²</text>
+      <!-- b² square (green tint) top-right: (330,40) to (410,120) -->
+      <rect x="330" y="40" width="80" height="80" fill="rgba(90,122,26,0.28)" stroke="#5a7a1a" stroke-width="1.8"/>
+      <text x="370" y="84" font-size="14" fill="#5a7a1a" font-weight="700" text-anchor="middle">b²</text>
+      <!-- four triangles (light tan) -->
+      <polygon points="270,40 330,40 270,120" fill="rgba(184,101,26,0.18)" stroke="#b8651a" stroke-width="1"/>
+      <polygon points="330,40 330,120 270,120" fill="rgba(184,101,26,0.18)" stroke="#b8651a" stroke-width="1"/>
+      <polygon points="330,120 410,120 330,180" fill="rgba(184,101,26,0.18)" stroke="#b8651a" stroke-width="1"/>
+      <polygon points="410,120 410,180 330,180" fill="rgba(184,101,26,0.18)" stroke="#b8651a" stroke-width="1"/>
+      <!-- colored side segments: a=orange, b=green -->
+      <line x1="270" y1="40" x2="330" y2="40" stroke="#b8651a" stroke-width="3"/>
+      <line x1="330" y1="40" x2="410" y2="40" stroke="#5a7a1a" stroke-width="3"/>
+      <line x1="270" y1="40" x2="270" y2="120" stroke="#b8651a" stroke-width="3"/>
+      <line x1="270" y1="120" x2="270" y2="180" stroke="#5a7a1a" stroke-width="3"/>
+      <line x1="410" y1="40" x2="410" y2="120" stroke="#5a7a1a" stroke-width="3"/>
+      <line x1="410" y1="120" x2="410" y2="180" stroke="#b8651a" stroke-width="3"/>
+      <line x1="270" y1="180" x2="330" y2="180" stroke="#5a7a1a" stroke-width="3"/>
+      <line x1="330" y1="180" x2="410" y2="180" stroke="#b8651a" stroke-width="3"/>
+      <!-- side labels a, b -->
+      <text x="300" y="34" font-size="12" fill="#b8651a" font-style="italic" text-anchor="middle" font-weight="700">a</text>
+      <text x="370" y="34" font-size="12" fill="#5a7a1a" font-style="italic" text-anchor="middle" font-weight="700">b</text>
+      <text x="264" y="84" font-size="12" fill="#b8651a" font-style="italic" text-anchor="end" font-weight="700">a</text>
+      <text x="264" y="154" font-size="12" fill="#5a7a1a" font-style="italic" text-anchor="end" font-weight="700">b</text>
+      <!-- a+b bracket on top -->
+      <path d="M 270,28 L 270,24 L 410,24 L 410,28" fill="none" stroke="#5a4a40" stroke-width="1.2"/>
+      <text x="340" y="20" font-size="13" fill="#5a4a40" text-anchor="middle" font-weight="700">a+b</text>
+      <!-- a+b bracket on left -->
+      <path d="M 258,40 L 254,40 L 254,180 L 258,180" fill="none" stroke="#5a4a40" stroke-width="1.2"/>
+      <text x="248" y="114" font-size="13" fill="#5a4a40" text-anchor="middle" font-weight="700" transform="rotate(-90 248 114)">a+b</text>
+      <!-- arrangement label -->
+      <text x="340" y="205" font-size="12" fill="#5a4a40" text-anchor="middle" font-weight="700">(ب)</text>
+    </svg>
+    <figcaption>
+      هر دو چینش درونِ مربعِ بزرگ با ضلعِ $a+b$ (براکتِ خاکستری).<br>
+      رنگِ نارنجی = ضلعِ $a$، سبز = ضلعِ $b$، شرابی = ضلعِ $c$.<br>
+      چپ (الف): چهار مثلث در گوشه‌ها، ناحیهٔ خالی = مربعِ $c^2$.<br>
+      راست (ب): مربعِ $a^2$ در گوشهٔ چپ-پایین، مربعِ $b^2$ در گوشهٔ راست-بالا، چهار مثلثِ باقی‌مانده.
+    </figcaption>
+  </figure>
+
+  <!-- placeholder-proofs3 -->
+
+  <!-- ===================== ۳. نامساوی مثلثی ===================== -->
+  <h2 id="p-triineq"><span class="n">۳</span>نامساوی مثلثی</h2>
+
+  <div class="thm">
+    <span class="name">نامساوی مثلثی</span>
+    <div class="math">$$\cAll\, a, b \in \cR \;:\; |a + b| \le |a| + |b|$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">از تعریفِ قدرمطلق</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">By definition of $|\cdot|$: $\cAll\, x \in \cR \;:\; -|x| \le x \le |x|$.</span>
+      <span class="gloss">هر عدد بین $-|x|$ و $|x|$ است — تعریفِ قدرمطلق.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Apply to $a$: $-|a| \le a \le |a|$.</span>
+      <span class="gloss">برای $a$: $-|a| \le a \le |a|$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Apply to $b$: $-|b| \le b \le |b|$.</span>
+      <span class="gloss">برای $b$: $-|b| \le b \le |b|$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Add the two inequalities: $-(|a| + |b|) \le a + b \le |a| + |b|$.</span>
+      <span class="gloss">جمعِ نامساوی‌های هم‌جهت، نامساویِ هم‌جهت می‌دهد.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">Set $M = |a| + |b|$. Then $-M \le a+b \le M \cImp |a+b| \le M$.</span>
+      <span class="gloss">اگر $x$ بین $-M$ و $M$ باشد، آن‌گاه $|x| \le M$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۶</span>
+      <span class="formal">$\therefore\; |a+b| \le |a| + |b|$. <span class="qed"></span></span>
+      <span class="gloss">نامساویِ مثلثی ثابت شد. ∎</span>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 400 200" width="400" height="200" xmlns="http://www.w3.org/2000/svg" style="direction:ltr">
+      <line x1="40" y1="60" x2="360" y2="60" stroke="#948570" stroke-width="1"/>
+      <line x1="40" y1="140" x2="360" y2="140" stroke="#948570" stroke-width="1"/>
+      <polygon points="360,60 352,56 352,64" fill="#948570"/>
+      <polygon points="360,140 352,136 352,144" fill="#948570"/>
+      <circle cx="200" cy="60" r="2.5" fill="#948570"/>
+      <circle cx="200" cy="140" r="2.5" fill="#948570"/>
+      <text x="194" y="78" font-size="12" fill="#948570" font-style="italic">0</text>
+      <text x="194" y="158" font-size="12" fill="#948570" font-style="italic">0</text>
+      <line x1="200" y1="60" x2="260" y2="60" stroke="#b8651a" stroke-width="3"/>
+      <line x1="260" y1="60" x2="340" y2="60" stroke="#6a7a2a" stroke-width="3"/>
+      <text x="220" y="48" font-size="13" fill="#b8651a" font-style="italic">a</text>
+      <text x="296" y="48" font-size="13" fill="#6a7a2a" font-style="italic">b</text>
+      <line x1="200" y1="70" x2="340" y2="70" stroke="#7a2845" stroke-width="2"/>
+      <text x="262" y="92" font-size="13" fill="#7a2845" font-style="italic">a+b</text>
+      <text x="40" y="36" font-size="12" fill="#5a4a40" font-style="italic">(الف) هم‌جهت: |a+b| = |a|+|b|</text>
+      <line x1="200" y1="140" x2="280" y2="140" stroke="#b8651a" stroke-width="3"/>
+      <line x1="200" y1="140" x2="140" y2="140" stroke="#6a7a2a" stroke-width="3"/>
+      <text x="232" y="128" font-size="13" fill="#b8651a" font-style="italic">a</text>
+      <text x="156" y="128" font-size="13" fill="#6a7a2a" font-style="italic">b</text>
+      <line x1="140" y1="150" x2="280" y2="150" stroke="#7a2845" stroke-width="2"/>
+      <text x="200" y="172" font-size="13" fill="#7a2845" font-style="italic">a+b</text>
+      <text x="40" y="116" font-size="12" fill="#5a4a40" font-style="italic">(ب) مخالف‌جهت: |a+b| &lt; |a|+|b|</text>
+    </svg>
+    <figcaption>
+      خطِ اعداد — دو حالتِ a و b.<br>
+      (الف) هم‌جهت: $|a+b| = |a| + |b|$ (برابری).<br>
+      (ب) مخالف‌جهت: $|a+b| &lt; |a| + |b|$ (نامساویِ اکید).
+    </figcaption>
+  </figure>
+
+  <!-- ===================== ۴. قانون کسینوس‌ها ===================== -->
+  <h2 id="p-cosines"><span class="n">۴</span>قانون کسینوس‌ها</h2>
+
+  <div class="thm">
+    <span class="name">قانون کسینوس‌ها</span>
+    <div class="math">$$\cAll\,\triangle ABC \;\text{with}\; \gamma = \angle C \;:\; c^2 = a^2 + b^2 - 2ab\cos\gamma$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">تجزیه به دو مثلثِ قائم</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Place $A=(0,0)$, $B=(c,0)$, $C=(x,y)$ with $y>0$. Then $|AC|=b$ and $|BC|=a$.</span>
+      <span class="gloss">مثلث را در دستگاهِ مختصات می‌گذاریم: $A$ و $B$ روی محورِ $x$، $C$ بالاتر.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">From $|AC|^2 = b^2$: $x^2 + y^2 = b^2$. From $|BC|^2 = a^2$: $(x-c)^2 + y^2 = a^2$.</span>
+      <span class="gloss">دو معادله از طولِ دو ضلعِ $b$ و $a$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Subtract: $(x-c)^2 - x^2 = a^2 - b^2 \;\Rightarrow\; -2cx + c^2 = a^2 - b^2 \;\Rightarrow\; x = \dfrac{b^2 + c^2 - a^2}{2c}$.</span>
+      <span class="gloss">تفریقِ معادله‌ها $y$ را حذف می‌کند و $x$ را می‌دهد.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Vectors $\vec{CA}=(-x,-y)$, $\vec{CB}=(c-x,-y)$. So $\cos\gamma = \dfrac{\vec{CA}\cdot\vec{CB}}{ab} = \dfrac{-x(c-x)+y^2}{ab} = \dfrac{b^2 - cx}{ab}$.</span>
+      <span class="gloss">زاویهٔ $\gamma$ از ضربِ نقطه‌ایِ $\vec{CA}$ و $\vec{CB}$ به‌دست می‌آید.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">Substitute $x$: $ab\cos\gamma = b^2 - c\cdot\dfrac{b^2+c^2-a^2}{2c} = \dfrac{a^2 + b^2 - c^2}{2}$.</span>
+      <span class="gloss">با جای‌گذاریِ $x$ و ساده‌سازی، $ab\cos\gamma = \tfrac{a^2+b^2-c^2}{2}$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۶</span>
+      <span class="formal">Rearrange: $c^2 = a^2 + b^2 - 2ab\cos\gamma$. <span class="qed"></span></span>
+      <span class="gloss">همان قانونِ کسینوس‌ها.</span>
+    </div>
+  </div>
+
+  <div class="box note">
+    <span class="label">تعمیمِ فیثاغورس</span>
+    اگر $\gamma = \pi/2$، آن‌گاه $\cos\gamma = 0$ و $c^2 = a^2 + b^2$ — همان فیثاغورس.
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 400 240" width="400" height="240" xmlns="http://www.w3.org/2000/svg" style="direction:ltr">
+      <polygon points="40,220 360,220 200,40" fill="rgba(122,40,69,0.06)" stroke="#7a2845" stroke-width="1.8"/>
+      <line x1="200" y1="40" x2="200" y2="220" stroke="#b8651a" stroke-width="1.2" stroke-dasharray="5 4"/>
+      <circle cx="200" cy="220" r="2.5" fill="#b8651a"/>
+      <text x="208" y="234" font-size="13" fill="#b8651a" font-style="italic">H</text>
+      <text x="28" y="234" font-size="15" fill="#7a2845" font-weight="700">A</text>
+      <text x="364" y="234" font-size="15" fill="#7a2845" font-weight="700">B</text>
+      <text x="194" y="34" font-size="15" fill="#7a2845" font-weight="700">C</text>
+      <text x="190" y="135" font-size="13" fill="#b8651a" font-style="italic">h</text>
+      <text x="116" y="140" font-size="14" fill="#6a7a2a" font-style="italic">b</text>
+      <text x="276" y="140" font-size="14" fill="#6a7a2a" font-style="italic">a</text>
+      <text x="194" y="240" font-size="14" fill="#6a7a2a" font-style="italic">c</text>
+      <path d="M 184,56 A 18,18 0 0,1 216,56" fill="none" stroke="#2a5a6a" stroke-width="1.4"/>
+      <text x="194" y="74" font-size="14" fill="#2a5a6a" font-style="italic">γ</text>
+      <text x="118" y="234" font-size="12" fill="#7a4a1a" font-style="italic">x</text>
+      <line x1="40" y1="226" x2="200" y2="226" stroke="#7a4a1a" stroke-width="0.8"/>
+      <line x1="40" y1="222" x2="40" y2="230" stroke="#7a4a1a" stroke-width="0.8"/>
+      <line x1="200" y1="222" x2="200" y2="230" stroke="#7a4a1a" stroke-width="0.8"/>
+    </svg>
+    <figcaption>
+      مثلثِ $ABC$ با $A=(0,0)$، $B=(c,0)$، $C=(x,h)$.<br>
+      ضلعِ $b = |AC|$، ضلعِ $a = |BC|$، ضلعِ $c = |AB|$.<br>
+      زاویهٔ $\gamma$ در رأسِ $C$.
+    </figcaption>
+  </figure>
+
+  <!-- placeholder-proofs4 -->
+
+  <!-- ===================== ۵. مجموع دنبالهٔ حسابی ===================== -->
+  <h2 id="p-arith"><span class="n">۵</span>مجموع دنبالهٔ حسابی</h2>
+
+  <div class="thm">
+    <span class="name">مجموع حسابی</span>
+    <div class="math">$$S_n = \sum_{k=1}^{n} a_k = \frac{n}{2}\,(a_1 + a_n)$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">ترفندِ گاوس</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Write $S = a_1 + a_2 + \cdots + a_n$ and, reversed, $S = a_n + a_{n-1} + \cdots + a_1$.</span>
+      <span class="gloss">مجموع را یک‌بار از چپ و یک‌بار از راست می‌نویسیم — همان $S$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Add column-wise: $2S = (a_1 + a_n) + (a_2 + a_{n-1}) + \cdots + (a_n + a_1)$.</span>
+      <span class="gloss">جمعِ ستونی: $2S$ را به‌صورتِ جمعِ جفت‌های متقارن می‌نویسیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Since $\{a_k\}$ is arithmetic: $a_k = a_1 + (k-1)d$ and $a_{n+1-k} = a_1 + (n-k)d$, so $a_k + a_{n+1-k} = 2a_1 + (n-1)d = a_1 + a_n$.</span>
+      <span class="gloss">هر جفتِ متقارن، جمعِ ثابتی برابرِ $a_1 + a_n$ دارد.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">All $n$ pairs equal $a_1 + a_n$, hence $2S = n(a_1 + a_n)$.</span>
+      <span class="gloss">هر $n$ جفت برابرِ $a_1 + a_n$ است، پس $2S = n(a_1 + a_n)$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">$\therefore\; S = \dfrac{n}{2}(a_1 + a_n)$. <span class="qed"></span></span>
+      <span class="gloss">فرمولِ مجموعِ دنبالهٔ حسابی. ∎</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۶. مجموع دنبالهٔ هندسی ===================== -->
+  <h2 id="p-geom"><span class="n">۶</span>مجموع دنبالهٔ هندسی</h2>
+
+  <div class="thm">
+    <span class="name">مجموع هندسی</span>
+    <div class="math">$$\sum_{k=0}^{n-1} ar^k = a\,\frac{1 - r^n}{1 - r}, \quad r \cNeq 1; \qquad \sum_{k=0}^{\infty} ar^k = \frac{a}{1 - r}, \quad |r| < 1$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">تفریقِ نسخهٔ شیفت‌یافته</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Let $S = a + ar + ar^2 + \cdots + ar^{n-1}$.</span>
+      <span class="gloss">مجموعِ دنبالهٔ هندسی را $S$ می‌نامیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Multiply by $r$: $rS = ar + ar^2 + \cdots + ar^n$.</span>
+      <span class="gloss">ضرب در $r$ یک گام به‌چپ شیفت می‌دهد.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Subtract: $S - rS = a - ar^n$ (all middle terms cancel).</span>
+      <span class="gloss">جملاتِ $ar$ تا $ar^{n-1}$ در هر دو طرف هستند و حذف می‌شوند.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Factor: $S(1 - r) = a(1 - r^n)$. Since $r \cNeq 1$: $S = a\,\dfrac{1 - r^n}{1 - r}$. <span class="qed"></span></span>
+      <span class="gloss">با فاکتورگیری و بخش بر $1-r$ (چون $r \neq 1$) فرمولِ مجموع به‌دست می‌آید. ∎</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">If $|r| < 1$, then $r^n \to 0$ as $n \to \infty$, so $\sum_{k=0}^{\infty} ar^k = \dfrac{a}{1 - r}$. <span class="qed"></span></span>
+      <span class="gloss">برای $|r| < 1$، حدِ $r^n$ صفر است و مجموعِ نامتناهی برابرِ $\tfrac{a}{1-r}$ می‌شود. ∎</span>
+    </div>
+  </div>
+
+  <!-- placeholder-proofs5 -->
+
+  <!-- ===================== ۷. تعداد زیرمجموعه‌ها ===================== -->
+  <h2 id="p-subsets"><span class="n">۷</span>تعداد زیرمجموعه‌ها</h2>
+
+  <div class="thm">
+    <span class="name">زیرمجموعه‌ها</span>
+    <div class="math">$$|A| = n \;\cImp\; |\mathcal{P}(A)| = 2^n$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">دوسویی با رشته‌های بیتی</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Enumerate $A = \{a_1, a_2, \ldots, a_n\}$.</span>
+      <span class="gloss">مجموعهٔ $A$ را با $n$ عنصر شماره‌گذاری می‌کنیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Define $\phi : \mathcal{P}(A) \to \{0,1\}^n$ by $\phi(B)_i = 1 \iff a_i \in B$.</span>
+      <span class="gloss">هر زیرمجموعه را به یک رشتهٔ بیتی متناظر می‌کنیم: بیتِ $i$ نشانِ حضورِ $a_i$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">$\phi$ is a bijection: every subset gives a unique bit-string, and every bit-string gives a unique subset.</span>
+      <span class="gloss">این نگاشت دوسویی است: هر زیرمجموعه رشتهٔ بیتِ یکتا می‌دهد و برعکس.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">$|\{0,1\}^n| = 2^n$ (each bit has 2 choices, $n$ independent bits).</span>
+      <span class="gloss">تعدادِ رشته‌های بیتِ طولِ $n$ برابرِ $2^n$ است — هر بیت ۲ انتخاب، $n$ بیتِ مستقل.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">$\therefore\; |\mathcal{P}(A)| = |\{0,1\}^n| = 2^n$. <span class="qed"></span></span>
+      <span class="gloss">تعدادِ زیرمجموعه‌های $A$ برابرِ $2^n$ است. ∎</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۸. فرمول ترکیب‌ها ===================== -->
+  <h2 id="p-comb"><span class="n">۸</span>فرمول ترکیب‌ها</h2>
+
+  <div class="thm">
+    <span class="name">فرمول ترکیب‌ها</span>
+    <div class="math">$$\binom{n}{k} = \frac{n!}{k!\,(n-k)!}$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">شمارشِ دوگانه</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Let $P(n, k) = $ number of ordered $k$-tuples from $n$ distinct elements. Then $P(n,k) = n(n-1)\cdots(n-k+1) = \dfrac{n!}{(n-k)!}$.</span>
+      <span class="gloss">تعداد انتخابِ $k$ عنصر <em>با ترتیب</em>.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Each $k$-element subset can be ordered in $k!$ ways, so $P(n,k) = \binom{n}{k} \cdot k!$.</span>
+      <span class="gloss">هر مجموعهٔ $k$تایی، $k!$ جای‌گشت دارد.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Solve: $\binom{n}{k} = \dfrac{P(n,k)}{k!} = \dfrac{n!/(n-k)!}{k!} = \dfrac{n!}{k!(n-k)!}$. <span class="qed"></span></span>
+      <span class="gloss">با حل، فرمولِ ترکیب به‌دست می‌آید. ∎</span>
+    </div>
+  </div>
+
+  <!-- placeholder-proofs6 -->
+
+  <!-- ===================== ۹. قضیه دوجمله‌ای ===================== -->
+  <h2 id="p-binom"><span class="n">۹</span>قضیه دوجمله‌ای</h2>
+
+  <div class="thm">
+    <span class="name">دوجمله‌ای</span>
+    <div class="math">$$(x + y)^n = \sum_{k=0}^{n} \binom{n}{k} x^{n-k} y^k$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">اثباتِ ترکیبیاتی</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">$(x+y)^n = \underbrace{(x+y)(x+y)\cdots(x+y)}_{n \text{ factors}}$.</span>
+      <span class="gloss">$(x+y)^n$ حاصلِ ضربِ $n$ عاملِ $(x+y)$ است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Expanding, each term picks $x$ or $y$ from each factor. A term with $k$ copies of $y$ and $(n-k)$ copies of $x$ has coefficient $x^{n-k} y^k$.</span>
+      <span class="gloss">هر جمله از یک انتخاب دل‌خواه می‌آید: از کدام پرانتز $y$ بگیریم؟</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">The number of ways to choose which $k$ factors contribute $y$ is $\binom{n}{k}$.</span>
+      <span class="gloss">تعداد راه‌های انتخابِ $k$ پرانتز از $n$ پرانتز — همان فرمولِ ترکیب.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Summing over $k = 0, \ldots, n$: $(x+y)^n = \sum_{k=0}^{n} \binom{n}{k} x^{n-k} y^k$. <span class="qed"></span></span>
+      <span class="gloss">با جمع بر $k$، قضیهٔ دوجمله‌ای ثابت می‌شود. ∎</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۱۰. گویا نبودن √۲ ===================== -->
+  <h2 id="p-sqrt2"><span class="n">۱۰</span>گویا نبودن √۲</h2>
+
+  <div class="thm">
+    <span class="name">گویا نبودن √۲</span>
+    <div class="math">$$\cNeg\,\cEx\, p, q \in \cZ,\; q \cNeq 0 \;:\; \sqrt{2} = \tfrac{p}{q},\; \gcd(p, q) = 1$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">به‌تناقض</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Suppose, for contradiction, $\sqrt{2} = \tfrac{p}{q}$ with $p, q \in \cZ$, $q \cNeq 0$, $\gcd(p, q) = 1$.</span>
+      <span class="gloss">فرضِ تناقض: $\sqrt{2}$ گویاست و کسر را ساده کرده‌ایم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Squaring: $2 = \tfrac{p^2}{q^2}$, hence $p^2 = 2q^2$.</span>
+      <span class="gloss">به‌توانِ ۲: $p^2 = 2q^2$، پس $p^2$ زوج است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">$2 \mid p^2 \cImp 2 \mid p$ (since $\text{odd}^2 = \text{odd}$). Write $p = 2m$.</span>
+      <span class="gloss">اگر $p$ فرد باشد، $p^2$ هم فرد است؛ پس $p$ باید زوج باشد. پس $p = 2m$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Substitute: $2q^2 = (2m)^2 = 4m^2$, hence $q^2 = 2m^2$.</span>
+      <span class="gloss">جای‌گذاری: $q^2 = 2m^2$، پس $q^2$ هم زوج است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">By the same argument, $2 \mid q^2 \cImp 2 \mid q$.</span>
+      <span class="gloss">همان استدلال، برای $q$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۶</span>
+      <span class="formal">So $2 \mid p \cAnd 2 \mid q$, contradicting $\gcd(p, q) = 1$.</span>
+      <span class="gloss">هر دو زواند، پس مقسوم‌علیه‌مشترکِ بزرگ‌تر از ۱ دارند — در تناقض با گامِ ۱.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۷</span>
+      <span class="formal">The supposition is false; $\therefore\; \sqrt{2} \notin \cQ$. <span class="qed"></span></span>
+      <span class="gloss">فرضِ تناقض رد شد؛ $\sqrt{2}$ گویا نیست. ∎</span>
+    </div>
+  </div>
+
+  <!-- placeholder-proofs7 -->
+
+  <!-- ===================== ۱۱. نامتناهی بودن اعداد اول ===================== -->
+  <h2 id="p-primes"><span class="n">۱۱</span>نامتناهی بودن اعداد اول</h2>
+
+  <div class="thm">
+    <span class="name">نامتناهی بودن اعداد اول</span>
+    <div class="math">$$\cAll\, n \in \cN \;:\; \cEx\, \text{prime } p > n$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">اثباتِ اقلیدس — به‌تناقض</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Suppose the set of primes is finite: $\{p_1, p_2, \ldots, p_k\}$.</span>
+      <span class="gloss">فرضِ تناقض: اعدادِ اول متناهی‌اند و فهرست می‌شوند.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Define $N = p_1 \cdot p_2 \cdots p_k + 1$.</span>
+      <span class="gloss">عددِ $N$ = ضربِ همهٔ اول‌های فهرست + ۱ را می‌سازیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">By FTA, $N$ has a prime divisor $q$ (every integer $> 1$ has one — proved separately).</span>
+      <span class="gloss">هر عددِ بزرگ‌تر از ۱ یک مقسوم‌علیهٔ اول دارد — پس $N$ هم دارد: $q$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">If $q = p_i$ for some $i$, then $p_i \mid (p_1 \cdots p_k)$ and $p_i \mid N$, so $p_i \mid (N - p_1\cdots p_k) = 1$ — impossible.</span>
+      <span class="gloss">اگر $q$ در فهرست باشد، باید بر ۱ بخش باشد — محال.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">So $q \notin \{p_1, \ldots, p_k\}$, contradicting the assumption that the list was complete.</span>
+      <span class="gloss">پس $q$ اولی است که در فهرست نیست — در تناقض با کامل‌بودنِ فهرست.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۶</span>
+      <span class="formal">$\therefore$ the set of primes is infinite. <span class="qed"></span></span>
+      <span class="gloss">مجموعهٔ اعدادِ اول متناهی نیست. ∎</span>
+    </div>
+  </div>
+
+  <div class="box note">
+    <span class="label">نکتهٔ ظریف</span>
+    $N = p_1\cdots p_k + 1$ لزوماً اول <em>نیست</em>؛ فقط کافی است که یک عاملِ اولِ جدید داشته باشد.
+  </div>
+
+  <!-- ===================== ۱۲. قاعده بخشش بر ۳ ===================== -->
+  <h2 id="p-div3"><span class="n">۱۲</span>قاعده بخشش بر ۳</h2>
+
+  <div class="thm">
+    <span class="name">بخشش بر ۳</span>
+    <div class="math">$$n = \sum_{i=0}^{k} d_i \cdot 10^i \;:\quad 3 \cDiv n \;\cIff\; 3 \cDiv \sum_{i=0}^{k} d_i$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">حسابِ پیمانه‌ای</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Key: $10 \cEquiv 1 \pmod{3}$, since $10 = 3 \cdot 3 + 1$.</span>
+      <span class="gloss">کلید: $10$ به‌پیمانهٔ ۳ با ۱ هم‌نهشت است — چون $10 = 3\cdot 3 + 1$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Therefore $10^i \cEquiv 1^i = 1 \pmod{3}$ for all $i \ge 0$.</span>
+      <span class="gloss">اگر $a \cEquiv b$، آن‌گاه $a^i \cEquiv b^i$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">So $n = \sum d_i \cdot 10^i \cEquiv \sum d_i \cdot 1 = \sum d_i \pmod{3}$.</span>
+      <span class="gloss">پس $n$ به‌پیمانهٔ ۳ با جمعِ ارقامش هم‌نهشت است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Hence $n \cEquiv 0 \pmod{3} \cIff \sum d_i \cEquiv 0 \pmod{3}$, i.e. $3 \cDiv n \cIff 3 \cDiv \sum d_i$. <span class="qed"></span></span>
+      <span class="gloss">پس $3$ بر $n$ بخش است iff بر جمعِ ارقامش بخش است. ∎</span>
+    </div>
+  </div>
+
+  <div class="box note">
+    <span class="label">تعمیم</span>
+    چون $10 \cEquiv 1 \pmod{9}$ نیز برقرار است، همان قاعده برای ۹ هم کار می‌کند. برای ۱۱: $10 \cEquiv -1 \pmod{11}$، که قاعدهٔ جمعِ تفاضلی ارقام را می‌دهد.
+  </div>
+
+  <!-- placeholder-proofs8 -->
+
+  <!-- ===================== ۱۳. قضیه بنیادی حساب ===================== -->
+  <h2 id="p-fta-arith"><span class="n">۱۳</span>قضیه بنیادی حساب</h2>
+
+  <div class="thm">
+    <span class="name">تجزیهٔ یکتای اول</span>
+    <div class="math">$$\cAll\, n \in \cN,\; n > 1 \;:\; \cEx\, p_1 \le \cdots \le p_k \;\text{prime},\; n = p_1 \cdots p_k,\;\text{unique up to order}$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">بخشِ ۱ — وجود (استقرای قوی)</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Base: $n = 2$ is prime. ✓</span>
+      <span class="gloss">پایهٔ استقرا: $2$ خودش اول است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Inductive step: assume every $m$ with $2 \le m < n$ has a prime factorization. Consider $n$.</span>
+      <span class="gloss">گامِ استقرا: فرض می‌کنیم هر $m$ کوچک‌تر از $n$ تجزیهٔ اول دارد.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Either $n$ is prime (done), or $n = a \cdot b$ with $1 < a, b < n$.</span>
+      <span class="gloss">یا $n$ خودش اول است (تمام)، یا $n = a\cdot b$ با $1 &lt; a, b &lt; n$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">By the inductive hypothesis, $a$ and $b$ have prime factorizations; concatenating gives one for $n$. <span class="qed"></span></span>
+      <span class="gloss">از فرضِ استقرا، $a$ و $b$ تجزیهٔ اول دارند؛ چسباندنِ آن‌ها تجزیهٔ $n$ را می‌دهد. ∎</span>
+    </div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">بخشِ ۲ — یکتایی (لمِ اقلیدس)</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Euclid's lemma (proved via Bézout, see §14): if $p$ prime and $p \mid ab$, then $p \mid a \cOr p \mid b$.</span>
+      <span class="gloss">لمِ اقلیدس: اگر $p$ اول و بر $ab$ بخش باشد، پس بر $a$ یا بر $b$ بخش است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Suppose $n = p_1 \cdots p_k = q_1 \cdots q_l$ are two prime factorizations.</span>
+      <span class="gloss">فرض: دو تجزیهٔ اولِ متفاوت برای $n$ داریم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">$p_1 \mid q_1 \cdots q_l$. By Euclid's lemma applied repeatedly, $p_1 \mid q_i$ for some $i$. Both are prime, so $p_1 = q_i$.</span>
+      <span class="gloss">اگر $p_1$ اول و بر $q_i$ اول بخش‌ باشد، آن‌گاه $p_1 = q_i$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Cancel $p_1 = q_i$ from both sides. Repeat with $p_2, \ldots$ until all are matched.</span>
+      <span class="gloss">$p_1 = q_i$ را از دو طرف ساده می‌کنیم و با $p_2, \ldots$ همین کار را تکرار می‌کنیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">Thus $k = l$ and the factorizations agree up to order. <span class="qed"></span></span>
+      <span class="gloss">پس $k = l$ و تجزیه‌ها تا ترتیب یکسان‌اند. ∎</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۱۴. اتحاد بزو ===================== -->
+  <h2 id="p-bezout"><span class="n">۱۴</span>اتحاد بزو</h2>
+
+  <div class="box bridge">
+    <span class="label">پیش‌زمینه</span>
+    <p><strong>ب.م.م</strong> (بزرگ‌ترین مقسوم‌علیهٔ مشترک) $\gcd(a, b)$ بزرگ‌ترین عدد صحیحی است که هم $a$ و هم $b$ بر آن بخش‌پذیرند. مثلاً $\gcd(12, 18) = 6$.</p>
+    <p><strong>الگوریتمِ اقلیدسی</strong>: برای یافتنِ $\gcd(a, b)$، $a$ را بر $b$ بخش می‌کنیم: $a = bq + r$ با $0 \le r &lt; |b|$. آن‌گاه $\gcd(a, b) = \gcd(b, r)$ — چون هر مقسوم‌علیهٔ مشترکِ $a$ و $b$ بر $r = a - bq$ هم بخش‌ است، و برعکس. این کار را تکرار می‌کنیم تا باقی‌مانده صفر شود.</p>
+    <p><strong>اتحادِ بزو</strong> می‌گوید: ب.م.م را می‌توان به‌صورتِ ترکیبِ خطیِ $a$ و $b$ با ضرایبِ صحیح نوشت — یعنی $\gcd(a,b) = ax + by$ برای برخی $x, y \in \cZ$. این بدیهی نیست: مثلاً $\gcd(12, 18) = 6 = 18\cdot 1 + 12\cdot(-1)$.</p>
+  </div>
+
+  <div class="thm">
+    <span class="name">اتحاد بزو</span>
+    برای هر دو عدد صحیحِ $a, b$ که هر دو صفر نباشند، ب.م.مِ آن‌ها را می‌توان به‌صورتِ ترکیبِ خطیِ $a$ و $b$ با ضرایبِ صحیح نوشت:
+    <div class="math">$$\cAll\, a, b \in \cZ,\; (a,b) \cNeq (0,0) \;:\; \cEx\, x, y \in \cZ \;:\; \gcd(a, b) = ax + by$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">الگوریتمِ اقلیدسی</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Division rule: $a = bq + r$ with $0 \le r < |b|$, and $\gcd(a, b) = \gcd(b, r)$.</span>
+      <span class="gloss">قاعدهٔ بخش‌کردن: $a = bq + r$ با باقی‌ماندهٔ $r$ کوچک‌تر از $|b|$. مقسوم‌علیهٔ مشترکِ $a, b$ همان مقسوم‌علیهٔ مشترکِ $b, r$ است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Iterate: $a = bq_1 + r_1$, $b = r_1 q_2 + r_2$, $\ldots$, until $r_{k} = 0$. Then $\gcd(a, b) = r_{k-1}$.</span>
+      <span class="gloss">تکرارِ بخش‌کردن: باقی‌مانده‌ها کم می‌شوند، پس الگوریتم خاتمه می‌یابد. آخرین باقی‌ماندهٔ ناصفر، همان ب.م.م است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Back-substitute: each $r_i = r_{i-2} - r_{i-1} q_i$ is a linear combination of the previous two remainders.</span>
+      <span class="gloss">جای‌گذاریِ رو‌به‌عقب: هر باقی‌مانده را با دو باقی‌ماندهٔ قبلی выраж می‌کنیم، و این زنجیره را تا $a$ و $b$ می‌کشیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Unwinding to $a, b$: $\gcd(a, b) = r_{k-1} = ax + by$ for some $x, y \in \cZ$. <span class="qed"></span></span>
+      <span class="gloss">در پایان، ب.م.م به‌صورتِ $ax + by$ با ضرایبِ صحیح درمی‌آید — همین اتحادِ بزو.</span>
+    </div>
+  </div>
+
+  <div class="box note">
+    <span class="label">کاربرد — لمِ اقلیدس</span>
+    اگر $p$ اول، $p \mid ab$، $p \cNotDiv a$: آن‌گاه $\gcd(p, a) = 1$، پس از بزو $\cEx\, x, y : xp + ya = 1$. ضرب در $b$: $xpb + yab = b$. چون $p \mid xpb$ و $p \mid yab$ (چون $p \mid ab$)، پس $p \mid b$. این لم، یکتاییِ تجزیهٔ اول (§۱۳) را ثابت می‌کند.
+  </div>
+
+  <!-- placeholder-proofs9 -->
+
+  <!-- ===================== ۱۵. قضیه ویلسن ===================== -->
+  <h2 id="p-wilson"><span class="n">۱۵</span>قضیه ویلسن</h2>
+
+  <div class="box bridge">
+    <span class="label">پیش‌زمینه</span>
+    <p><strong>هم‌نهشتی پیمانه‌ای</strong>: $a \cEquiv b \pmod{p}$ یعنی $a - b$ بر $p$ بخش‌پذیر است. مثلاً $7 \cEquiv 1 \pmod{3}$.</p>
+    <p><strong>معکوسِ پیمانه‌ای</strong>: اگر $\gcd(a, p) = 1$، آن‌گاه $\cEx\, a^{-1}$ با $a \cdot a^{-1} \cEquiv 1 \pmod{p}$. از بزو: $ax + py = 1$، پس $a^{-1} \cEquiv x \pmod{p}$.</p>
+    <p><strong>قضیهٔ ویلسن</strong> یک آزمونِ زیبا برای اول‌بودن است: $p$ اول است اگر و تنها اگر $(p-1)! \cEquiv -1 \pmod{p}$. مثلاً برای $p = 5$: $(5-1)! = 24 \cEquiv 4 \cEquiv -1 \pmod{5}$. ✓</p>
+  </div>
+
+  <div class="thm">
+    <span class="name">ویلسن</span>
+    عددِ $p$ اول است اگر و تنها اگر $(p-1)!$ به‌پیمانهٔ $p$ با $-1$ هم‌نهشت باشد:
+    <div class="math">$$p \;\text{prime} \;\cIff\; (p - 1)! \cEquiv -1 \pmod{p}$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">جفت‌کردنِ معکوس‌ها</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">For $p$ prime, every $a \in \{1, \ldots, p-1\}$ has a unique inverse mod $p$: $\cEx\, a^{-1} : a \cdot a^{-1} \cEquiv 1 \pmod{p}$.</span>
+      <span class="gloss">برای $p$ اول، هر $a$ در $\{1, \ldots, p-1\}$ معکوسِ پیمانه‌ای دارد — از بزو: $\gcd(a, p) = 1$ پس $ax + py = 1$ و $x = a^{-1}$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Self-inverse elements satisfy $a^2 \cEquiv 1 \pmod{p}$, i.e. $p \mid (a-1)(a+1)$.</span>
+      <span class="gloss">عنصرِ خود‌معکوس یعنی $a = a^{-1}$، یعنی $a^2 \cEquiv 1$، یعنی $p \mid (a-1)(a+1)$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">By Euclid's lemma: $a \cEquiv 1 \cOr a \cEquiv -1 \pmod{p}$. So only $1$ and $p - 1$ are self-inverse.</span>
+      <span class="gloss">چون $p$ اول، لمِ اقلیدس می‌گوید $p \mid (a-1)$ یا $p \mid (a+1)$. پس تنها خود‌معکوس‌ها $1$ و $p-1$ هستند.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Pair up $\{2, 3, \ldots, p-2\}$ as $(a, a^{-1})$; each pair contributes $1$ to the product.</span>
+      <span class="gloss">بقیهٔ اعداد را با معکوس‌هایشان جفت می‌کنیم — هر جفت در ضرب با هم $1$ می‌دهند.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">So $(p-1)! = 1 \cdot \underbrace{(2 \cdot 2^{-1}) \cdots ((p-2)(p-2)^{-1})}_{= 1} \cdot (p-1) \cEquiv 1 \cdot 1 \cdot (p-1) \cEquiv -1 \pmod{p}$. <span class="qed"></span></span>
+      <span class="gloss">پس $(p-1)!$ = $1$ × (حاصلِ جفت‌ها = $1$) × $(p-1) \cEquiv -1 \pmod{p}$.</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۱۶. کاشی-شوارتس ===================== -->
+  <h2 id="p-cauchy"><span class="n">۱۶</span>نامساوی کاشی-شوارتس</h2>
+
+  <div class="thm">
+    <span class="name">کاشی-شوارتس</span>
+    <div class="math">$$\left(\sum_{i=1}^{n} a_i b_i\right)^{\!2} \le \left(\sum_{i=1}^{n} a_i^2\right)\!\left(\sum_{i=1}^{n} b_i^2\right), \quad \text{equality} \cIff\, a = \lambda b$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">دلتای نامنفی</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">For all $t \in \cR$: $f(t) = \sum_{i=1}^{n} (a_i t + b_i)^2 \ge 0$ (sum of squares).</span>
+      <span class="gloss">تابعِ $f(t)$ مجموعِ چند مربع است، پس برای هر $t$ نامنفی است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Expand: $f(t) = \left(\sum a_i^2\right) t^2 + 2\left(\sum a_i b_i\right) t + \left(\sum b_i^2\right) = At^2 + Bt + C$.</span>
+      <span class="gloss">با قرار دادن $A = \sum a_i^2$، $B = 2\sum a_i b_i$، $C = \sum b_i^2$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">$f(t) \ge 0$ for all $t \cImp$ discriminant $\Delta = B^2 - 4AC \le 0$.</span>
+      <span class="gloss">یک درجهٔ دومِ نامنفی، دلتای نامنفی دارد.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Substitute: $4\left(\sum a_i b_i\right)^2 - 4\left(\sum a_i^2\right)\left(\sum b_i^2\right) \le 0$, hence $\left(\sum a_i b_i\right)^2 \le \left(\sum a_i^2\right)\left(\sum b_i^2\right)$. <span class="qed"></span></span>
+      <span class="gloss">با جای‌گذاریِ $A, B, C$، نامساویِ کاشی-شوارتس به‌دست می‌آید. ∎</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">Equality iff $\Delta = 0$, i.e. $f$ has a real root $t_0$, i.e. $\sum(a_i t_0 + b_i)^2 = 0$, i.e. $a_i t_0 + b_i = 0$ for all $i$, i.e. $a = \lambda b$. <span class="qed"></span></span>
+      <span class="gloss">برابری iff $\Delta = 0$، یعنی $f$ ریشه دارد، یعنی همهٔ مربع‌ها صفرند، یعنی $a = \lambda b$. ∎</span>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 400 240" width="400" height="240" xmlns="http://www.w3.org/2000/svg" style="direction:ltr">
+      <line x1="40" y1="200" x2="380" y2="200" stroke="#948570" stroke-width="0.8"/>
+      <line x1="60" y1="220" x2="60" y2="20" stroke="#948570" stroke-width="0.8"/>
+      <circle cx="60" cy="200" r="2.5" fill="#7a2845"/>
+      <text x="44" y="216" font-size="12" fill="#948570" font-style="italic">O</text>
+      <line x1="60" y1="200" x2="260" y2="200" stroke="#b8651a" stroke-width="2.5" marker-end="url(#arr1)"/>
+      <line x1="60" y1="200" x2="150" y2="93" stroke="#6a7a2a" stroke-width="2.5" marker-end="url(#arr2)"/>
+      <line x1="150" y1="93" x2="150" y2="200" stroke="#2a5a6a" stroke-width="1.2" stroke-dasharray="5 4"/>
+      <line x1="60" y1="200" x2="150" y2="200" stroke="#7a2845" stroke-width="2" marker-end="url(#arr3)"/>
+      <path d="M 92,200 A 32,32 0 0,0 88,184" fill="none" stroke="#9a2845" stroke-width="1.3"/>
+      <text x="98" y="192" font-size="13" fill="#9a2845" font-style="italic">θ</text>
+      <text x="248" y="216" font-size="14" fill="#b8651a" font-style="italic" font-weight="700">u</text>
+      <text x="138" y="86" font-size="14" fill="#6a7a2a" font-style="italic" font-weight="700">v</text>
+      <text x="156" y="156" font-size="12" fill="#2a5a6a" font-style="italic">|v|sinθ</text>
+      <text x="96" y="220" font-size="12" fill="#7a2845" font-style="italic">|v|cosθ</text>
+      <defs>
+        <marker id="arr1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <polygon points="0,0 8,4 0,8" fill="#b8651a"/>
+        </marker>
+        <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <polygon points="0,0 8,4 0,8" fill="#6a7a2a"/>
+        </marker>
+        <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <polygon points="0,0 8,4 0,8" fill="#7a2845"/>
+        </marker>
+      </defs>
+    </svg>
+    <figcaption>
+      دو بردارِ $u$ و $v$ با زاویهٔ $\theta$.<br>
+      تصویرِ $v$ روی $u$ = $|v|\cos\theta$ (قرمز).<br>
+      $u \cdot v = |u|\,|v|\cos\theta$، و $|\cos\theta| \le 1$، پس $|u \cdot v| \le |u|\,|v|$.
+    </figcaption>
+  </figure>
+
+  <!-- placeholder-proofs10 -->
+
+  <!-- ===================== ۱۷. میانگین حسابی-هندسی ===================== -->
+  <h2 id="p-amgm"><span class="n">۱۷</span>نامساوی میانگین حسابی-هندسی</h2>
+
+  <div class="thm">
+    <span class="name">AM-GM</span>
+    <div class="math">$$\cAll\, x_1, \ldots, x_n \ge 0 \;:\; \frac{x_1 + \cdots + x_n}{n} \ge \sqrt[n]{x_1 \cdots x_n}, \quad \text{equality} \cIff\, x_1 = \cdots = x_n$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">استقرای به‌عقبِ کوشی</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Base $n = 2$: $\tfrac{a+b}{2} \ge \sqrt{ab}$, since $(\sqrt{a} - \sqrt{b})^2 \ge 0 \cImp a + b \ge 2\sqrt{ab}$.</span>
+      <span class="gloss">مربعِ هر عدد نامنفی است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Doubling step: if AM-GM holds for $n$, then for $2n$:
+      $\frac{x_1 + \cdots + x_{2n}}{2n} = \frac{1}{2}\!\left(\frac{x_1 + \cdots + x_n}{n} + \frac{x_{n+1} + \cdots + x_{2n}}{n}\right) \ge \frac{1}{2}\!\left(\sqrt[n]{x_1 \cdots x_n} + \sqrt[n]{x_{n+1} \cdots x_{2n}}\right) \ge \sqrt[2n]{x_1 \cdots x_{2n}}$.</span>
+      <span class="gloss">اول از فرضِ $n$، سپس از $n=2$ برای دو ریشهٔ $n$اُم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">So AM-GM holds for $n = 2^k$ for every $k$.</span>
+      <span class="gloss">با تکرارِ گامِ دو، AM-GM برای هر توانِ ۲ ثابت می‌شود.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Backward step: take arbitrary $n$. Pick $k$ with $2^k > n$. Set $\bar{x} = \tfrac{x_1 + \cdots + x_n}{n}$ and pad the list with $2^k - n$ copies of $\bar{x}$ to get $2^k$ numbers.</span>
+      <span class="gloss">گامِ بازگشت: برای $n$ دل‌خواه، $k$ را با $2^k > n$ انتخاب می‌کنیم و لیست را با کپیِ میانگین تا $2^k$ عدد پُر می‌کنیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">Apply AM-GM to the $2^k$ numbers: $\bar{x} \ge \left(x_1 \cdots x_n \cdot \bar{x}^{2^k - n}\right)^{1/2^k}$.</span>
+      <span class="gloss">AM-GM را به $2^k$ عددِ پُر‌شده اعمال می‌کنیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۶</span>
+      <span class="formal">Raise to $2^k$: $\bar{x}^{2^k} \ge (x_1 \cdots x_n)\, \bar{x}^{2^k - n}$. Divide by $\bar{x}^{2^k - n}$ (if $\bar{x} > 0$): $\bar{x}^n \ge x_1 \cdots x_n$, hence $\bar{x} \ge \sqrt[n]{x_1 \cdots x_n}$. <span class="qed"></span></span>
+      <span class="gloss">به‌توانِ $2^k$ و ساده‌سازی: $\bar{x}^n \ge x_1\cdots x_n$، پس میانگینِ حسابی ≥ میانگینِ هندسی. ∎</span>
+    </div>
+    <div class="step">
+      <span class="sn">۷</span>
+      <span class="formal">Equality iff all $2^k$ padded numbers are equal, i.e. $x_1 = \cdots = x_n = \bar{x}$. <span class="qed"></span></span>
+      <span class="gloss">برابری iff همهٔ $x_i$ برابر باشند. ∎</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۱۸. اصل استقرای ریاضی ===================== -->
+  <h2 id="p-induction"><span class="n">۱۸</span>اصل استقرای ریاضی</h2>
+
+  <div class="thm">
+    <span class="name">اصل استقرا</span>
+    <div class="math">$$\big(P(1) \;\cAnd\; \cAll\, n \ge 1 : (P(n) \cImp P(n+1))\big) \;\cImp\; \cAll\, n \ge 1 : P(n)$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">از اصلِ خوش‌ترتیبی — به‌تناقض</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Assume $P(1)$ and $\cAll\, n : P(n) \cImp P(n+1)$, but $\cNeg\,\cAll\, n : P(n)$.</span>
+      <span class="gloss">فرضِ تناقض: $P$ برای همه درست نیست.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Then $S = \{n \in \cN : \cNeg\, P(n)\}$ is nonempty.</span>
+      <span class="gloss">مجموعهٔ $S$ از اعدادی که $P$ برایشان نادرست است، ناتهی است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">By the well-ordering principle, $S$ has a least element $m$.</span>
+      <span class="gloss">هر زیرمجموعهٔ ناتهی از $\cN$ کمینه دارد.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">$m \cNeq 1$, since $P(1)$ holds. So $m \ge 2$, i.e. $m - 1 \in \cN$.</span>
+      <span class="gloss">$m \neq 1$ چون $P(1)$ درست است؛ پس $m \ge 2$ و $m-1 \in \cN$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">Since $m$ is least, $m - 1 \notin S$, so $P(m - 1)$ holds.</span>
+      <span class="gloss">چون $m$ کمینه است، $m-1 \notin S$، پس $P(m-1)$ درست است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۶</span>
+      <span class="formal">By the inductive hypothesis, $P(m-1) \cImp P(m)$. So $P(m)$ holds — but $m \in S$ means $\cNeg\, P(m)$. Contradiction.</span>
+      <span class="gloss">از یک‌سو $P(m-1)$ درست است و استقرا $P(m)$ را می‌دهد؛ از سویِ دیگر $m \in S$ می‌گوید $P(m)$ نادرست است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۷</span>
+      <span class="formal">So $S = \emptyset$, i.e. $\cAll\, n \ge 1 : P(n)$. <span class="qed"></span></span>
+      <span class="gloss">پس $S$ تهی است و $P$ برای همهٔ $n$ درست است. ∎</span>
+    </div>
+  </div>
+
+  <div class="box note">
+    <span class="label">سه نوع استقرا</span>
+    <ul>
+      <li><strong>ضعیف</strong>: $P(n) \cImp P(n+1)$.</li>
+      <li><strong>قوی</strong>: $P(1) \cAnd \cdots \cAnd P(n) \cImp P(n+1)$ — در §۱۳ به‌کار رفت.</li>
+      <li><strong>کامل</strong>: $\cAll\, k < n : P(k) \cImp P(n)$.</li>
+    </ul>
+    هر سه به اصلِ خوش‌ترتیبی معادل‌اند.
+  </div>
+
+  <!-- placeholder-proofs11 -->
+
+  <!-- ===================== ۱۹. قضیه تالس ===================== -->
+  <h2 id="p-thales"><span class="n">۱۹</span>قضیه تالس</h2>
+
+  <div class="thm">
+    <span class="name">تالس</span>
+    اگر $A, B, C$ سه نقطه روی یک دایره باشند و $AC$ قطر باشد، آن‌گاه $\angle ABC = \pi/2$.
+    <div class="math">$$AC \text{ diameter} \;\cImp\; \angle ABC = \tfrac{\pi}{2}$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">از مرکزِ دایره</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Let $O$ be the center, so $|OA| = |OB| = |OC| = r$.</span>
+      <span class="gloss">نقطهٔ $O$ مرکزِ دایره و $r$ شعاع است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Since $|OA| = |OB|$, triangle $OAB$ is isosceles, so $\angle OAB = \angle OBA$. Call both $\alpha$.</span>
+      <span class="gloss">مثلثِ $OAB$ متساوی‌الساقین است — زاویه‌های قاعده برابرند.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Likewise $|OB| = |OC|$, so triangle $OBC$ is isosceles, $\angle OBC = \angle OCB$. Call both $\beta$.</span>
+      <span class="gloss">مثلثِ $OBC$ هم متساوی‌الساقین است — زاویه‌های قاعده را $\beta$ می‌نامیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">In triangle $ABC$: $\alpha + \beta + \angle ABC = \pi$. But $\angle ABC = \alpha + \beta$ (since $OB$ splits it).</span>
+      <span class="gloss">مجموعِ زاویه‌های $ABC$ برابرِ $\pi$ است و $\angle ABC = \alpha + \beta$ (چون $OB$ آن را می‌شکافد).</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">So $2(\alpha + \beta) = \pi$, hence $\angle ABC = \alpha + \beta = \pi/2$. <span class="qed"></span></span>
+      <span class="gloss">پس $2(\alpha + \beta) = \pi$ و $\angle ABC = \pi/2$. ∎</span>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 400 280" width="400" height="280" xmlns="http://www.w3.org/2000/svg" style="direction:ltr">
+      <circle cx="200" cy="140" r="110" fill="rgba(122,40,69,0.05)" stroke="#7a2845" stroke-width="1.6"/>
+      <line x1="90" y1="140" x2="310" y2="140" stroke="#8a1f3a" stroke-width="2.5"/>
+      <line x1="200" y1="140" x2="90" y2="140" stroke="#1a5a7a" stroke-width="1.4" stroke-dasharray="5 4"/>
+      <line x1="200" y1="140" x2="200" y2="30" stroke="#1a5a7a" stroke-width="1.4" stroke-dasharray="5 4"/>
+      <line x1="200" y1="140" x2="310" y2="140" stroke="#1a5a7a" stroke-width="1.4" stroke-dasharray="5 4"/>
+      <polygon points="90,140 310,140 200,30" fill="rgba(184,101,26,0.10)" stroke="none"/>
+      <line x1="90" y1="140" x2="200" y2="30" stroke="#b8651a" stroke-width="2.5"/>
+      <line x1="200" y1="30" x2="310" y2="140" stroke="#5a7a1a" stroke-width="2.5"/>
+      <rect x="190" y="40" width="10" height="10" fill="none" stroke="#7a2845" stroke-width="1.2"/>
+      <circle cx="90" cy="140" r="3.5" fill="#7a2845"/>
+      <circle cx="200" cy="30" r="3.5" fill="#7a2845"/>
+      <circle cx="310" cy="140" r="3.5" fill="#7a2845"/>
+      <circle cx="200" cy="140" r="3" fill="#1a5a7a"/>
+      <text x="80" y="158" font-size="17" fill="#7a2845" font-weight="700" text-anchor="middle">A</text>
+      <text x="200" y="22" font-size="17" fill="#7a2845" font-weight="700" text-anchor="middle">B</text>
+      <text x="320" y="158" font-size="17" fill="#7a2845" font-weight="700" text-anchor="middle">C</text>
+      <text x="208" y="156" font-size="13" fill="#1a5a7a" font-weight="700" font-style="italic">O</text>
+      <text x="212" y="88" font-size="13" fill="#1a5a7a" font-weight="700" font-style="italic">r</text>
+      <text x="130" y="76" font-size="14" fill="#b8651a" font-weight="700" font-style="italic">AB</text>
+      <text x="268" y="76" font-size="14" fill="#5a7a1a" font-weight="700" font-style="italic">BC</text>
+      <text x="200" y="162" font-size="14" fill="#8a1f3a" font-weight="700" font-style="italic" text-anchor="middle">AC</text>
+      <path d="M 115,140 A 25,25 0 0,0 107.3,122.3" fill="none" stroke="#b8651a" stroke-width="1.6"/>
+      <text x="120" y="128" font-size="14" fill="#b8651a" font-weight="700" font-style="italic">α</text>
+      <path d="M 182.3,47.7 A 25,25 0 0,0 200,55" fill="none" stroke="#b8651a" stroke-width="1.6"/>
+      <text x="178" y="60" font-size="14" fill="#b8651a" font-weight="700" font-style="italic">α</text>
+      <path d="M 200,55 A 25,25 0 0,0 217.7,47.7" fill="none" stroke="#5a7a1a" stroke-width="1.6"/>
+      <text x="216" y="60" font-size="14" fill="#5a7a1a" font-weight="700" font-style="italic">β</text>
+      <path d="M 285,140 A 25,25 0 0,1 292.3,157.7" fill="none" stroke="#5a7a1a" stroke-width="1.6"/>
+      <text x="280" y="156" font-size="14" fill="#5a7a1a" font-weight="700" font-style="italic">β</text>
+    </svg>
+    <figcaption>
+      دایره با مرکزِ $O$ و قطرِ $AC$ (شرابی).<br>
+      شعاع‌ها $|OA|=|OB|=|OC|=r$ (آبی، خط‌چین) — هر سه برابر.<br>
+      مثلثِ $ABC$: ضلعِ $AB$ (نارنجی) و $BC$ (سبز). زاویهٔ $B$ قائمه است.<br>
+      زاویه‌های برابر: $\alpha$ در $A$ و $B$ (نارنجی)، $\beta$ در $B$ و $C$ (سبز).
+    </figcaption>
+  </figure>
+
+  <!-- ===================== ۲۰. مثلث متساوی‌الساقین ===================== -->
+  <h2 id="p-isoceles"><span class="n">۲۰</span>قضیه مثلث متساوی‌الساقین</h2>
+
+  <div class="thm">
+    <span class="name">متساوی‌الساقین</span>
+    در یک مثلث، دو زاویه برابرند اگر و تنها اگر دو ضلعِ روبرویشان برابرند.
+    <div class="math">$$|AB| = |AC| \;\cIff\; \angle B = \angle C$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">($\cImp$) از تقارن</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Assume $|AB| = |AC|$. Reflect the triangle across the angle bisector of $\angle A$.</span>
+      <span class="gloss">خطِ تقارن، نیمسازِ زاویهٔ $A$ است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">The reflection swaps $B \leftrightarrow C$ (since $|AB| = |AC|$) and fixes $A$.</span>
+      <span class="gloss">این بازتاب $B$ و $C$ را جابه‌جا می‌کند و $A$ را ثابت نگه می‌دارد.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Reflections preserve angles, so $\angle B = \angle C$. <span class="qed"></span></span>
+      <span class="gloss">بازتاب زاویه‌ها را حفظ می‌کند، پس $\angle B = \angle C$. ∎</span>
+    </div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">($\cImpL$) به‌تناقض</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Assume $\angle B = \angle C$ but $|AB| \cNeq |AC|$, say $|AB| > |AC|$.</span>
+      <span class="gloss">فرضِ تناقض: $\angle B = \angle C$ ولی $|AB| > |AC|$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Mark $D$ on $AB$ with $|AD| = |AC|$. Then triangle $ADC$ is isosceles, so $\angle ACD = \angle ADC$.</span>
+      <span class="gloss">نقطهٔ $D$ روی $AB$ با $|AD| = |AC|$؛ مثلثِ $ADC$ متساوی‌الساقین است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">But $\angle ADC = \angle DCB + \angle DCB' = \pi - \angle B$ (exterior angle), and $\angle ACD = \angle C - \angle DCB$... contradiction after chasing. <span class="qed"></span></span>
+      <span class="gloss">تعقیبِ زاویه‌ها به تناقج می‌رسد.</span>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 400 240" width="400" height="240" xmlns="http://www.w3.org/2000/svg" style="direction:ltr">
+      <polygon points="200,30 80,210 320,210" fill="rgba(138,31,58,0.06)" stroke="#8a1f3a" stroke-width="1.8"/>
+      <line x1="200" y1="30" x2="200" y2="210" stroke="#c4600a" stroke-width="1.2" stroke-dasharray="6 4"/>
+      <circle cx="200" cy="210" r="2.5" fill="#c4600a"/>
+      <text x="194" y="228" font-size="13" fill="#c4600a" font-style="italic">M</text>
+      <text x="194" y="24" font-size="15" fill="#8a1f3a" font-weight="700">A</text>
+      <text x="66" y="228" font-size="15" fill="#8a1f3a" font-weight="700">B</text>
+      <text x="326" y="228" font-size="15" fill="#8a1f3a" font-weight="700">C</text>
+      <text x="120" y="128" font-size="14" fill="#5a7a1a" font-style="italic">b</text>
+      <text x="272" y="128" font-size="14" fill="#5a7a1a" font-style="italic">b</text>
+      <text x="194" y="240" font-size="14" fill="#5a7a1a" font-style="italic">a</text>
+      <path d="M 96,196 A 16,16 0 0,1 110,210" fill="none" stroke="#1a5a7a" stroke-width="1.3"/>
+      <text x="92" y="194" font-size="13" fill="#1a5a7a" font-style="italic">β</text>
+      <path d="M 290,210 A 16,16 0 0,1 304,196" fill="none" stroke="#1a5a7a" stroke-width="1.3"/>
+      <text x="296" y="194" font-size="13" fill="#1a5a7a" font-style="italic">β</text>
+      <path d="M 207.77,41.65 A 14,14 0 0,1 192.23,41.65" fill="none" stroke="#a8203a" stroke-width="1.3"/>
+      <text x="196" y="62" font-size="13" fill="#a8203a" font-style="italic">α</text>
+    </svg>
+    <figcaption>
+      مثلثِ $ABC$ با $|AB| = |AC| = b$ و $|BC| = a$.<br>
+      نیمسازِ زاویهٔ $A$ محورِ تقارن است — $M$ وسطِ $BC$.<br>
+      بازتابِ نسبت به این محور، $B$ و $C$ را جابه‌جا می‌کند؛ پس $\angle B = \angle C$.
+    </figcaption>
+  </figure>
+
+  <!-- ===================== ۲۱. فرمول هرون ===================== -->
+  <h2 id="p-heron"><span class="n">۲۱</span>فرمول مساحت هرون</h2>
+
+  <div class="thm">
+    <span class="name">هرون</span>
+    مساحتِ مثلثی با ضلع‌های $a, b, c$ و نیم‌محیط $s = \tfrac{a+b+c}{2}$:
+    <div class="math">$$K = \sqrt{s(s-a)(s-b)(s-c)}$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">از قانون کسینوس و جبر</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">$K = \tfrac{1}{2}ab\sin C$. So $K^2 = \tfrac{1}{4}a^2 b^2 \sin^2 C = \tfrac{1}{4}a^2 b^2 (1 - \cos^2 C)$.</span>
+      <span class="gloss">مساحت از فرمولِ $K = \tfrac{1}{2}ab\sin C$؛ با قرینه‌سازیِ پیتاگوراس، $\sin^2 C = 1 - \cos^2 C$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">By law of cosines: $\cos C = \tfrac{a^2 + b^2 - c^2}{2ab}$.</span>
+      <span class="gloss">از قانونِ کسینوس‌ها، $\cos C$ را به‌دست می‌آوریم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">So $16 K^2 = 4a^2 b^2 - (a^2 + b^2 - c^2)^2 = (2ab - a^2 - b^2 + c^2)(2ab + a^2 + b^2 - c^2) = (c^2 - (a-b)^2)((a+b)^2 - c^2)$.</span>
+      <span class="gloss">تفریقِ مربعِ کامل از مربعِ کامل.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Factor: $= (c - a + b)(c + a - b)(a + b - c)(a + b + c)$.</span>
+      <span class="gloss">با فاکتورگیریِ هر کدام به‌صورتِ اختلافِ مربع‌ها، چهار فاکتور می‌گیریم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">With $s = \tfrac{a+b+c}{2}$: $c - a + b = 2(s - a)$, $c + a - b = 2(s - b)$, $a + b - c = 2(s - c)$, $a + b + c = 2s$. So $16 K^2 = 16\, s(s-a)(s-b)(s-c)$.</span>
+      <span class="gloss">با تعریفِ $s = \tfrac{a+b+c}{2}$، هر فاکتور را به‌صورتِ $2(s - \cdot)$ بازنویسی می‌کنیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۶</span>
+      <span class="formal">Hence $K = \sqrt{s(s-a)(s-b)(s-c)}$. <span class="qed"></span></span>
+      <span class="gloss">فرمولِ هرون ثابت شد. ∎</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۲۲. بطلمیوس ===================== -->
+  <h2 id="p-ptolemy"><span class="n">۲۲</span>قضیه بطلمیوس</h2>
+
+  <div class="thm">
+    <span class="name">بطلمیوس</span>
+    برای چهارضلعی محاطی $ABCD$:
+    <div class="math">$$|AC|\cdot|BD| = |AB|\cdot|CD| + |AD|\cdot|BC|$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">ساختِ نقطهٔ $E$</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Choose $E$ inside $ABCD$ with $\angle ABE = \angle DBC$ and $\angle BAE = \angle BDC$.</span>
+      <span class="gloss">ساختِ مثلثِ شبیه به $\triangle BDC$ درونِ $\triangle ABC$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Then $\triangle ABE \sim \triangle DBC$, so $|AB|/|DB| = |AE|/|DC| = |BE|/|BC|$, giving $|AE|\cdot|BD| = |AB|\cdot|CD|$.</span>
+      <span class="gloss">از تشابهِ $\triangle ABE \sim \triangle DBC$: $|AE|\cdot|BD| = |AB|\cdot|CD|$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Also $\triangle ABD \sim \triangle EBC$ (sharing $\angle ABD = \angle EBC$ and matching angles), so $|AD|/|EC| = |BD|/|BC|$, giving $|EC|\cdot|BD| = |AD|\cdot|BC|$.</span>
+      <span class="gloss">از تشابهِ $\triangle ABD \sim \triangle EBC$: $|EC|\cdot|BD| = |AD|\cdot|BC|$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Add: $|AE|\cdot|BD| + |EC|\cdot|BD| = (|AE| + |EC|)\cdot|BD| = |AC|\cdot|BD| = |AB|\cdot|CD| + |AD|\cdot|BC|$. <span class="qed"></span></span>
+      <span class="gloss">نقطهٔ $E$ روی $AC$ است، پس $|AE| + |EC| = |AC|$.</span>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 480 290" width="480" height="290" xmlns="http://www.w3.org/2000/svg" style="direction:ltr">
+      <circle cx="240" cy="140" r="115" fill="rgba(122,40,69,0.05)" stroke="#7a2845" stroke-width="1.6"/>
+      <polygon points="201,248 132,101 279,32 348,179" fill="rgba(106,122,42,0.08)" stroke="none"/>
+      <line x1="201" y1="248" x2="279" y2="32" stroke="#8a1f3a" stroke-width="1.4" stroke-dasharray="6 4"/>
+      <line x1="132" y1="101" x2="348" y2="179" stroke="#8a1f3a" stroke-width="1.4" stroke-dasharray="6 4"/>
+      <line x1="201" y1="248" x2="132" y2="101" stroke="#b8651a" stroke-width="3"/>
+      <line x1="132" y1="101" x2="279" y2="32" stroke="#5a7a1a" stroke-width="3"/>
+      <line x1="279" y1="32" x2="348" y2="179" stroke="#1a5a7a" stroke-width="3"/>
+      <line x1="348" y1="179" x2="201" y2="248" stroke="#c4600a" stroke-width="3"/>
+      <circle cx="201" cy="248" r="3.5" fill="#7a2845"/>
+      <circle cx="132" cy="101" r="3.5" fill="#7a2845"/>
+      <circle cx="279" cy="32" r="3.5" fill="#7a2845"/>
+      <circle cx="348" cy="179" r="3.5" fill="#7a2845"/>
+      <text x="196" y="266" font-size="17" fill="#7a2845" font-weight="700" text-anchor="middle">A</text>
+      <text x="118" y="96" font-size="17" fill="#7a2845" font-weight="700" text-anchor="middle">B</text>
+      <text x="284" y="26" font-size="17" fill="#7a2845" font-weight="700" text-anchor="middle">C</text>
+      <text x="360" y="186" font-size="17" fill="#7a2845" font-weight="700" text-anchor="middle">D</text>
+      <text x="148" y="185" font-size="14" fill="#b8651a" font-weight="700" font-style="italic" text-anchor="middle">AB</text>
+      <text x="195" y="52" font-size="14" fill="#5a7a1a" font-weight="700" font-style="italic" text-anchor="middle">BC</text>
+      <text x="334" y="96" font-size="14" fill="#1a5a7a" font-weight="700" font-style="italic" text-anchor="middle">CD</text>
+      <text x="290" y="232" font-size="14" fill="#c4600a" font-weight="700" font-style="italic" text-anchor="middle">DA</text>
+      <text x="226" y="146" font-size="13" fill="#8a1f3a" font-weight="700" font-style="italic" text-anchor="middle">AC</text>
+      <text x="258" y="134" font-size="13" fill="#8a1f3a" font-weight="700" font-style="italic" text-anchor="middle">BD</text>
+    </svg>
+    <figcaption>
+      چهارضلعیِ محاطیِ $ABCD$ روی یک دایره.<br>
+      اضلاع با رنگِ متمایز: $AB$ (نارنجی)، $BC$ (سبز)، $CD$ (آبی)، $DA$ (کهربی).<br>
+      قطرها $AC$ و $BD$ (شرابی، خط‌چین).<br>
+      حکمِ بطلمیوس: $|AC|\cdot|BD| = |AB|\cdot|CD| + |AD|\cdot|BC|$.
+    </figcaption>
+  </figure>
+
+  <!-- ===================== ۲۳. چوا ===================== -->
+  <h2 id="p-ceva"><span class="n">۲۳</span>قضیه چوا</h2>
+
+  <div class="thm">
+    <span class="name">چوا</span>
+    در مثلث $ABC$، سه خطِ هم‌گذر از رأس‌ها به ضلعِ روبرو، در یک نقطه هم‌گر می‌شوند iff:
+    <div class="math">$$\frac{|BX|}{|XC|}\cdot\frac{|CY|}{|YA|}\cdot\frac{|AZ|}{|ZB|} = 1$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">از مساحت‌ها</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Let cevians $AX, BY, CZ$ meet at $P$. Then $\tfrac{|BX|}{|XC|} = \tfrac{[ABX]}{[ACX]} = \tfrac{[PBX]}{[PCX]} = \tfrac{[ABP]}{[ACP]}$.</span>
+      <span class="gloss">نسبتِ مساحت‌ها = نسبتِ قاعده‌ها وقتی ارتفاع یکی است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Likewise $\tfrac{|CY|}{|YA|} = \tfrac{[BCP]}{[ABP]}$ and $\tfrac{|AZ|}{|ZB|} = \tfrac{[ACP]}{[BCP]}$.</span>
+      <span class="gloss">همین استدلال برای دو سویِ دیگرِ مثلث.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Multiply: $\tfrac{|BX|}{|XC|}\cdot\tfrac{|CY|}{|YA|}\cdot\tfrac{|AZ|}{|ZB|} = \tfrac{[ABP]}{[ACP]}\cdot\tfrac{[BCP]}{[ABP]}\cdot\tfrac{[ACP]}{[BCP]} = 1$. <span class="qed"></span></span>
+      <span class="gloss">با ضربِ سه نسبت، مساحت‌ها ساده می‌شوند و حاصل ۱ می‌شود. ∎</span>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 460 280" width="460" height="280" xmlns="http://www.w3.org/2000/svg" style="direction:ltr">
+      <!-- triangle ABC (sides dark wine) -->
+      <polygon points="230,40 70,240 390,240" fill="rgba(122,40,69,0.06)" stroke="#7a2845" stroke-width="2"/>
+      <!-- cevians: AX (orange), BY (green), CZ (blue) -->
+      <line x1="230" y1="40" x2="230" y2="240" stroke="#b8651a" stroke-width="2"/>
+      <line x1="70" y1="240" x2="300" y2="130" stroke="#5a7a1a" stroke-width="2"/>
+      <line x1="390" y1="240" x2="150" y2="130" stroke="#1a5a7a" stroke-width="2"/>
+      <!-- intersection point P (wine) -->
+      <circle cx="230" cy="165" r="4" fill="#8a1f3a"/>
+      <text x="240" y="170" font-size="15" fill="#8a1f3a" font-weight="700" font-style="italic">P</text>
+      <!-- foot points X, Y, Z (colored matching their cevian) -->
+      <circle cx="230" cy="240" r="3.5" fill="#b8651a"/>
+      <circle cx="300" cy="130" r="3.5" fill="#5a7a1a"/>
+      <circle cx="150" cy="130" r="3.5" fill="#1a5a7a"/>
+      <!-- vertex dots -->
+      <circle cx="230" cy="40" r="4" fill="#7a2845"/>
+      <circle cx="70" cy="240" r="4" fill="#7a2845"/>
+      <circle cx="390" cy="240" r="4" fill="#7a2845"/>
+      <!-- vertex labels -->
+      <text x="230" y="32" font-size="17" fill="#7a2845" font-weight="700" text-anchor="middle">A</text>
+      <text x="56" y="258" font-size="17" fill="#7a2845" font-weight="700" text-anchor="middle">B</text>
+      <text x="404" y="258" font-size="17" fill="#7a2845" font-weight="700" text-anchor="middle">C</text>
+      <!-- foot point labels (colored matching their cevian) -->
+      <text x="238" y="258" font-size="14" fill="#b8651a" font-weight="700" font-style="italic">X</text>
+      <text x="308" y="124" font-size="14" fill="#5a7a1a" font-weight="700" font-style="italic">Y</text>
+      <text x="136" y="124" font-size="14" fill="#1a5a7a" font-weight="700" font-style="italic">Z</text>
+      <!-- cevian labels (colored matching their line, placed at midpoints) -->
+      <text x="240" y="110" font-size="13" fill="#b8651a" font-weight="700" font-style="italic">AX</text>
+      <text x="170" y="200" font-size="13" fill="#5a7a1a" font-weight="700" font-style="italic">BY</text>
+      <text x="290" y="200" font-size="13" fill="#1a5a7a" font-weight="700" font-style="italic">CZ</text>
+    </svg>
+    <figcaption>
+      مثلثِ $ABC$ و سه خطِ هم‌گذرِ $AX$ (نارنجی)، $BY$ (سبز)، $CZ$ (آبی) که در $P$ (شرابی) هم‌گرند.<br>
+      $X \in BC$، $Y \in CA$، $Z \in AB$.<br>
+      حکمِ چوا: $\tfrac{|BX|}{|XC|}\cdot\tfrac{|CY|}{|YA|}\cdot\tfrac{|AZ|}{|ZB|} = 1$.
+    </figcaption>
+  </figure>
+
+  <!-- ===================== ۲۴. سه‌تایی‌های فیثاغورسی ===================== -->
+  <h2 id="p-triples"><span class="n">۲۴</span>فرمول سه‌تایی‌های فیثاغورسی</h2>
+
+  <div class="thm">
+    <span class="name">سه‌تایی‌های فیثاغورسی</span>
+    همهٔ سه‌تایی‌های اولِ فیثاغورسی (با $\gcd(a,b,c) = 1$) به‌صورت:
+    <div class="math">$$a = m^2 - n^2, \quad b = 2mn, \quad c = m^2 + n^2, \quad m > n \ge 1,\; \gcd(m,n)=1,\; m \cNeq n \pmod{2}$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">تجزیهٔ پارامتری</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Assume $a^2 + b^2 = c^2$ with $\gcd(a,b,c) = 1$. Then exactly one of $a, b$ is even (else $c$ even, contradicting primitivity). WLOG $b$ even, $a$ odd.</span>
+      <span class="gloss">در یک سه‌گانهٔ اول، دقیقاً یکی از $a, b$ زوج است؛ بدون کاستگیِ کلی $b$ را زوج و $a$ را فرد می‌گیریم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">$b^2 = c^2 - a^2 = (c-a)(c+a)$. Since $a, c$ odd, $c - a$ and $c + a$ are both even. Write $c - a = 2u$, $c + a = 2v$, so $b^2 = 4uv$, i.e. $(b/2)^2 = uv$.</span>
+      <span class="gloss">$b^2 = (c-a)(c+a)$؛ چون $a, c$ فرد، دو فاکتور زوج‌اند و $b^2/4 = uv$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">$\gcd(u, v) = 1$ (since $\gcd(a, c) = 1$). So $uv$ is a square and $u, v$ coprime $\cImp$ $u = n^2$, $v = m^2$ for some $m, n$ with $\gcd(m, n) = 1$.</span>
+      <span class="gloss">اگر $\gcd(u,v)=1$ و $uv$ مربع باشد، هر کدام خود مربع‌اند.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Then $a = v - u = m^2 - n^2$, $c = v + u = m^2 + n^2$, $b = 2mn$. The parity condition $m \cNeq n \pmod{2}$ ensures $a, c$ odd. <span class="qed"></span></span>
+      <span class="gloss">با جای‌گذاری، فرمولِ پارامتری به‌دست می‌آید؛ $m, n$ باید مختلف‌الزوجیت باشند. ∎</span>
+    </div>
+  </div>
+
+  <!-- placeholder-proofs12 -->
+
+  <!-- ===================== ۲۵. واگرایی هارمونیک ===================== -->
+  <h2 id="p-harm"><span class="n">۲۵</span>واگرایی سری هارمونیک</h2>
+
+  <div class="thm">
+    <span class="name">واگرایی هارمونیک</span>
+    <div class="math">$$H_n = \sum_{k=1}^{n} \frac{1}{k} \;\to\; \infty \quad (n \to \infty)$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">گروه‌بندیِ اورلر</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Group terms in blocks of length $2^j$: $\sum_{k=1}^{2^m} \tfrac{1}{k} = 1 + \sum_{j=1}^{m-1} \sum_{k=2^{j-1}+1}^{2^j} \tfrac{1}{k}$.</span>
+      <span class="gloss">جملات را در بلوک‌های طولِ $2^j$ گروه‌بندی می‌کنیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Each block has $2^{j-1}$ terms, each $\ge \tfrac{1}{2^j}$, so $\sum_{k=2^{j-1}+1}^{2^j} \tfrac{1}{k} \ge 2^{j-1} \cdot \tfrac{1}{2^j} = \tfrac{1}{2}$.</span>
+      <span class="gloss">هر بلوک حداقل $\tfrac{1}{2}$ است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">So $H_{2^m} \ge 1 + (m-1) \cdot \tfrac{1}{2} = \tfrac{m+1}{2} \to \infty$. <span class="qed"></span></span>
+      <span class="gloss">$H_{2^m} \ge \tfrac{m+1}{2}$ و چون $m$ دل‌خواه است، $H_n$ واگراست. ∎</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۲۶. تقابل درجه دوم ===================== -->
+  <h2 id="p-tri-recip"><span class="n">۲۶</span>قانون تقابل درجه دوم</h2>
+
+  <div class="thm">
+    <span class="name">تقابل درجه دوم</span>
+    برای اول‌های فرد $p, q$:
+    <div class="math">$$\left(\tfrac{p}{q}\right)\!\left(\tfrac{q}{p}\right) = (-1)^{\tfrac{(p-1)(q-1)}{4}}$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">لمِ گاوس (طرح)</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Gauss's lemma: $\left(\tfrac{a}{p}\right) = (-1)^N$ where $N = $ number of residues $a, 2a, \ldots, \tfrac{p-1}{2}a$ that exceed $p/2$.</span>
+      <span class="gloss">لمِ گاوس، علامتِ لژاندر را به شمارشِ باقی‌مانده‌های بزرگ‌تر از $p/2$ وابسته می‌کند.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Apply to $a = -1$: $\left(\tfrac{-1}{p}\right) = (-1)^{(p-1)/2}$, i.e. $-1$ is a QR mod $p$ iff $p \cEquiv 1 \pmod{4}$.</span>
+      <span class="gloss">برای $a = -1$: $-1$ مربعِ پیمانه‌ای است iff $p \cEquiv 1 \pmod 4$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Apply to $a = 2$: $\left(\tfrac{2}{p}\right) = (-1)^{(p^2-1)/8}$, i.e. $2$ is a QR mod $p$ iff $p \cEquiv \pm 1 \pmod{8}$.</span>
+      <span class="gloss">برای $a = 2$: $2$ مربعِ پیمانه‌ای است iff $p \cEquiv \pm 1 \pmod 8$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">For odd primes $p, q$: count lattice points in $\{1 \le x \le \tfrac{p-1}{2},\; 1 \le y \le \tfrac{q-1}{2}\}$ above/below $y = (q/p)x$ in two ways. The parity counts give $\left(\tfrac{p}{q}\right)\!\left(\tfrac{q}{p}\right) = (-1)^{\tfrac{(p-1)(q-1)}{4}}$. <span class="qed"></span></span>
+      <span class="gloss">شمارشِ نقاطِ شبکه در یک مستطیل، از دو طرف — ایدهٔ مرکزیِ اثباتِ آیزنشتاین.</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۲۷. قضیه کوچک فرما ===================== -->
+  <h2 id="p-fermat-little"><span class="n">۲۷</span>قضیه کوچک فرما</h2>
+
+  <div class="thm">
+    <span class="name">فرما</span>
+    برای اولِ $p$ و $\gcd(a, p) = 1$:
+    <div class="math">$$a^{p-1} \cEquiv 1 \pmod{p}$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">از عملِ چرخشی</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Consider $\{1, 2, \ldots, p-1\}$ under multiplication mod $p$. Multiply each by $a$: the set $\{a, 2a, \ldots, (p-1)a\}$ is a permutation of $\{1, \ldots, p-1\}$ (since $a$ is invertible).</span>
+      <span class="gloss">ضرب در $a$ یک جایگشتِ پیمانه‌ای است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">So $a \cdot 2a \cdots (p-1)a \cEquiv 1 \cdot 2 \cdots (p-1) \pmod{p}$, i.e. $a^{p-1} (p-1)! \cEquiv (p-1)! \pmod{p}$.</span>
+      <span class="gloss">ضربِ همهٔ اعضا در دو طرف: $a^{p-1}(p-1)! \cEquiv (p-1)! \pmod p$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Since $\gcd((p-1)!, p) = 1$ (as $p$ is prime and $p \nmid (p-1)!$), cancel: $a^{p-1} \cEquiv 1 \pmod{p}$. <span class="qed"></span></span>
+      <span class="gloss">چون $(p-1)!$ نسبت به $p$ اول است، می‌توان ساده کرد: $a^{p-1} \cEquiv 1 \pmod p$. ∎</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۲۸. تعمیم اویلر ===================== -->
+  <h2 id="p-euler-fermat"><span class="n">۲۸</span>تعمیم اویلر قضیه فرما</h2>
+
+  <div class="thm">
+    <span class="name">اویلر</span>
+    برای $\gcd(a, n) = 1$:
+    <div class="math">$$a^{\varphi(n)} \cEquiv 1 \pmod{n}, \quad \varphi(n) = |\{k : 1 \le k \le n,\, \gcd(k,n) = 1\}|$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">گروهِ یکه‌های پیمانه‌ای</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Let $U_n = \{k \bmod n : \gcd(k, n) = 1\}$, a group of order $\varphi(n)$ under multiplication mod $n$.</span>
+      <span class="gloss">مجموعهٔ $U_n$ گروهِ یکه‌های پیمانه‌ای است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">By Lagrange's theorem (order of subgroup divides group order), the order of any $a \in U_n$ divides $\varphi(n)$.</span>
+      <span class="gloss">قضیهٔ لاگرانژ: مرتبهٔ هر عضو، مرتبهٔ گروه را می‌بَرَد.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">So $a^{\varphi(n)} \cEquiv 1 \pmod{n}$. <span class="qed"></span></span>
+      <span class="gloss">پس $a^{\varphi(n)} \cEquiv 1 \pmod n$ — تعمیمِ قضیهٔ فرما. ∎</span>
+    </div>
+  </div>
+
+  <div class="box note">
+    <span class="label">قضیه لاگرانژ</span>
+    برای گروهِ متناهی $G$ و زیرگروهِ $H$: $|H|$ بر $|G|$ بخش‌ است. اثبات: تجزیهٔ $G$ به کلاس‌های هم‌بندیِ $H$ که همگی اندازهٔ $|H|$ دارند.
+  </div>
+
+  <!-- ===================== ۲۹. چهار مربع لاگرانژ ===================== -->
+  <h2 id="p-four-sq"><span class="n">۲۹</span>قضیه چهار مربع لاگرانژ</h2>
+
+  <div class="thm">
+    <span class="name">لاگرانژ</span>
+    هر عددِ طبیعی به‌صورتِ مجموعِ چهار مربعِ کامل قابل‌نوشتن است.
+    <div class="math">$$\cAll\, n \in \cN \;:\; \cEx\, a, b, c, d \in \cZ \;:\; n = a^2 + b^2 + c^2 + d^2$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">تقلیل به اول‌ها</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Identity (Euler): $(a^2+b^2+c^2+d^2)(w^2+x^2+y^2+z^2) = (aw-bx-cy-dz)^2 + (ax+bw+cz-dy)^2 + (ay-bz+cw+dx)^2 + (az+by-cx+dw)^2$.</span>
+      <span class="gloss">اتحادِ چهار مربعِ اویلر: مجموعِ چهار مربع، تحتِ ضرب، بسته است.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">So it suffices to prove for primes $p$.</span>
+      <span class="gloss">پس کافی است قضیه را برای اعدادِ اول ثابت کنیم — تجزیهٔ هر عدد به اول‌ها و اتحادِ اویلر.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">For prime $p$: there exist $x, y$ with $x^2 + y^2 + 1 \cEquiv 0 \pmod{p}$ (pigeonhole on $\{x^2\}$ and $\{-1 - y^2\}$).</span>
+      <span class="gloss">اصلِ لانه کبوتری: دو مجموعهٔ $\{x^2\}$ و $\{-1-y^2\}$ در $\mathbb{Z}_p$ هم‌پوشانی دارند.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Construct a lattice in $\mathbb{Z}^4$ with $p^3$ points; by Minkowski (or direct counting), a non-zero point with norm $< 2p$ exists, giving $a^2+b^2+c^2+d^2 = p$. <span class="qed"></span></span>
+      <span class="gloss">از قضیهٔ مینکوفسکی (یا شمارشِ مستقیم) یک نقطهٔ ناصفرِ شبکه با نُرمِ $&lt; 2p$ پیدا می‌شود — پس $p$ مجموعِ چهار مربع است. ∎</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۳۰. مجموع دو مربع ===================== -->
+  <h2 id="p-2sq-prime"><span class="n">۳۰</span>مجموع دو مربع برای اول‌های ۱ mod ۴</h2>
+
+  <div class="thm">
+    <span class="name">فرما-اویلر</span>
+    اولِ فرد $p$ به‌صورت $a^2 + b^2$ قابل‌نوشتن iff $p \cEquiv 1 \pmod{4}$.
+    <div class="math">$$p = a^2 + b^2 \;\cIff\; p \cEquiv 1 \pmod{4}$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">($\cImp$) نزولِ بی‌نهایت</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">If $p \cEquiv 1 \pmod{4}$, then $\left(\tfrac{-1}{p}\right) = 1$ (by quadratic reciprocity), so $\cEx\, x : x^2 \cEquiv -1 \pmod{p}$.</span>
+      <span class="gloss">از تقابلِ درجهٔ دوم، $-1$ مربعِ پیمانه‌ای است وقتی $p \cEquiv 1 \pmod 4$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">So $\cEx\, m$ with $m^2 + 1 \cEquiv 0 \pmod{p}$, i.e. $p \mid (m^2 + 1)$. Pick smallest such $m$, $|m| < p/2$.</span>
+      <span class="gloss">پس $m$ وجود دارد با $p \mid m^2 + 1$؛ کوچک‌ترین را با $|m| &lt; p/2$ برمی‌داریم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Set $n = (m^2 + 1)/p$. Then $n < p$ and $n \cdot p = m^2 + 1^2$ is a sum of two squares.</span>
+      <span class="gloss">$n = (m^2+1)/p$؛ آن‌گاه $np = m^2 + 1$ و $n &lt; p$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Descent: if $n > 1$, construct a smaller $n' < n$ with the same property (using the two-square identity and division-with-remainder). Eventually $n = 1$, giving $p = a^2 + b^2$. <span class="qed"></span></span>
+      <span class="gloss">نزولِ بی‌نهایتِ فرما — هر بار یک عددِ کوچک‌تر با همان ویژگی.</span>
+    </div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">($\cImpL$)</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">If $p = a^2 + b^2$, then $p \mid (a^2 + b^2)$ and $p \cNotDiv a, b$. So $(a b^{-1})^2 \cEquiv -1 \pmod{p}$, i.e. $-1$ is a QR mod $p$.</span>
+      <span class="gloss">اگر $p = a^2 + b^2$، آن‌گاه $-1$ مربعِ پیمانه‌ایِ $p$ است — از $a \cdot b^{-1}$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">By Euler's criterion: $(-1)^{(p-1)/2} \cEquiv 1 \pmod{p}$, so $p \cEquiv 1 \pmod{4}$. <span class="qed"></span></span>
+      <span class="gloss">از معیارِ اویلر، $(-1)^{(p-1)/2} = 1$، پس $p \cEquiv 1 \pmod 4$. ∎</span>
+    </div>
+  </div>
+
+  <!-- placeholder-proofs13 -->
+
+  <!-- ===================== ۳۱. شمارش‌پذیری گویاها ===================== -->
+  <h2 id="p-denom"><span class="n">۳۱</span>شمارش‌پذیری گویاها</h2>
+
+  <div class="thm">
+    <span class="name">شمارش‌پذیری $\cQ$</span>
+    مجموعهٔ اعدادِ گویا شمارش‌پذیر است.
+    <div class="math">$$\cEx\, f : \cN \to \cQ \;\text{bijection}$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">مورب‌سازیِ قطری</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">List fractions $p/q$ with $q > 0$, $\gcd(p, q) = 1$, in a 2D grid by $(|p| + q)$.</span>
+      <span class="gloss">هر گویا را در سطرِ $|p| + q$ قرار می‌دهیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Each diagonal $\{(p, q) : |p| + q = n\}$ is finite (has $O(n)$ elements).</span>
+      <span class="gloss">هر قطری متناهی است — تعدادِ گویاهایش $O(n)$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Enumerate diagonals in order $n = 1, 2, 3, \ldots$, within each diagonal list fractions left-to-right, skipping duplicates.</span>
+      <span class="gloss">قطری‌ها را به ترتیب می‌شماریم؛ تکراری‌ها را رد می‌کنیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">This gives a bijection $\cN \to \cQ$. So $\cQ$ is countable. <span class="qed"></span></span>
+      <span class="gloss">پس یک دوسوییِ $\cN \to \cQ$ ساخته می‌شود — گویاها شمارش‌پذیرند. ∎</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۳۲. کانتور ===================== -->
+  <h2 id="p-cantor"><span class="n">۳۲</span>قضیه کانتور</h2>
+
+  <div class="thm">
+    <span class="name">کانتور</span>
+    برای هر مجموعهٔ $A$، مجموعهٔ توانی $\mathcal{P}(A)$ (یعنی مجموعهٔ همهٔ زیرمجموعه‌های $A$) به‌طور اکید بزرگ‌تر است — هیچ تابعِ پوشا از $A$ به $\mathcal{P}(A)$ وجود ندارد.
+    <div class="math">$$\cNotDiv\, f : A \to \mathcal{P}(A) \;\text{surjective}, \quad \text{i.e.}\; |A| < |\mathcal{P}(A)|$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">مجموعهٔ کانتور — به‌تناقض</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Suppose $f : A \to \mathcal{P}(A)$ is any function. Define $D = \{x \in A : x \notin f(x)\}$.</span>
+      <span class="gloss">مجموعهٔ کانتورِ $D$ — عناصری که در تصویرشان نیستند.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">If $f$ were surjective, $\cEx\, d \in A : f(d) = D$.</span>
+      <span class="gloss">اگر $f$ پوشا بود، یک $d \in A$ وجود داشت با $f(d) = D$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Is $d \in D$? If $d \in D$, then by definition $d \notin f(d) = D$ — contradiction. If $d \notin D$, then by definition $d \in f(d) = D$ — contradiction.</span>
+      <span class="gloss">پارادوکسِ راسل — $d$ نه در $D$ است و نه نیست.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">So no such $d$ exists, hence $f$ is not surjective. $\therefore\; |A| < |\mathcal{P}(A)|$. <span class="qed"></span></span>
+      <span class="gloss">پس چنین $d$ای وجود ندارد و $f$ پوشا نیست — $|A| &lt; |\mathcal{P}(A)|$. ∎</span>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 400 280" width="400" height="280" xmlns="http://www.w3.org/2000/svg" style="direction:ltr">
+      <text x="200" y="20" font-size="13" fill="#7a2845" font-weight="700" text-anchor="middle">f(aᵢ) as subsets of A = {a₁, a₂, a₃, a₄}</text>
+      <line x1="60" y1="30" x2="340" y2="30" stroke="#948570" stroke-width="1"/>
+      <line x1="60" y1="30" x2="60" y2="220" stroke="#948570" stroke-width="1"/>
+      <line x1="340" y1="30" x2="340" y2="220" stroke="#948570" stroke-width="1"/>
+      <line x1="60" y1="220" x2="340" y2="220" stroke="#948570" stroke-width="1"/>
+      <line x1="130" y1="30" x2="130" y2="220" stroke="#948570" stroke-width="0.8"/>
+      <line x1="200" y1="30" x2="200" y2="220" stroke="#948570" stroke-width="0.8"/>
+      <line x1="270" y1="30" x2="270" y2="220" stroke="#948570" stroke-width="0.8"/>
+      <line x1="60" y1="70" x2="340" y2="70" stroke="#948570" stroke-width="0.8"/>
+      <line x1="60" y1="110" x2="340" y2="110" stroke="#948570" stroke-width="0.8"/>
+      <line x1="60" y1="150" x2="340" y2="150" stroke="#948570" stroke-width="0.8"/>
+      <line x1="60" y1="190" x2="340" y2="190" stroke="#948570" stroke-width="0.8"/>
+      <text x="40" y="54" font-size="12" fill="#5a4a40" font-style="italic">a₁</text>
+      <text x="40" y="94" font-size="12" fill="#5a4a40" font-style="italic">a₂</text>
+      <text x="40" y="134" font-size="12" fill="#5a4a40" font-style="italic">a₃</text>
+      <text x="40" y="174" font-size="12" fill="#5a4a40" font-style="italic">a₄</text>
+      <text x="95" y="22" font-size="11" fill="#5a4a40" text-anchor="middle">a₁</text>
+      <text x="165" y="22" font-size="11" fill="#5a4a40" text-anchor="middle">a₂</text>
+      <text x="235" y="22" font-size="11" fill="#5a4a40" text-anchor="middle">a₃</text>
+      <text x="305" y="22" font-size="11" fill="#5a4a40" text-anchor="middle">a₄</text>
+      <text x="95" y="56" font-size="14" fill="#b8651a" text-anchor="middle">1</text>
+      <text x="165" y="56" font-size="14" fill="#948570" text-anchor="middle">0</text>
+      <text x="235" y="56" font-size="14" fill="#b8651a" text-anchor="middle">1</text>
+      <text x="305" y="56" font-size="14" fill="#948570" text-anchor="middle">0</text>
+      <text x="95" y="96" font-size="14" fill="#948570" text-anchor="middle">0</text>
+      <text x="165" y="96" font-size="14" fill="#b8651a" text-anchor="middle">1</text>
+      <text x="235" y="96" font-size="14" fill="#948570" text-anchor="middle">0</text>
+      <text x="305" y="96" font-size="14" fill="#b8651a" text-anchor="middle">1</text>
+      <text x="95" y="136" font-size="14" fill="#b8651a" text-anchor="middle">1</text>
+      <text x="165" y="136" font-size="14" fill="#b8651a" text-anchor="middle">1</text>
+      <text x="235" y="136" font-size="14" fill="#948570" text-anchor="middle">0</text>
+      <text x="305" y="136" font-size="14" fill="#948570" text-anchor="middle">0</text>
+      <text x="95" y="176" font-size="14" fill="#948570" text-anchor="middle">0</text>
+      <text x="165" y="176" font-size="14" fill="#948570" text-anchor="middle">0</text>
+      <text x="235" y="176" font-size="14" fill="#b8651a" text-anchor="middle">1</text>
+      <text x="305" y="176" font-size="14" fill="#b8651a" text-anchor="middle">1</text>
+      <circle cx="95" cy="50" r="10" fill="none" stroke="#9a2845" stroke-width="1.6"/>
+      <circle cx="165" cy="90" r="10" fill="none" stroke="#9a2845" stroke-width="1.6"/>
+      <circle cx="235" cy="130" r="10" fill="none" stroke="#9a2845" stroke-width="1.6"/>
+      <circle cx="305" cy="170" r="10" fill="none" stroke="#9a2845" stroke-width="1.6"/>
+      <text x="95" y="244" font-size="14" fill="#9a2845" text-anchor="middle" font-weight="700">0</text>
+      <text x="165" y="244" font-size="14" fill="#9a2845" text-anchor="middle" font-weight="700">0</text>
+      <text x="235" y="244" font-size="14" fill="#9a2845" text-anchor="middle" font-weight="700">1</text>
+      <text x="305" y="244" font-size="14" fill="#9a2845" text-anchor="middle" font-weight="700">0</text>
+      <text x="200" y="266" font-size="13" fill="#9a2845" font-style="italic" text-anchor="middle">D = {a₃} — opposite of diagonal</text>
+    </svg>
+    <figcaption>
+      جدولی از $f(a_i)$ به‌صورت زیرمجموعه‌های $A$.<br>
+      قطرِ قرمز: $a_i \in f(a_i)$ یا نه. $D$ = برعکسِ قطر.<br>
+      $D$ با هر ردیف تفاوت دارد (در ستونِ $a_i$ برابرِ قطر نیست) — پس $D \neq f(a_i)$.
+    </figcaption>
+  </figure>
+
+  <!-- placeholder-proofs14 -->
+
+  <!-- ===================== ۳۳. شرودر-برنشتاین ===================== -->
+  <h2 id="p-schroeder-bernstein"><span class="n">۳۳</span>قضیه شرودر-برنشتاین</h2>
+
+  <div class="thm">
+    <span class="name">شرودر-برنشتاین</span>
+    اگر $\cEx\, f : A \to B$ injective و $g : B \to A$ injective، آن‌گاه $\cEx\, h : A \to B$ bijective.
+    <div class="math">$$(\cEx\, f : A \hookrightarrow B) \,\cAnd\, (\cEx\, g : B \hookrightarrow A) \;\cImp\; |A| = |B|$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">تجزیهٔ کانتور-برنشتاین</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Define $A_0 = A \setminus g(B)$, and recursively $A_{n+1} = g(f(A_n))$. Let $A^* = \bigcup_{n \ge 0} A_n$.</span>
+      <span class="gloss">$A_0$ را خارج از تصویرِ $g$ می‌گیریم و به‌طور بازگشتی $A_{n+1} = g(f(A_n))$؛ اجتماعِ همه را $A^*$ می‌نامیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Define $h : A \to B$ by $h(x) = f(x)$ if $x \in A^*$, else $h(x) = g^{-1}(x)$.</span>
+      <span class="gloss">رویِ $A^*$ از $f$، رویِ بقیه از $g^{-1}$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">$h$ is injective: on $A^*$, $f$ is injective; on $A \setminus A^*$, $g^{-1}$ is injective; and the two images are disjoint (by construction).</span>
+      <span class="gloss">$h$ یک‌به‌یک است — $f$ رویِ $A^*$، $g^{-1}$ رویِ بقیه، و تصویرهایشان جدا هستند.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">$h$ is surjective: any $y \in B$ is hit either by $h(g(y)) = y$ (if $g(y) \notin A^*$) or by some $x \in A^*$ (if $g(y) \in A^*$). <span class="qed"></span></span>
+      <span class="gloss">$h$ پوشا است — هر $y \in B$ یا از $g^{-1}$ و یا از $f$ رویِ $A^*$ به‌دست می‌آید. ∎</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۳۴. مقدار میانی ===================== -->
+  <h2 id="p-ivt"><span class="n">۳۴</span>قضیه مقدار میانی</h2>
+
+  <div class="thm">
+    <span class="name">مقدار میانی (IVT)</span>
+    اگر $f : [a, b] \to \cR$ پیوسته و $f(a) \cdot f(b) &lt; 0$، آن‌گاه $\cEx\, c \in (a, b) : f(c) = 0$.
+    <div class="math">$$f \text{ continuous},\; f(a)\, f(b) &lt; 0 \;\cImp\; \cEx\, c \in (a, b) : f(c) = 0$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">دو بخشی بودن — بایرکشن</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">WLOG $f(a) &lt; 0 &lt; f(b)$. Set $a_0 = a, b_0 = b$. Recursively: $m_n = (a_n + b_n)/2$; if $f(m_n) &lt; 0$ set $a_{n+1} = m_n, b_{n+1} = b_n$, else $a_{n+1} = a_n, b_{n+1} = m_n$.</span>
+      <span class="gloss">نصف می‌کنیم و سمتی که علامت عوض می‌کند را نگه می‌داریم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">By construction $f(a_n) &lt; 0 \le f(b_n)$ and $b_n - a_n = (b-a)/2^n \to 0$.</span>
+      <span class="gloss">در هر گام، $f(a_n) &lt; 0 \le f(b_n)$ و طولِ بازه نصف می‌شود.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">$(a_n), (b_n)$ both converge to the same $c \in [a, b]$ (nested intervals, completeness).</span>
+      <span class="gloss">دو دنبالهٔ تو در تو به یک نقطهٔ $c \in [a,b]$ همگرا می‌شوند — از تکمیلِ اعدادِ حقیقی.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">By continuity: $f(c) = \lim f(a_n) \le 0$ and $f(c) = \lim f(b_n) \ge 0$, so $f(c) = 0$. <span class="qed"></span></span>
+      <span class="gloss">از پیوستگی، $f(c) \le 0$ و $f(c) \ge 0$، پس $f(c) = 0$. ∎</span>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 400 240" width="400" height="240" xmlns="http://www.w3.org/2000/svg" style="direction:ltr">
+      <line x1="40" y1="180" x2="380" y2="180" stroke="#948570" stroke-width="1"/>
+      <text x="372" y="194" font-size="12" fill="#948570" font-style="italic">x</text>
+      <path d="M 80,220 Q 140,210 210,180 Q 280,150 340,140" fill="none" stroke="#7a2845" stroke-width="2"/>
+      <circle cx="80" cy="220" r="3" fill="#b8651a"/>
+      <circle cx="340" cy="140" r="3" fill="#b8651a"/>
+      <circle cx="210" cy="180" r="3.5" fill="#6a7a2a"/>
+      <line x1="80" y1="180" x2="80" y2="220" stroke="#948570" stroke-width="0.8" stroke-dasharray="3 3"/>
+      <line x1="340" y1="180" x2="340" y2="140" stroke="#948570" stroke-width="0.8" stroke-dasharray="3 3"/>
+      <line x1="210" y1="180" x2="210" y2="220" stroke="#6a7a2a" stroke-width="0.8" stroke-dasharray="3 3"/>
+      <text x="74" y="234" font-size="13" fill="#b8651a" font-style="italic">a</text>
+      <text x="334" y="234" font-size="13" fill="#b8651a" font-style="italic">b</text>
+      <text x="204" y="234" font-size="13" fill="#6a7a2a" font-style="italic">c</text>
+      <text x="50" y="226" font-size="12" fill="#b8651a" font-style="italic">f(a) &lt; 0</text>
+      <text x="296" y="134" font-size="12" fill="#b8651a" font-style="italic">f(b) &gt; 0</text>
+      <text x="218" y="176" font-size="12" fill="#6a7a2a" font-style="italic">f(c) = 0</text>
+    </svg>
+    <figcaption>
+      نمودارِ $f$ پیوسته روی $[a,b]$.<br>
+      $f(a) &lt; 0$ و $f(b) &gt; 0$ — علامت در دو سر متضاد است.<br>
+      پیوستگی ایجاب می‌کند که $f$ از صفر بگذرد: $f(c) = 0$ برای یک $c \in (a,b)$.
+    </figcaption>
+  </figure>
+
+  <!-- placeholder-proofs15 -->
+
+  <!-- ===================== ۳۵. مقدار میانگین ===================== -->
+  <h2 id="p-mvt"><span class="n">۳۵</span>قضیه مقدار میانگین</h2>
+
+  <div class="thm">
+    <span class="name">مقدار میانگین (MVT)</span>
+    اگر $f : [a, b] \to \cR$ در $[a, b]$ پیوسته و در $(a, b)$ مشتق‌پذیر باشد:
+    <div class="math">$$\cEx\, c \in (a, b) \;:\; f'(c) = \frac{f(b) - f(a)}{b - a}$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">از قضیهٔ رول</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Define $g(x) = f(x) - \dfrac{f(b) - f(a)}{b - a}(x - a)$. Then $g(a) = f(a)$ and $g(b) = f(a)$, so $g(a) = g(b)$.</span>
+      <span class="gloss">تابعِ $g$ را طوری می‌سازیم که در $a$ و $b$ برابر باشد.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">By Rolle's theorem: $\cEx\, c \in (a, b) : g'(c) = 0$.</span>
+      <span class="gloss">از قضیهٔ رول، چون $g(a) = g(b)$، یک $c \in (a,b)$ با $g'(c) = 0$ وجود دارد.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">$g'(c) = f'(c) - \dfrac{f(b) - f(a)}{b - a} = 0$, so $f'(c) = \dfrac{f(b) - f(a)}{b - a}$. <span class="qed"></span></span>
+      <span class="gloss">با مشتق‌گیریِ $g$ و صفر قرار دادن: $f'(c) = \dfrac{f(b)-f(a)}{b-a}$. ∎</span>
+    </div>
+  </div>
+
+  <div class="box note">
+    <span class="label">قضیه رول</span>
+    اگر $h(a) = h(b)$ و $h$ در $[a,b]$ پیوسته و در $(a,b)$ مشتق‌پذیر، آن‌گاه $\cEx\, c : h'(c) = 0$. اثبات: $h$ ماکزیمم/مینیممِ داخلی دارد (در غیر این صورت $h$ ثابت و $h' = 0$)، و در آن نقطه $h' = 0$ (لمِ فرما).
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 400 240" width="400" height="240" xmlns="http://www.w3.org/2000/svg" style="direction:ltr">
+      <line x1="40" y1="220" x2="380" y2="220" stroke="#8a7a60" stroke-width="1"/>
+      <line x1="40" y1="220" x2="40" y2="20" stroke="#8a7a60" stroke-width="1"/>
+      <text x="372" y="234" font-size="12" fill="#8a7a60" font-style="italic">x</text>
+      <text x="28" y="28" font-size="12" fill="#8a7a60" font-style="italic">y</text>
+      <path d="M 80,180 Q 210,100 340,60" fill="none" stroke="#8a1f3a" stroke-width="2"/>
+      <line x1="80" y1="180" x2="340" y2="60" stroke="#c4600a" stroke-width="1.8"/>
+      <line x1="80" y1="170" x2="340" y2="50" stroke="#1a5a7a" stroke-width="1.4" stroke-dasharray="6 4"/>
+      <circle cx="80" cy="180" r="3.5" fill="#8a1f3a"/>
+      <circle cx="340" cy="60" r="3.5" fill="#8a1f3a"/>
+      <circle cx="210" cy="110" r="3.5" fill="#5a7a1a"/>
+      <line x1="80" y1="220" x2="80" y2="180" stroke="#8a7a60" stroke-width="0.8" stroke-dasharray="3 3"/>
+      <line x1="340" y1="220" x2="340" y2="60" stroke="#8a7a60" stroke-width="0.8" stroke-dasharray="3 3"/>
+      <line x1="210" y1="220" x2="210" y2="110" stroke="#8a7a60" stroke-width="0.8" stroke-dasharray="3 3"/>
+      <text x="74" y="234" font-size="13" fill="#8a1f3a" font-style="italic">a</text>
+      <text x="334" y="234" font-size="13" fill="#8a1f3a" font-style="italic">b</text>
+      <text x="204" y="234" font-size="13" fill="#5a7a1a" font-style="italic">c</text>
+      <text x="50" y="184" font-size="12" fill="#8a1f3a" font-style="italic">f(a)</text>
+      <text x="312" y="64" font-size="12" fill="#8a1f3a" font-style="italic">f(b)</text>
+      <text x="218" y="106" font-size="12" fill="#5a7a1a" font-style="italic">f(c)</text>
+      <text x="280" y="124" font-size="11" fill="#c4600a" font-style="italic">secant</text>
+      <text x="270" y="170" font-size="11" fill="#1a5a7a" font-style="italic">tangent ∥ secant</text>
+    </svg>
+    <figcaption>
+      نمودارِ $f$ روی $[a,b]$.<br>
+      خطِ قاطعِ (نارنجی) از $(a, f(a))$ به $(b, f(b))$ با شیبِ $\tfrac{f(b)-f(a)}{b-a}$.<br>
+      مماسِ (آبی، خط‌چین) در $c$ با همان شیب — $f'(c) = \tfrac{f(b)-f(a)}{b-a}$.
+    </figcaption>
+  </figure>
+
+  <!-- ===================== ۳۶. قضیه بنیادی حسابان ===================== -->
+  <h2 id="p-ftc"><span class="n">۳۶</span>قضیه بنیادی حساب دیفرانسیل و انتگرال</h2>
+
+  <div class="thm">
+    <span class="name">FTC</span>
+    اگر $F(x) = \int_a^x f(t)\, dt$ و $f$ پیوسته باشد:
+    <div class="math">$$F'(x) = f(x), \quad \int_a^b f(x)\, dx = G(b) - G(a) \;\text{where}\; G' = f$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">بخشِ ۱ — $F' = f$</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">$\dfrac{F(x+h) - F(x)}{h} = \dfrac{1}{h}\int_x^{x+h} f(t)\, dt$.</span>
+      <span class="gloss">نسبتِ تفاضلیِ $F$ = میانگینِ $f$ روی $[x, x+h]$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">By MVT for integrals (since $f$ continuous): $\int_x^{x+h} f = h \cdot f(c_h)$ for some $c_h \in [x, x+h]$.</span>
+      <span class="gloss">مقدارِ میانگینِ انتگرال — $f$ در نقطه‌ای از بازه مقدارِ میانگین را می‌گیرد.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">As $h \to 0$, $c_h \to x$, so by continuity $\dfrac{F(x+h) - F(x)}{h} = f(c_h) \to f(x)$. Hence $F'(x) = f(x)$. <span class="qed"></span></span>
+      <span class="gloss">وقتی $h \to 0$، $c_h \to x$ و از پیوستگی، $f(c_h) \to f(x)$؛ پس $F'(x) = f(x)$. ∎</span>
+    </div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">بخشِ ۲ — $\int_a^b f = G(b) - G(a)$</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Let $G' = f$. By part 1, $F(x) = \int_a^x f$ also has $F' = f$. So $(G - F)' = 0$ on $[a, b]$.</span>
+      <span class="gloss">اگر $G' = f$، آن‌گاه از بخشِ ۱، $F' = f$ نیز هست؛ پس $(G-F)' = 0$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">By MVT, $G - F$ is constant: $G(x) - F(x) = G(a) - F(a) = G(a) - 0 = G(a)$.</span>
+      <span class="gloss">از MVT، $G - F$ ثابت است؛ در $x = a$، $F(a) = 0$، پس $G(x) - F(x) = G(a)$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">At $x = b$: $G(b) - F(b) = G(a)$, i.e. $F(b) = \int_a^b f = G(b) - G(a)$. <span class="qed"></span></span>
+      <span class="gloss">در $x = b$: $\int_a^b f = F(b) = G(b) - G(a)$. ∎</span>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 400 240" width="400" height="240" xmlns="http://www.w3.org/2000/svg" style="direction:ltr">
+      <line x1="40" y1="200" x2="380" y2="200" stroke="#948570" stroke-width="1"/>
+      <line x1="40" y1="200" x2="40" y2="20" stroke="#948570" stroke-width="1"/>
+      <text x="372" y="214" font-size="12" fill="#948570" font-style="italic">x</text>
+      <text x="28" y="28" font-size="12" fill="#948570" font-style="italic">y</text>
+      <path d="M 80,160 Q 160,80 240,100 Q 320,140 340,120" fill="none" stroke="#7a2845" stroke-width="2"/>
+      <path d="M 80,200 L 80,160 Q 160,80 240,100 L 240,200 Z" fill="rgba(106,122,42,0.18)" stroke="none"/>
+      <path d="M 80,160 Q 160,80 240,100" fill="none" stroke="#7a2845" stroke-width="2"/>
+      <rect x="240" y="200" width="30" height="-100" fill="rgba(184,101,26,0.30)" stroke="#b8651a" stroke-width="1.2"/>
+      <line x1="240" y1="200" x2="240" y2="100" stroke="#6a7a2a" stroke-width="0.8" stroke-dasharray="3 3"/>
+      <line x1="270" y1="200" x2="270" y2="105" stroke="#b8651a" stroke-width="0.8" stroke-dasharray="3 3"/>
+      <circle cx="80" cy="200" r="2.5" fill="#7a2845"/>
+      <circle cx="340" cy="200" r="2.5" fill="#7a2845"/>
+      <circle cx="240" cy="200" r="2.5" fill="#6a7a2a"/>
+      <circle cx="270" cy="200" r="2.5" fill="#b8651a"/>
+      <text x="74" y="214" font-size="13" fill="#7a2845" font-style="italic">a</text>
+      <text x="334" y="214" font-size="13" fill="#7a2845" font-style="italic">b</text>
+      <text x="234" y="214" font-size="13" fill="#6a7a2a" font-style="italic">x</text>
+      <text x="264" y="214" font-size="13" fill="#b8651a" font-style="italic">x+h</text>
+      <text x="100" y="150" font-size="13" fill="#6a7a2a" font-style="italic">F(x) = ∫f</text>
+      <text x="278" y="160" font-size="11" fill="#b8651a" font-style="italic">f(x)·h</text>
+    </svg>
+    <figcaption>
+      $F(x) = \int_a^x f(t)\, dt$ — مساحتِ سایه‌خوردهٔ سبز.<br>
+      نوارِ نارنجی با پهنا $h$ و ارتفاعِ $f(x)$: $F(x+h) - F(x) \approx f(x)\cdot h$.<br>
+      پس $\dfrac{F(x+h)-F(x)}{h} \to f(x)$، یعنی $F' = f$.
+    </figcaption>
+  </figure>
+
+  <!-- placeholder-proofs16 -->
+
+  <!-- ===================== ۳۷. تیلور ===================== -->
+  <h2 id="p-taylor"><span class="n">۳۷</span>قضیه تیلور</h2>
+
+  <div class="thm">
+    <span class="name">تیلور</span>
+    اگر $f$ تا مرتبهٔ $n+1$ مشتق‌پذیر باشد در اطرافِ $a$:
+    <div class="math">$$f(x) = \sum_{k=0}^{n} \frac{f^{(k)}(a)}{k!}(x-a)^k + R_n(x), \quad R_n(x) = \frac{f^{(n+1)}(c)}{(n+1)!}(x-a)^{n+1}$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">از MVT تکرارشده</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Let $T_n(x) = \sum_{k=0}^{n} \tfrac{f^{(k)}(a)}{k!}(x-a)^k$. Define $R_n(x) = f(x) - T_n(x)$.</span>
+      <span class="gloss">چندجمله‌ایِ تیلورِ $T_n$ و باقی‌ماندهٔ $R_n = f - T_n$ را تعریف می‌کنیم.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">Cauchy MVT applied to $R_n(x)$ and $g(x) = (x-a)^{n+1}$ on $[a, x]$: $\cEx\, c \in (a, x)$ with $\dfrac{R_n(x)}{(x-a)^{n+1}} = \dfrac{R_n^{(n+1)}(c)}{(n+1)!}$.</span>
+      <span class="gloss">قاعدهٔ کوشیِ MVT — نسبتِ دو تابع با مشتق‌های هم‌صفر.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">$T_n^{(n+1)} = 0$ (it's a polynomial of degree $n$), so $R_n^{(n+1)} = f^{(n+1)}$.</span>
+      <span class="gloss">$T_n$ چندجمله‌ایِ درجهٔ $n$ است، پس $T_n^{(n+1)} = 0$ و $R_n^{(n+1)} = f^{(n+1)}$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">Substitute: $R_n(x) = \dfrac{f^{(n+1)}(c)}{(n+1)!}(x-a)^{n+1}$. <span class="qed"></span></span>
+      <span class="gloss">با جای‌گذاری، فرمولِ باقی‌ماندهٔ تیلور به‌دست می‌آید. ∎</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۳۸. بی‌ترتیبی‌ها ===================== -->
+  <h2 id="p-derangements"><span class="n">۳۸</span>فرمول بی‌ترتیبی‌ها</h2>
+
+  <div class="box bridge">
+    <span class="label">پیش‌زمینه</span>
+    <p><strong>جایگشت</strong> از $\{1, \ldots, n\}$ یعنی یک چینشون از این $n$ عدد در یک ردیف — مثلاً برای $n=3$ جایگشت‌های $(1,2,3)$, $(2,3,1)$, $(3,1,2)$, ... . تعدادِ همهٔ جایگشت‌ها $n!$ است.</p>
+    <p>در یک جایگشت، عدد $i$ را <strong>نقطهٔ ثابت</strong> می‌گوییم اگر در جایِ $i$-ام نشسته باشد. مثلاً در $(2,1,3)$، عدد $3$ نقطهٔ ثابت است (و $1$ و $2$ نه).</p>
+    <p><strong>بی‌ترتیبی</strong> (derangement) جایگشتی است که <em>هیچ</em> نقطهٔ ثابتی ندارد. مثلاً برای $n=3$ فقط $(2,3,1)$ و $(3,1,2)$ بی‌ترتیبی‌اند. می‌خواهیم $D_n$ = تعداد بی‌ترتیبی‌ها را به‌دست آوریم.</p>
+    <p><strong>اصلِ شمول-استبعاد</strong>: برای شمارشِ اشیایی که <em>هیچ‌کدام</em> از ویژگی‌های $P_1, \ldots, P_n$ را ندارند، ابتدا همه را می‌شماریم، سپس آن‌هایی که حداقل یک ویژگی دارند را کم می‌کنیم، سپس آن‌هایی که حداقل دو ویژگی دارند را اضافه می‌کنیم (چون دوبار کم شده‌بودند)، و الی آخر — با علامتِ $+,-,+,-,\ldots$.</p>
+  </div>
+
+  <div class="thm">
+    <span class="name">بی‌ترتیبی</span>
+    تعداد جایگشت‌های $\{1, \ldots, n\}$ بدون نقطهٔ ثابت:
+    <div class="math">$$D_n = n!\sum_{k=0}^{n} \frac{(-1)^k}{k!} \;\approx\; \frac{n!}{e}$$</div>
+    یعنی تقریباً یک‌بر-$e$ِ همهٔ جایگشت‌ها بی‌ترتیبی‌اند.
+  </div>
+
+  <div class="proof">
+    <span class="ph">اصلِ شمول-استبعاد</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Let $A_i = $ set of permutations fixing $i$. Then $D_n = n! - |A_1 \cup \cdots \cup A_n|$.</span>
+      <span class="gloss">بی‌ترتیبی = همهٔ جایگشت‌ها ($n!$) منهای آن‌هایی که حداقل یک نقطهٔ ثابت دارند (یعنی $\bigcup A_i$).</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">By inclusion-exclusion: $|A_1 \cup \cdots \cup A_n| = \sum |A_i| - \sum |A_i \cap A_j| + \cdots$.</span>
+      <span class="gloss">شمول-استبعاد: تعدادِ اجتماع = جمعِ تک‌تک، منهایِ جمعِ دوتایی، به‌علاوهٔ جمعِ سه‌تایی، ... — با علامتِ $+,-,+,-,\ldots$.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">$|A_{i_1} \cap \cdots \cap A_{i_k}| = (n-k)!$ (fix $k$ points, permute the rest). There are $\binom{n}{k}$ such intersections.</span>
+      <span class="gloss">اگر $k$ نقطه ثابت باشند، بقیهٔ $n-k$ عدد دلخواه جایگشت می‌شوند — $(n-k)!$ حالت. و $\binom{n}{k}$ راه برای انتخابِ آن $k$ نقطه هست.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۴</span>
+      <span class="formal">So $|A_1 \cup \cdots \cup A_n| = \sum_{k=1}^{n} (-1)^{k+1} \binom{n}{k}(n-k)! = \sum_{k=1}^{n} (-1)^{k+1} \dfrac{n!}{k!}$.</span>
+      <span class="gloss">با قرار دادنِ $\binom{n}{k}(n-k)! = \dfrac{n!}{k!}$، اجتماع به‌صورتِ یک جمعِ متناوب درمی‌آید.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۵</span>
+      <span class="formal">Hence $D_n = n! - \sum_{k=1}^{n} (-1)^{k+1} \dfrac{n!}{k!} = n!\sum_{k=0}^{n} \dfrac{(-1)^k}{k!}$. As $n \to \infty$, $D_n/n! \to e^{-1}$. <span class="qed"></span></span>
+      <span class="gloss">جمعِ نهایی همان بسطِ تیلورِ $e^{-1}$ است — پس نسبتِ بی‌ترتیبی‌ها به همهٔ جایگشت‌ها به $1/e$ میل می‌کند.</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۳۹. تولد ===================== -->
+  <h2 id="p-birthday"><span class="n">۳۹</span>مسألهٔ تولد</h2>
+
+  <div class="thm">
+    <span class="name">مسألهٔ تولد</span>
+    در گروهی از $n$ نفر، احتمالِ هم‌تولدِ حداقل دو نفر:
+    <div class="math">$$P(n) = 1 - \prod_{k=0}^{n-1} \frac{365 - k}{365}$$</div>
+    $P(23) > \tfrac{1}{2}$.
+  </div>
+
+  <div class="proof">
+    <span class="ph">از متمم</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Compute complement: $P(\text{no shared birthday}) = \dfrac{365}{365} \cdot \dfrac{364}{365} \cdots \dfrac{365 - n + 1}{365} = \prod_{k=0}^{n-1} \dfrac{365 - k}{365}$.</span>
+      <span class="gloss">هر نفرِ جدید باید با همهٔ قبلی‌ها متفاوت باشد.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">So $P(n) = 1 - \prod_{k=0}^{n-1} \dfrac{365 - k}{365}$.</span>
+      <span class="gloss">متمم را از ۱ کم می‌کنیم تا احتمالِ هم‌تولدِ حداقل دو نفر به‌دست آید.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۳</span>
+      <span class="formal">Bound: $\prod_{k=0}^{n-1} (1 - k/365) \le \exp\!\left(-\sum_{k=0}^{n-1} k/365\right) = \exp\!\left(-\tfrac{n(n-1)}{730}\right)$. For $n = 23$: $\exp(-253/365) \approx 0.4995$, so $P(23) \approx 0.507 > 1/2$. <span class="qed"></span></span>
+      <span class="gloss">تقریبِ $1 - x \le e^{-x}$.</span>
+    </div>
+  </div>
+
+  <!-- ===================== ۴۰. لانه کبوتری ===================== -->
+  <h2 id="p-pigeonhole"><span class="n">۴۰</span>اصل لانه کبوتری</h2>
+
+  <div class="thm">
+    <span class="name">لانه کبوتری</span>
+    اگر $n+1$ شیء در $n$ لانه قرار گیرد، آن‌گاه حداقل یک لانه دو شیء دارد.
+    <div class="math">$$|A| > |B| \;\cImp\; \cNotDiv\, f : A \to B \;\text{injective}$$</div>
+  </div>
+
+  <div class="proof">
+    <span class="ph">به‌تناقض</span>
+    <div class="step">
+      <span class="sn">۱</span>
+      <span class="formal">Suppose $f : A \to B$ injective with $|A| = n+1, |B| = n$. Then $f$ maps $A$ onto $f(A) \subseteq B$ bijectively.</span>
+      <span class="gloss">فرضِ تناقض: $f$ یک‌به‌یک است؛ پس $A$ و $f(A) \subseteq B$ هم‌اندازه‌اند.</span>
+    </div>
+    <div class="step">
+      <span class="sn">۲</span>
+      <span class="formal">So $|f(A)| = |A| = n + 1$. But $f(A) \subseteq B$ implies $|f(A)| \le |B| = n$. Contradiction: $n + 1 \le n$. <span class="qed"></span></span>
+      <span class="gloss">$|f(A)| = n+1$ ولی $f(A) \subseteq B$ پس $|f(A)| \le n$ — تناقض. ∎</span>
+    </div>
+  </div>
+
+  <div class="box note">
+    <span class="label">کاربرد</span>
+    در هر جمعِ ۳۶۷ نفر، حداقل دو نفر هم‌تولد هستند (۳۶۶ لانه برای ۳۶۵/۳۶۶ روزِ سال). در هر زیرمجموعهٔ $n+1$ تایی از $\{1, \ldots, 2n\}$، دو عدد یکی بر دیگری بخش‌ است (لانه‌ها: دسته‌های $\{k, 2k, 4k, \ldots\}$).
+  </div>
+
+  <div class="box bridge">
+    <span class="label">پایان</span>
+    این چهل اثبات، پلی‌اند به شاخه‌های ریاضیات: هندسه (فیثاغورس، تالس، بطلمیوس، چوا، هرون)، نظریهٔ اعداد (√۲، اعداد اول، ویلسن، فرما، اویلر، لاگرانژ، تقابل درجه دوم)، آنالیز (کاشی-شوارتس، AM-GM، مقدار میانی، مقدار میانگین، FTC، تیلور)، ترکیبیات (ترکیب، دوجمله‌ای، بی‌ترتیبی‌ها، تولد)، و منطقِ بنیادی (استقرا، کانتور، شرودر-برنشتاین، لانه کبوتری).
+  </div>
+  <div class="footer">
+    در راهِ اثبات — چهل قضیهٔ بنیادی، به زبانِ نمادینِ ریاضی
+  </div>
+  </div>
+
+<!-- placeholder-script -->
+<button id="totop" class="totop" aria-label="بالا">↑ بالا</button>
+<script>
+  (function(){
+    var btn = document.getElementById('totop');
+    window.addEventListener('scroll', function(){
+      if (window.scrollY > 400) btn.classList.add('show');
+      else btn.classList.remove('show');
+    });
+    btn.addEventListener('click', function(){
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  })();
+
+  function expandCustomMacros(text){
+    return text
+      .replace(/\\cAll\b/g, "\\textcolor{#8a1f3a}{\\forall}")
+      .replace(/\\cEx\b/g,  "\\textcolor{#c4600a}{\\exists}")
+      .replace(/\\cAnd\b/g, "\\textcolor{#5a7a1a}{\\land}")
+      .replace(/\\cOr\b/g,  "\\textcolor{#b84a1a}{\\lor}")
+      .replace(/\\cImp\b/g, "\\textcolor{#1a5a7a}{\\Rightarrow}")
+      .replace(/\\cImpL\b/g,"\\textcolor{#1a5a7a}{\\Leftarrow}")
+      .replace(/\\cIff\b/g, "\\textcolor{#2a7a8a}{\\Leftrightarrow}")
+      .replace(/\\cNeg\b/g, "\\textcolor{#a8203a}{\\neg}")
+      .replace(/\\cNeq\b/g, "\\textcolor{#a8203a}{\\neq}")
+      .replace(/\\cDiv\b/g, "\\textcolor{#1a5a7a}{\\mid}")
+      .replace(/\\cNotDiv\b/g,"\\textcolor{#a8203a}{\\nmid}")
+      .replace(/\\cEquiv\b/g,"\\textcolor{#2a7a8a}{\\equiv}")
+      .replace(/\\cIn\b/g,  "\\textcolor{#8a1f3a}{\\in}")
+      .replace(/\\cR\b/g,   "\\textcolor{#1a5a7a}{\\mathbb{R}}")
+      .replace(/\\cZ\b/g,   "\\textcolor{#1a5a7a}{\\mathbb{Z}}")
+      .replace(/\\cN\b/g,   "\\textcolor{#1a5a7a}{\\mathbb{N}}")
+      .replace(/\\cQ\b/g,   "\\textcolor{#1a5a7a}{\\mathbb{Q}}");
+  }
+  function walkTextNodes(node){
+    if (node.nodeType === 3){ node.nodeValue = expandCustomMacros(node.nodeValue); }
+    else if (node.nodeType === 1 && node.tagName !== "SCRIPT" && node.tagName !== "STYLE" && node.tagName !== "NOSCRIPT" && node.tagName !== "TEXTAREA" && node.tagName !== "PRE" && node.tagName !== "CODE"){
+      for (var c = node.firstChild; c; c = c.nextSibling){ walkTextNodes(c); }
+    }
+  }
+  document.addEventListener("DOMContentLoaded", function(){
+    walkTextNodes(document.body);
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "$", right: "$", display: false},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false,
+        ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
